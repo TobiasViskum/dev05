@@ -1,0 +1,144 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --min-width: 243px;
+  --max-width: 445px;
+
+  --user-select: auto;
+
+  /* Colors */
+  --bg-transparent: 0.5;
+  --bg-first-preset: 5, 5, 5;
+  --bg-second-preset: 29, 29, 29;
+  --bg-third-preset: 50, 50, 50;
+
+  --bg-first: rgb(var(--bg-first-preset));
+  --bg-first-transparent: rgba(var(--bg-first-preset), var(--bg-transparent));
+  --bg-second: rgb(var(--bg-second-preset));
+  --bg-second-transparent: rgba(var(--bg-second-preset), var(--bg-transparent));
+  --bg-third: rgb(var(--bg-third-preset));
+  --bg-news-preset: 46, 209, 87;
+  --bg-news: rgb(var(--bg-news-preset));
+  --bg-alert: rgb(245, 83, 99);
+  --bg-btn-active: rgb(8, 42, 82);
+  --bg-btn-inactive: rgb(46, 47, 55);
+  --bg-fitness: rgb(250, 130, 31);
+  --bg-dog: rgb(19, 177, 90);
+  --bg-chat: rgb(26, 113, 184);
+  --bg-cardio: rgb(178, 34, 197);
+  --bg-compete: rgb(241, 47, 73);
+
+  --text-first: rgb(251, 251, 252);
+  --text-second: rgb(132, 132, 132);
+  --text-active: rgb(4, 136, 255);
+  --text-btn-active: rgb(133, 190, 254);
+  --text-btn-inactive: rgb(191, 193, 201);
+  --text-news: rgb(46, 209, 88);
+  --text-alert: rgb(245, 83, 99);
+
+  --border-text-white: rgb(251, 251, 252);
+  --border-first: #050505;
+  --border-second: #17181b;
+  --border-active: #143f71;
+  --border-inactive: #2b2c2f;
+  --border-image-gray: #848484;
+
+  --outline-active: rgb(20, 63, 113);
+  --outline-inactive: rgb(43, 44, 47);
+
+  --placeholder-first: #fbfbfc;
+  --placeholder-second: #848484;
+
+  --box-shadow-first: #fbfbfc;
+
+  /* Other */
+
+  --border-4: 4px;
+
+  --min-width-tiny: calc(var(--min-width) * 0.6);
+  --min-width-small: calc(var(--min-width));
+
+  --max-width-tiny: calc(var(--max-width) * 0.6);
+  --max-width-small: calc(var(--max-width));
+
+  --grid-template-rows-1-min: repeat(1, min-content);
+  --grid-template-rows-2-min: repeat(2, min-content);
+  --grid-template-rows-3-min: repeat(3, min-content);
+  --grid-template-rows-auto-min: repeat(auto-fit, min-content);
+
+  --grid-auto-rows-0: 0px;
+
+  --grid-template-cols-auto-minmax-1: repeat(
+    1,
+    minmax(var(--min-width), var(--max-width))
+  );
+
+  --transition-prop-grid: grid-template-columns, grid-template-rows,
+    grid-template-areas, row-gap, column-gap;
+
+  --box-shadow-circle-sm: 0 0 4px;
+  --box-shadow-circle-md: 0 0 8px;
+  --box-shadow-circle-lg: 0 0 12px;
+  --box-shadow-circle-xl: 0 0 16px;
+  --box-shadow-circle-2xl: 0 0 20px;
+  --box-shadow-circle-3xl: 0 0 26px;
+  --box-shadow-circle-4xl: 0 0 32px;
+  --box-shadow-circle-5xl: 0 0 40px;
+
+  --box-shadow-br-md: 0.25rem 0.25rem 0.5rem var(--bg-first) /*var(--bg-first)*/;
+  --box-shadow-br-lg: 0.25rem 0.25rem 0.5rem black /*var(--bg-first)*/;
+}
+
+.image-gray {
+  filter: invert(49%) sepia(0%) saturate(98%) hue-rotate(272deg)
+    brightness(102%) contrast(94%);
+}
+.image-blue {
+  filter: brightness(0) saturate(100%) invert(50%) sepia(50%) saturate(7493%)
+    hue-rotate(195deg) brightness(104%) contrast(101%);
+}
+.image-light-blue {
+  filter: brightness(0) saturate(100%) invert(74%) sepia(5%) saturate(4917%)
+    hue-rotate(185deg) brightness(104%) contrast(98%);
+}
+
+.image-green {
+  filter: brightness(0) saturate(100%) invert(71%) sepia(19%) saturate(1581%)
+    hue-rotate(81deg) brightness(89%) contrast(98%);
+}
+
+.vas_0 {
+  filter: brightness(0) saturate(100%) invert(48%) sepia(96%) saturate(5337%)
+    hue-rotate(131deg) brightness(105%) contrast(83%);
+}
+.vas_1-3 {
+  filter: brightness(0) saturate(100%) invert(66%) sepia(36%) saturate(931%)
+    hue-rotate(41deg) brightness(98%) contrast(94%);
+}
+.vas_4 {
+  filter: brightness(0) saturate(100%) invert(84%) sepia(44%) saturate(661%)
+    hue-rotate(351deg) brightness(103%) contrast(98%);
+}
+.vas_5-6 {
+  filter: brightness(0) saturate(100%) invert(62%) sepia(82%) saturate(1197%)
+    hue-rotate(8deg) brightness(105%) contrast(94%);
+}
+.vas_7-9 {
+  filter: brightness(0) saturate(100%) invert(33%) sepia(81%) saturate(3011%)
+    hue-rotate(10deg) brightness(104%) contrast(91%);
+}
+.vas_10 {
+  filter: brightness(0) saturate(100%) invert(20%) sepia(49%) saturate(6080%)
+    hue-rotate(351deg) brightness(91%) contrast(88%);
+}
+
+* {
+  -webkit-user-select: var(--user-select);
+  -khtml-user-select: var(--user-select);
+  -moz-user-select: var(--user-select);
+  -o-user-select: var(--user-select);
+  user-select: var(--user-select);
+  -webkit-user-drag: var(--user-select);
+}

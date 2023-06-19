@@ -1,0 +1,1 @@
+xcopy C:\Users\tobia\Personal\Development\React\dev05\src\lib\auth \\192.168.2.20\development\dev05\src\lib\auth /E /Y /Q /D

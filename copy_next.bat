@@ -1,0 +1,1 @@
+xcopy C:\Users\tobia\Personal\Development\React\dev05\.next \\192.168.2.20\development\dev05\.next /E /Y /Q /D

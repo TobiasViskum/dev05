@@ -1,0 +1,1 @@
+xcopy C:\Users\tobia\Personal\Development\React\dev05\node_modules \\192.168.2.20\development\dev05\node_modules /E /Y /Q /D
