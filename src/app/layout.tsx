@@ -29,6 +29,7 @@ export default async function RootLayout({
   //     ? await getProfileData(uid)
   //     : null
   //   : null;
+  console.log("I run");
 
   return (
     <html lang="en">
