@@ -54,6 +54,7 @@ export default function ContentItem({
 
   return (
     <Link
+      data-linkz-ai-ignore
       href={destPath}
       className={twMerge("mt-2 flex w-11 flex-col items-center", className)}
     >
