@@ -2,7 +2,7 @@
 import Image, { StaticImageData } from "next/image";
 import Link from "next/link";
 import { twJoin, twMerge } from "tailwind-merge";
-import { usePathname } from "next/navigation";
+import { usePathname, useSearchParams } from "next/navigation";
 
 export default function ContentItem({
   profileData,
@@ -20,6 +20,10 @@ export default function ContentItem({
   className?: string;
 }) {
   const path = usePathname();
+  const searchParams = useSearchParams();
+  const prevParam = searchParams.get("prev")
+    ? `?prev=${searchParams.get("prev")}`
+    : "";
 
   function getImageColor() {
     if (profileData?.color_theme === "blue") {
@@ -54,7 +58,7 @@ export default function ContentItem({
 
   return (
     <Link
-      href={destPath}
+      href={[destPath, prevParam].join("")}
       className={twMerge("mt-2 flex w-11 flex-col items-center", className)}
     >
       <div className="grid h-7 w-7 place-items-center">

@@ -1,6 +1,8 @@
+"use client";
+
 import Header from "./Header";
 import Footer from "./Footer";
-import { getProfileData } from "@/lib/db";
+import { usePathname } from "next/navigation";
 
 export default function PageLayout({
   profileData,
@@ -9,6 +11,12 @@ export default function PageLayout({
   profileData: ProfileData | null;
   children: React.ReactNode;
 }) {
+  const path = usePathname();
+
+  if (path === "/pwa-start") {
+    return <>{children}</>;
+  }
+
   return (
     <>
       <Header profileData={profileData} />

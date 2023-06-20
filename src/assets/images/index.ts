@@ -31,6 +31,7 @@ import neutralDownSmiley from "./neutralDownSmiley.png";
 import littleSadSmiley from "./littleSadSmiley.png";
 import verySadSmiley from "./verySadSmiley.png";
 import notes from "./notes.png";
+import logo from "./logo.png";
 
 export {
   profileTobias,
@@ -66,4 +67,5 @@ export {
   littleSadSmiley,
   verySadSmiley,
   notes,
+  logo,
 };

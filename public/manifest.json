@@ -1,0 +1,31 @@
+{
+  "theme_color": "#050505",
+  "background_color": "#050505",
+  "display": "standalone",
+  "name": "Viskum App 3.1",
+  "start_url": "/pwa-start",
+  "short_name": "Viskum",
+  "description": "An app made by Tobias T. Viskum for the Viskum Family!",
+  "icons": [
+    {
+      "src": "/icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon-256x256.png",
+      "sizes": "256x256",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon-384x384.png",
+      "sizes": "384x384",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

@@ -7,6 +7,7 @@ import { appImages } from "@/lib/util";
 import Link from "next/link";
 import { twJoin } from "tailwind-merge";
 import { isTheme } from "@/lib/util/themes";
+import { usePathname } from "next/navigation";
 
 interface Props {
   appData: AppData;
@@ -14,7 +15,7 @@ interface Props {
 }
 
 export default function MostVisitedCard({ profileData, appData }: Props) {
-  const uid = profileData.uid;
+  const path = usePathname();
   const appImageData = appImages[appData.name_id];
 
   function handleNavigate() {
@@ -28,7 +29,11 @@ export default function MostVisitedCard({ profileData, appData }: Props) {
   }
 
   return (
-    <Link href={appData.href} onClick={handleNavigate} className="group">
+    <Link
+      href={[appData.href, "?prev=", path].join("")}
+      onClick={handleNavigate}
+      className="group"
+    >
       <Box
         profileData={profileData}
         className="flex items-center gap-x-3 overflow-hidden p-1.5 dt:group-hover:border-active"

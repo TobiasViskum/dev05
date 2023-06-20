@@ -44,6 +44,7 @@ interface ProfileDataBefore {
   most_visited: string | null;
   available_apps: string | null;
   color_theme: string;
+  group_uid: string;
 }
 
 type Favorites = { [key: string]: string } | null;
@@ -78,6 +79,7 @@ interface ProfileData {
   most_visited: MostVisited;
   available_apps: AvailableApps;
   color_theme: string;
+  group_uid: string;
 }
 
 interface AppData {

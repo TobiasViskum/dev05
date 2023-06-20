@@ -91,6 +91,28 @@
   --box-shadow-br-lg: 0.25rem 0.25rem 0.5rem black /*var(--bg-first)*/;
 }
 
+* {
+  -webkit-user-select: var(--user-select);
+  -khtml-user-select: var(--user-select);
+  -moz-user-select: var(--user-select);
+  -o-user-select: var(--user-select);
+  user-select: var(--user-select);
+  -webkit-user-drag: var(--user-select);
+}
+
+img {
+  -webkit-user-select: none;
+  user-select: none;
+  touch-action: none;
+  pointer-events: none;
+}
+
+a {
+  -webkit-user-select: var(--user-select);
+  user-select: var(--user-select);
+  -webkit-touch-callout: var(--user-select);
+}
+
 .image-gray {
   filter: invert(49%) sepia(0%) saturate(98%) hue-rotate(272deg)
     brightness(102%) contrast(94%);
@@ -134,24 +156,10 @@
     hue-rotate(351deg) brightness(91%) contrast(88%);
 }
 
-* {
-  -webkit-user-select: var(--user-select);
-  -khtml-user-select: var(--user-select);
-  -moz-user-select: var(--user-select);
-  -o-user-select: var(--user-select);
-  user-select: var(--user-select);
-  -webkit-user-drag: var(--user-select);
-}
-
-img {
-  -webkit-user-select: var(--user-select);
-  user-select: var(--user-select);
-  touch-action: var(--user-select);
-  pointer-events: var(--user-select);
-}
-
-a {
-  -webkit-user-select: var(--user-select);
-  user-select: var(--user-select);
-  -webkit-touch-callout: var(--user-select);
+.made-by-text {
+  background: #00ff00;
+  background: linear-gradient(to left, #00ff55 0%, #00ffff 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }

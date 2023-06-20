@@ -9,6 +9,7 @@ import FavoriteButton from "./FavoriteButton";
 import { twJoin, twMerge } from "tailwind-merge";
 import { isTheme } from "@/lib/util/themes";
 import { useState } from "react";
+import { usePathname } from "next/navigation";
 
 interface Props {
   profileData: ProfileData;
@@ -25,6 +26,7 @@ export default function FavoritesCard({
   appData,
   instantFavoriteUpdate,
 }: Props) {
+  const path = usePathname();
   const [isBorderActive, setIsBorderActive] = useState(false);
   const appImageData = appImages[appData.name_id];
 
@@ -53,7 +55,11 @@ export default function FavoritesCard({
   }
 
   return (
-    <Link href={appData.href} className="group" onClick={handleNavigate}>
+    <Link
+      href={[appData.href, "?prev=", path].join("")}
+      className="group"
+      onClick={handleNavigate}
+    >
       <Box
         onMouseMove={(e) => handleHover(e)}
         onMouseLeave={(e) => handleHover(e, true)}
