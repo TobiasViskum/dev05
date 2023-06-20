@@ -153,6 +153,5 @@ img {
 a {
   -webkit-user-select: var(--user-select);
   user-select: var(--user-select);
-  /* touch-action: var(--user-select); */
-  /* pointer-events: var(--user-select); */
+  -webkit-touch-callout: none;
 }
