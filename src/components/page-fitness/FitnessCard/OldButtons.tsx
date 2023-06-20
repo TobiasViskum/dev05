@@ -38,7 +38,7 @@ export default function Buttons({ profileData, exerciseData }: Props) {
     <>
       <button
         className={twJoin(
-          "grid h-8 w-8 place-items-center rounded-full shadow-br-md transition-transform can-hover:hover:scale-110",
+          "grid h-8 w-8 place-items-center rounded-full shadow-br-md transition-transform dt:hover:scale-110",
           isTheme("blue", profileData)
             ? "[background:_var(--bg-third)]"
             : "bg-second"
@@ -48,7 +48,7 @@ export default function Buttons({ profileData, exerciseData }: Props) {
       </button>
       <button
         className={twJoin(
-          "grid h-8 w-8 place-items-center rounded-full shadow-br-md transition-transform can-hover:hover:scale-110",
+          "grid h-8 w-8 place-items-center rounded-full shadow-br-md transition-transform dt:hover:scale-110",
           isTheme("blue", profileData)
             ? "[background:_var(--bg-third)]"
             : "bg-second"
@@ -59,7 +59,7 @@ export default function Buttons({ profileData, exerciseData }: Props) {
       <button
         onClick={handleLockClick}
         className={twJoin(
-          "grid h-8 w-8 place-items-center rounded-full shadow-br-md transition-transform can-hover:hover:scale-110",
+          "grid h-8 w-8 place-items-center rounded-full shadow-br-md transition-transform dt:hover:scale-110",
           isTheme("blue", profileData)
             ? "[background:_var(--bg-third)]"
             : "bg-second"
@@ -73,7 +73,7 @@ export default function Buttons({ profileData, exerciseData }: Props) {
       </button>
       <button
         className={twJoin(
-          "ml-auto mr-4 grid h-8 w-8 place-items-center rounded-full shadow-br-md transition-all can-hover:hover:scale-110",
+          "ml-auto mr-4 grid h-8 w-8 place-items-center rounded-full shadow-br-md transition-all dt:hover:scale-110",
           isTheme("blue", profileData)
             ? "[background:_var(--bg-third)]"
             : "bg-second",

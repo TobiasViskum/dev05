@@ -25,7 +25,9 @@ export default function TabsButton({
     favorites == null ? false : favorites[name_id] ? true : false;
   const newState = !isFavorite;
 
-  async function handleClick() {
+  async function handleClick(e: React.MouseEvent<HTMLButtonElement>) {
+    e.preventDefault();
+    e.stopPropagation();
     if (favorites === null) {
       instantFavoriteUpdate({}, "set");
     } else {
@@ -54,8 +56,13 @@ export default function TabsButton({
   }
   return (
     <>
-      <button className="aspect-square h-8 w-8 p-2" onClick={handleClick}>
+      <button
+        aria-label="hideBorder"
+        className="aspect-square h-8 w-8 p-2 "
+        onClick={(e) => handleClick(e)}
+      >
         <Image
+          aria-label="hideBorder"
           priority
           src={isFavorite ? star_full : star_outline}
           alt="icon"

@@ -22,7 +22,7 @@ module.exports = {
         "half": "50%",
       },
       screens: {
-        "can-hover": { "raw": "(hover: hover)" },
+        "dt": { "raw": "(hover: hover)" },
         "tn": "350px",
         "vsm": "564px",
       },

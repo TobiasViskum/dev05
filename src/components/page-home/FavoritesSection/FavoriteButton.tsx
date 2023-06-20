@@ -22,7 +22,10 @@ export default function FavoriteButton({
   const name_id = appData.name_id;
   const favorites = profileData.favorites;
 
-  async function handleClick() {
+  async function handleClick(e: React.MouseEvent<HTMLButtonElement>) {
+    e.stopPropagation();
+    e.preventDefault();
+
     if (favorites === null) {
       instantFavoriteUpdate({}, "set");
     } else {
@@ -46,8 +49,13 @@ export default function FavoriteButton({
   }
   return (
     <>
-      <button className="aspect-square h-8 w-8 p-2" onClick={handleClick}>
+      <button
+        aria-label="hideBorder"
+        className="aspect-square h-8 w-8 p-2"
+        onClick={(e) => handleClick(e)}
+      >
         <Image
+          aria-label="hideBorder"
           priority
           src={star_full}
           alt="icon"

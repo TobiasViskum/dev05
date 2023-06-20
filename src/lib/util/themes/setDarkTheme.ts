@@ -32,7 +32,7 @@ export default function setDarkTheme() {
     "--border-text-white": "rgb(251, 251, 252)",
     "--border-first": "#050505",
     "--border-second": "#17181b",
-    "--border-active": "#143f71",
+    "--border-active": "rgb(147, 51, 234)",
     "--border-inactive": "#2b2c2f",
     "--border-image-gray": "#848484",
 
