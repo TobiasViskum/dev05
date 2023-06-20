@@ -11,6 +11,7 @@ export default async function MaxPage({ params }: ViskumAppParams) {
 
   const profileData = await getProfileData(uid);
 
+  if (profileData === null) return <></>;
   return (
     <div className="flex flex-col gap-y-6">
       <h1 className="text-4xl font-semibold">Settings</h1>

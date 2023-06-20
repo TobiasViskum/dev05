@@ -15,6 +15,7 @@ export default async function MaxPage({ params }: ViskumAppParams) {
     getFitnessData(uid),
     getProfileData(uid),
   ]);
+  if (profileData === null) return <></>;
 
   return (
     <>

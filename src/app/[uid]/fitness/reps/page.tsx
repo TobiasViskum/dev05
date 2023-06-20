@@ -15,7 +15,7 @@ export default async function RepsPage({ params }: ViskumAppParams) {
     getFitnessData(uid),
     getProfileData(uid),
   ]);
-
+  if (profileData === null) return <></>;
   return (
     <>
       <div className="mb-4 flex items-center gap-x-3">

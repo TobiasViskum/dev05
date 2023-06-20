@@ -9,7 +9,7 @@ export const metadata: Metadata = {
 export default async function HomePage({ params }: ViskumAppParams) {
   const uid = params.uid;
   const profileData = await getProfileData(uid);
-  const appData = await getAppData(profileData);
+  const appData = profileData && (await getAppData(profileData));
 
   const strProfileData = JSON.stringify(profileData);
   const strAppData = JSON.stringify(appData);
