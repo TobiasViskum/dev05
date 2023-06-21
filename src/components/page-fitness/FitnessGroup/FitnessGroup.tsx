@@ -43,12 +43,12 @@ export default function FitnessGroup({
 
   return (
     <div className="group relative mt-3 flex min-w-small flex-col items-center first:mt-0">
-      <div
+      <button
         className="grid w-full place-items-center rounded-full border border-solid border-inactive bg-first text-center text-lg"
         onClick={handleClick}
       >
         {groupData.name}
-      </div>
+      </button>
 
       <div
         className={twMerge(

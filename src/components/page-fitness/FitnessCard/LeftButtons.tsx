@@ -25,28 +25,28 @@ export default function LeftButtons({
 
   function handleEditClick() {
     const event = new CustomEvent("showFitnessOverlay", {
-      detail: { overlay: "editAmount", exerciseData: exerciseData  },
+      detail: { overlay: "editAmount", exerciseData: exerciseData },
     });
     document.dispatchEvent(event);
   }
 
   if (isLocked === 0) {
     return (
-      <div
-        className="absolute -bottom-2 -right-2 h-8 w-8 p-2"
+      <button
+        className="absolute -bottom-2 -right-2 h-8 w-8 p-2 rounded-full"
         onClick={handleEditClick}
       >
         <Image src={edit} alt="edit" className="image-blue" />
-      </div>
+      </button>
     );
   } else {
     return (
-      <div
-        className="absolute -left-2 -top-2 h-8 w-8 p-[9px]"
+      <button
+        className="absolute -left-2 -top-2 h-8 w-8 p-[9px] rounded-full z-20"
         onClick={handleLockClick}
       >
         <Image src={locked} alt="edit" className="image-blue" />
-      </div>
+      </button>
     );
   }
 }

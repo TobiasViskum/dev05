@@ -31,8 +31,14 @@ export default function FitnessOverlay() {
     }) as EventListener);
   }, []);
 
+  function closeOverlay() {
+    setIsActive(false);
+    setTimeout(() => {
+      setActiveOverlay("");
+    }, 150);
+  }
   function handleClose(e: React.MouseEvent<HTMLDivElement, MouseEvent>) {
-    if (mainRef.current) {
+    if (mainRef.current && e) {
       const dimensions = mainRef.current.getBoundingClientRect();
       if (
         e.clientX < dimensions.left ||
@@ -40,10 +46,7 @@ export default function FitnessOverlay() {
         e.clientY < dimensions.top ||
         e.clientY > dimensions.bottom
       ) {
-        setIsActive(false);
-        setTimeout(() => {
-          setActiveOverlay("");
-        }, 150);
+        closeOverlay();
       }
     }
   }
@@ -70,7 +73,10 @@ export default function FitnessOverlay() {
           className="z-10 min-w-small max-w-small rounded bg-first text-first shadow-[0_0_0_0.3rem_rgba(var(--bg-second-preset),_0.75)]"
         >
           {activeOverlay === "editAmount" ? (
-            <EditAmount exerciseData={exerciseData.current} />
+            <EditAmount
+              exerciseData={exerciseData.current}
+              closeOverlay={closeOverlay}
+            />
           ) : activeOverlay === "createExercise" ? (
             <CreateExercise />
           ) : (

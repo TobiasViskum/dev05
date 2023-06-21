@@ -36,7 +36,6 @@ export default function Login({}: {}) {
           name?: string;
           uid?: string;
         } = await response.json();
-        console.log(result);
 
         if (result.message === "error") {
           setLoginResponse(

@@ -36,6 +36,19 @@ export default function useFirstRenderEvent({
         } else {
           updateHeader(false, "header");
         }
+      } else if (splitPath[2] === "settings") {
+        if (documentElement.scrollTop >= 24) {
+          updateHeader(true, "header");
+          if (documentElement.scrollTop >= 56) {
+            updateHeader(true, "title");
+          }
+        }
+        if (documentElement.scrollTop < 56) {
+          updateHeader(false, "title");
+          if (documentElement.scrollTop < 24) {
+            updateHeader(false, "header");
+          }
+        }
       }
     }
 
