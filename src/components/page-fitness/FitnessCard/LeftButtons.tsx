@@ -12,12 +12,17 @@ export default function LeftButtons({
   const [isLocked, setIsLocked] = useState(exerciseData.is_date_locked);
 
   async function handleLockClick() {
-    setIsLocked(isLocked === 1 ? 0 : 1);
+    const newState = isLocked === 1 ? 0 : 1;
+    const event = new CustomEvent(`updateExerciseLock${exerciseData.id}`, {
+      detail: { newState: newState },
+    });
+    document.dispatchEvent(event);
+    setIsLocked(newState);
     await fetch("/api/fitness/update-lock", {
       method: "POST",
       body: JSON.stringify({
         id: exerciseData.id,
-        newState: isLocked === 1 ? 0 : 1,
+        newState: newState,
       }),
     });
     router.refresh();

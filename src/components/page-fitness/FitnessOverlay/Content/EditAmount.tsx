@@ -1,5 +1,6 @@
 import { useRef, useState } from "react";
 import { usePathname } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 interface Props {
   exerciseData: FitnessData | null;
@@ -84,6 +85,8 @@ export default function EditAmount({ exerciseData, closeOverlay }: Props) {
       }
     }
   }
+
+  async function updateAmountAndUnit(newAmount: number, newUnit: string) {}
 
   function handleSaveClick() {
     let newAmount = "";

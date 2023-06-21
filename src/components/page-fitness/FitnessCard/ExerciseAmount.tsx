@@ -13,6 +13,7 @@ export default function ExerciseAmount({
     exerciseType === "reps" ? exerciseData.reps : exerciseData.max
   );
   const [unitName, setUnitName] = useState(exerciseData.unit_name);
+  const [isLocked, setIsLocked] = useState(exerciseData.is_date_locked);
   const UNIT_CONVERTER = 2.20462262;
 
   function roundToOneDecimal(number: number) {
@@ -28,6 +29,14 @@ export default function ExerciseAmount({
     ) => {
       setExerciseAmount(e.detail.newAmount);
       setUnitName(e.detail.newUnit);
+    }) as EventListener);
+
+    document.addEventListener(`updateExerciseLock${exerciseData.id}`, ((
+      e: CustomEvent<{
+        newState: number;
+      }>
+    ) => {
+      setIsLocked(e.detail.newState);
     }) as EventListener);
   }, [exerciseData.id]);
 
@@ -55,10 +64,12 @@ export default function ExerciseAmount({
   }
 
   function handleEditClick() {
-    const event = new CustomEvent("showFitnessOverlay", {
-      detail: { overlay: "editAmount", exerciseData: exerciseData },
-    });
-    document.dispatchEvent(event);
+    if (isLocked === 0) {
+      const event = new CustomEvent("showFitnessOverlay", {
+        detail: { overlay: "editAmount", exerciseData: exerciseData },
+      });
+      document.dispatchEvent(event);
+    }
   }
 
   return (
