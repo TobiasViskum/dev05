@@ -1,32 +1,21 @@
-import Link from "next/link";
+import { logo } from "@/assets/images";
+import Image from "next/image";
+import { ClientHandler } from "@/components/page-index";
 
-export default async function RootPage() {
+export default function RootPage() {
   return (
     <>
-      <div className="flex flex-col items-center justify-center gap-y-4 text-center">
-        <h1 className="my-4 text-4xl font-bold">Viskum App</h1>
-        <Link
-          prefetch={false}
-          href={"/login"}
-          className="text-active underline"
-        >
-          Go to Login Page
-        </Link>
-        <h2 className="mt-2 text-2xl font-semibold">
-          You can download this website as an App! (PWA)
-        </h2>
-        <p className="text-second">
-          But it{"'"}s recommended to wait until you have logged in
-        </p>
-        <h2 className="text-2xl font-semibold">How to download:</h2>
-        <div>
-          <h3 className="font-bold">iOS:</h3>
-          <p className="text-second">Share {"→"} Add to Homescreen</p>
+      <div className="flex flex-col items-center justify-between h-[100svh] min-w-small overflow-hidden min-h-[650px] relative max-h-[800px]">
+        <div className="font-bold text-center mt-10 flex">
+          <h1 className="text-blue-600 text-5xl tn:text-7xl">Viskum</h1>
         </div>
-        <div>
-          <h3 className="text-bold">Android:</h3>
-          <p className="text-second">...</p>
+        <ClientHandler />
+        <div className="absolute top-0 w-[calc(100%_-_32px)] left-4 h-full grid place-items-center min-w-small select-none z-0">
+          <div className="w-48 h-48 tn:w-64 tn:h-64 opacity-20">
+            <Image src={logo} alt="logo" />
+          </div>
         </div>
+        <div className="mb-4 mt-20 tn:mt-28" />
       </div>
     </>
   );

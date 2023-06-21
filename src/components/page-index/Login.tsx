@@ -13,7 +13,7 @@ export default function Login({}: {}) {
   const divTw =
     "border-solid border-2 border-inactive w-5/6 rounded-md bg-first";
   const inputTw =
-    "bg-first placeholder-[var(--text-second)] text-center rounded-md w-full outline-none text-first pb-3 autofill:bg-first autofill:hover:bg-first autofill:focus:bg-first autofill:active:bg-first [transition:_background-color_9999s_ease-in-out_0s]";
+    "bg-first placeholder-[var(--text-second)] text-center rounded-md w-full outline-none text-first pb-3 autofill:bg-first autofill:hover:bg-first autofill:focus:bg-first autofill:active:bg-first [transition:_background-color_9999s_ease-in-out_0s] autofill:text-first autofill:hover:text-first autofill:focus:text-first autofill:active:text-first";
   const pTw = "absolute -bottom-8";
 
   async function handleFormSubmit() {
@@ -60,12 +60,10 @@ export default function Login({}: {}) {
           setLoginResponse(
             <p className={twJoin(pTw, "text-green-500")}>Success!</p>
           );
+          setHasLoggedIn(true);
           setTimeout(() => {
-            setHasLoggedIn(true);
-            setTimeout(() => {
-              location.href = `/${result.uid}`;
-            }, 1000);
-          }, 500);
+            location.href = `/${result.uid}`;
+          }, 2000);
         }
       }
     }
@@ -128,7 +126,7 @@ export default function Login({}: {}) {
           {loginResponse}
         </div>
 
-        <div className="flex flex-col gap-x-1 bottom-4 absolute z-10">
+        <div className="flex flex-col gap-x-1 bottom-8 absolute z-10">
           <p>
             Don{"'"}t have an account{"?"}
           </p>

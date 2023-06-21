@@ -1,5 +1,5 @@
 import { getProfileData, getAppData } from "@/lib/db";
-import { ProfileHolder, Statusbar, MostVisited } from "@/components/page-index";
+import { ProfileHolder, Statusbar, MostVisited } from "@/components/page-start";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {

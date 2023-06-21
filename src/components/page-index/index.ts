@@ -1,6 +1,4 @@
-import ProfileHolder from "./ProfileHolder";
-import Statusbar from "./Statusbar";
-import MostVisited from "./MostVisited/MostVisited";
-import MostVisitedCard from "./MostVisited/MostVisitedCard";
+import SpinningIcon from "./SpinningIcon";
+import ClientHandler from "./ClientHandler";
 
-export { ProfileHolder, Statusbar, MostVisited, MostVisitedCard };
+export { SpinningIcon, ClientHandler };

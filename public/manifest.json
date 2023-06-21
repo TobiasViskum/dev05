@@ -3,7 +3,8 @@
   "background_color": "#050505",
   "display": "standalone",
   "name": "Viskum App 3.1",
-  "start_url": "/pwa-start",
+  "start_url": "/",
+  "scope": "/",
   "short_name": "Viskum",
   "description": "An app made by Tobias T. Viskum for the Viskum Family!",
   "icons": [

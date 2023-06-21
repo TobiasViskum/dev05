@@ -1,31 +1,37 @@
 "use client";
 
 import { useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 import { useEffect } from "react";
 
 export function UserAuthClient({ uid }: { uid: string }) {
   const router = useRouter();
+  const path = usePathname();
 
   useEffect(() => {
     async function authenticateUser() {
       const sessionKey = localStorage.getItem("sessionKey");
+      const mail = localStorage.getItem("mail");
 
-      const response = await fetch(`/api/login/confirm`, {
+      const response = await fetch("/api/user/verify", {
         method: "POST",
         body: JSON.stringify({
-          uid: uid,
           sessionKey: sessionKey,
+          mail: mail,
         }),
       });
-      const data: { newRedirect: string; passed: boolean; status: string } =
-        await response.json();
+      const result: {
+        message: "success" | "failed" | "error";
+        name?: string;
+        uid?: string;
+      } = await response.json();
 
-      if (data.passed == false) {
-        router.push(data.newRedirect);
+      if (result.message === "failed" || result.message === "error") {
+        router.push("/");
       }
     }
     authenticateUser();
-  });
+  }, [path, router]);
 
   return <></>;
 }

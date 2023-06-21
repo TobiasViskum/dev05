@@ -36,7 +36,7 @@ export default async function verifyUser({
     setTimeout(() => {
       changeIsProcessingVisible(false);
       changeMainElement(<Login />);
-    }, 750);
+    }, 1000);
   } else if (result.message === "failed") {
     changeProcessingTitle(
       <h2 className="font-medium text-yellow-500">Failed to login</h2>
@@ -44,15 +44,13 @@ export default async function verifyUser({
     setTimeout(() => {
       changeIsProcessingVisible(false);
       changeMainElement(<Login />);
-    }, 750);
-  } else if (result.message === "success") {
-    setTimeout(() => {
-      changeProcessingTitle(
-        <h2 className="font-medium">Welcome back, {result.name}!</h2>
-      );
-      setTimeout(() => {
-        location.href = `/${result.uid}`;
-      }, 1000);
     }, 1000);
+  } else if (result.message === "success") {
+    changeProcessingTitle(
+      <h2 className="font-medium">Welcome back, {result.name}!</h2>
+    );
+    setTimeout(() => {
+      location.href = `/${result.uid}`;
+    }, 2000);
   }
 }

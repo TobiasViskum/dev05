@@ -38,18 +38,20 @@ export default function ClientHandler() {
         setTimeout(() => {
           setIsProcessingVisible(false);
           setMainElement(<Login />);
-        }, 1500);
+        }, 2000);
       } else if (sessionKey && mail) {
-        setIsProcessingTitle(<h2 className="font-medium">Verifying</h2>);
-        verifyUser({
-          sessionKey: sessionKey,
-          mail: mail,
-          changeProcessingTitle: changeProcessingTitle,
-          changeIsProcessingVisible: changeIsProcessingVisible,
-          changeMainElement: changeMainElement,
-        });
+        setIsProcessingTitle(<h2 className="font-medium">Verifying...</h2>);
+        setTimeout(() => {
+          verifyUser({
+            sessionKey: sessionKey,
+            mail: mail,
+            changeProcessingTitle: changeProcessingTitle,
+            changeIsProcessingVisible: changeIsProcessingVisible,
+            changeMainElement: changeMainElement,
+          });
+        }, 250);
       }
-    }, 2000);
+    }, 250);
   }, []);
 
   return (

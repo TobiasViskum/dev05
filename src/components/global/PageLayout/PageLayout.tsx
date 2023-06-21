@@ -13,15 +13,15 @@ export default function PageLayout({
 }) {
   const path = usePathname();
 
-  if (path === "/pwa-start") {
+  if (path === "/") {
     return <>{children}</>;
   }
 
   return (
-    <>
+    <div className="z-10">
       <Header profileData={profileData} />
       {children}
       <Footer profileData={profileData} />
-    </>
+    </div>
   );
 }
