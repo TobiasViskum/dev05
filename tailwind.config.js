@@ -23,6 +23,7 @@ module.exports = {
       },
       screens: {
         "dt": { "raw": "(hover: hover)" },
+        "w-autofill": { "raw": ":-webkit-autofill" },
         "tn": "350px",
         "vsm": "564px",
       },

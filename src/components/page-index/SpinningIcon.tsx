@@ -23,7 +23,7 @@ export default function SpinningIcon() {
           ></path>
         </svg>
       </div>
-      <div className="absolute bottom-8 flex gap-x-1 flex-col">
+      <div className="absolute bottom-8 flex gap-x-1 flex-col text-center">
         <p>Made by:</p>
         <p className="font-bold made-by-text">Tobias Tranberg Viskum</p>
       </div>
