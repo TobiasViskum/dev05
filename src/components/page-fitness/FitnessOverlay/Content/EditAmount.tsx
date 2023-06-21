@@ -10,6 +10,7 @@ interface Props {
 export default function EditAmount({ exerciseData, closeOverlay }: Props) {
   const UNIT_CONVERTER = 2.20462262;
   const MAX_INPUT = 1000;
+  const router = useRouter();
   const inputRef = useRef<HTMLInputElement | null>(null);
   const path = usePathname();
   const exerciseType = path.split("/").slice(-1)[0];
@@ -86,17 +87,36 @@ export default function EditAmount({ exerciseData, closeOverlay }: Props) {
     }
   }
 
-  async function updateAmountAndUnit(newAmount: number, newUnit: string) {}
+  async function updateAmountAndUnit(newAmount: number, newUnit: string) {
+    const updateAmount = fetch("/api/fitness/update-amount", {
+      method: "POST",
+      body: JSON.stringify({
+        id: exerciseData?.id,
+        newAmount: newAmount,
+        type: exerciseType,
+      }),
+    });
+    const updateUnit = fetch("/api/fitness/update-unit", {
+      method: "POST",
+      body: JSON.stringify({ id: exerciseData?.id, newUnit: newUnit }),
+    });
+
+    await Promise.all([updateAmount, updateUnit]);
+    router.refresh();
+  }
 
   function handleSaveClick() {
-    let newAmount = "";
+    let tempAmount = "";
     if (inputValue === "") {
-      newAmount = placeholderValue;
-    } else newAmount = inputValue;
+      tempAmount = placeholderValue;
+    } else tempAmount = inputValue;
+    const newAmount = Number(tempAmount.replace(",", "."));
+
+    updateAmountAndUnit(newAmount, currUnit);
 
     const event = new CustomEvent(`updateExercise${exerciseData?.id}`, {
       detail: {
-        newAmount: Number(newAmount.replace(",", ".")).toString(),
+        newAmount: newAmount.toString(),
         newUnit: currUnit,
       },
     });

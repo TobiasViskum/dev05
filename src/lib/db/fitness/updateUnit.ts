@@ -10,7 +10,6 @@ export default async function updateUnit({ id, newUnit }: Props) {
   const val_unit = [newUnit];
   const unit_id = (await execute<{ unit_id: number }[]>(q_unit, val_unit))[0]
     .unit_id;
-  console.log(unit_id);
 
   const q_fitness = "UPDATE fitness_stat_table SET unit_id=? WHERE id=?";
   const val_fitness = [unit_id, id];
