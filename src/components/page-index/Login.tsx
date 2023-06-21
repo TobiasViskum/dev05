@@ -13,7 +13,7 @@ export default function Login({}: {}) {
   const divTw =
     "border-solid border-2 border-inactive w-5/6 rounded-md bg-first";
   const inputTw =
-    "bg-first placeholder-[var(--text-second)] text-center rounded-md w-full outline-none text-first pb-3 autofill:bg-first autofill:hover:bg-first autofill:focus:bg-first autofill:active:bg-first [transition:_background-color_9999s_ease-in-out_0s] autofill:text-first autofill:hover:text-first autofill:focus:text-first autofill:active:text-first [-webkit-text-fill-color:_var(--text-first)]";
+    "bg-first placeholder-[var(--text-second)] text-center rounded-md w-full outline-none text-first pb-3 autofill:bg-first autofill:hover:bg-first autofill:focus:bg-first autofill:active:bg-first [transition:_background-color_9999s_ease-in-out_0s] autofill:text-first autofill:hover:text-first autofill:focus:text-first autofill:active:text-first autofill:[-webkit-text-fill-color:_var(--text-first)]";
   const pTw = "absolute -bottom-8";
 
   async function handleFormSubmit() {

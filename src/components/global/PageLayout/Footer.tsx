@@ -47,7 +47,7 @@ export default function Footer({
     <>
       <footer
         className={twJoin(
-          "fixed bottom-0 left-0 z-10 flex h-20 w-[100svw] min-w-[272px] justify-center bg-second-transparent backdrop-blur-xl",
+          "fixed bottom-0 left-0 z-50 flex h-20 w-[100svw] min-w-[272px] justify-center bg-second-transparent backdrop-blur-xl",
           isTheme("blue", profileData)
             ? ""
             : " border-0 border-t border-solid border-second"
