@@ -58,7 +58,7 @@ export default function ClientHandler() {
     <>
       <div
         className={twJoin(
-          "text-center place-items-center gap-y-3",
+          "text-center place-items-center gap-y-3 grid",
           isProcessingVisible ? "grid" : "hidden"
         )}
       >

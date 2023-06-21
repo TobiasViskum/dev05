@@ -18,7 +18,7 @@ export default function PageLayout({
   }
 
   return (
-    <div className="z-10">
+    <div className="z-50">
       <Header profileData={profileData} />
       {children}
       <Footer profileData={profileData} />
