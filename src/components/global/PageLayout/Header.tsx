@@ -60,7 +60,7 @@ export default function Header({
   return (
     <>
       <div
-        className="fixed left-0 top-0 z-20 w-full min-w-small"
+        className="fixed left-0 top-0 z-20 w-full min-w-small [transform:_translate3d(0,0,0)] h-12 overflow-auto"
         style={{
           backfaceVisibility: "hidden",
           WebkitBackfaceVisibility: "hidden",
@@ -68,7 +68,7 @@ export default function Header({
       >
         <header
           className={twMerge(
-            "visible flex h-12 w-full min-w-[272px] items-center justify-center border-0 border-b border-solid border-first bg-first backdrop-blur-md transition-colors",
+            "visible flex w-full h-full min-w-[272px] items-center justify-center border-0 border-b border-solid border-first bg-first backdrop-blur-md transition-colors",
             title === "start"
               ? "invisible"
               : isHeaderActive

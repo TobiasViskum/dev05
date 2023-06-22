@@ -23,8 +23,10 @@ module.exports = {
       },
       screens: {
         "dt": { "raw": "(hover: hover)" },
+        "touch": { "raw": "(hover: none)" },
         "w-autofill": { "raw": ":-webkit-autofill" },
         "standalone": { "raw": "(display-mode: standalone)" },
+        "browser": { "raw": "(display-mode: browser)" },
         "tn": "350px",
         "vsm": "564px",
       },

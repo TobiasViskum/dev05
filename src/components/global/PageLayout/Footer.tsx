@@ -6,6 +6,7 @@ import { useEffect } from "react";
 import { HomeContent, StartContent, FitnessContent } from "./FooterContent";
 import { twMerge, twJoin } from "tailwind-merge";
 import { isTheme } from "@/lib/util/themes";
+import DesktopFooter from "./DesktopFooter";
 
 export default function Footer({
   profileData,
@@ -47,7 +48,7 @@ export default function Footer({
     <>
       <footer
         className={twJoin(
-          "fixed bottom-0 left-0 z-20 flex h-20 w-[100svw] min-w-[272px] justify-center bg-second-transparent backdrop-blur-xl",
+          "fixed bottom-0 left-0 z-20 hidden standalone:touch:flex h-20 w-[100svw] min-w-[272px] justify-center bg-second-transparent backdrop-blur-xl",
           isTheme("blue", profileData)
             ? ""
             : " border-0 border-t border-solid border-second"
@@ -69,6 +70,7 @@ export default function Footer({
           ""
         )}
       </footer>
+      <DesktopFooter />
       <div className="mt-32"></div>
     </>
   );
