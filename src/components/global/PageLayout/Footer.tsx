@@ -1,12 +1,10 @@
-"use client";
-
 import { usePathname } from "next/navigation";
 import { useState } from "react";
 import { useEffect } from "react";
 import { HomeContent, StartContent, FitnessContent } from "./FooterContent";
 import { twMerge, twJoin } from "tailwind-merge";
 import { isTheme } from "@/lib/util/themes";
-import DesktopFooter from "./DesktopFooter";
+import BrowserBottomShadow from "./FooterContent/BrowserBottomShadow";
 
 export default function Footer({
   profileData,
@@ -70,8 +68,9 @@ export default function Footer({
           ""
         )}
       </footer>
-      <DesktopFooter />
-      <div className="mt-32"></div>
+
+      <div className="mt-32" />
+      <BrowserBottomShadow />
     </>
   );
 }

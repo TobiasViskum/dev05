@@ -8,10 +8,9 @@ import { useSearchParams } from "next/navigation";
 interface Props {
   title: string;
   splitPath: string[];
-  profileData: ProfileData | null;
 }
 
-export default function GoBackButton({ title, splitPath, profileData }: Props) {
+export default function GoBackButton({ title, splitPath }: Props) {
   const searchParams = useSearchParams();
   const prevParam = searchParams.get("prev");
 
@@ -33,23 +32,9 @@ export default function GoBackButton({ title, splitPath, profileData }: Props) {
         )}
       >
         <div className="h-3 w-3">
-          <Image
-            src={arrowLeft}
-            alt=""
-            className={twJoin(
-              "h-full w-full",
-              isTheme("blue", profileData) ? "image-light-blue" : "image-blue"
-            )}
-          />
+          <Image src={arrowLeft} alt="" className="h-full w-full" />
         </div>
-        <p
-          className={twJoin(
-            "pl-1.5 text-sm",
-            isTheme("blue", profileData) ? "text-second" : "text-active"
-          )}
-        >
-          Go Back
-        </p>
+        <p className="pl-1.5 text-sm">Go Back</p>
       </Link>
     </>
   );

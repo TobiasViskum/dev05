@@ -7,10 +7,9 @@ import { usePathname } from "next/navigation";
 
 interface Props {
   splitPath: string[];
-  profileData: ProfileData | null;
 }
 
-export default function SettingsButton({ splitPath, profileData }: Props) {
+export default function SettingsButton({ splitPath }: Props) {
   const path = usePathname();
   const uid = splitPath[1];
 
@@ -24,14 +23,7 @@ export default function SettingsButton({ splitPath, profileData }: Props) {
         href={`/${uid}/settings?prev=${path}`}
         className="absolute right-2 top-2 aspect-square h-8 w-8"
       >
-        <Image
-          src={settingsPng}
-          alt="settings"
-          className={twMerge(
-            "h-full w-full",
-            isTheme("blue", profileData) ? "image-light-blue" : "image-blue"
-          )}
-        />
+        <Image src={settingsPng} alt="settings" className="h-full w-full" />
       </Link>
     </>
   );
