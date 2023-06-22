@@ -165,7 +165,7 @@ export default function EditAmount({
             onChange={(e) => handleInput(e)}
             ref={inputRef}
             className="w-3/5 rounded-lg border-2 border-solid border-inactive bg-first py-1 text-center text-first placeholder-[var(--text-second)] outline-none"
-            placeholder={placeholderValue}
+            placeholder={placeholderValue.replace(".", ",")}
             inputMode="decimal"
             pattern="[0-9],*"
           />
