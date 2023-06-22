@@ -1,6 +1,9 @@
 import { Suspense } from "react";
 import { Metadata } from "next";
-import { FitnessGroupAndCards } from "@/components/page-fitness";
+import {
+  FitnessGroupAndCards,
+  RepsMaxLoadingSkeleton,
+} from "@/components/page-fitness";
 
 export const metadata: Metadata = {
   title: {
@@ -19,7 +22,7 @@ export default async function MaxPage({ params }: ViskumAppParams) {
         <h1 className="text-3xl">Max</h1>
       </div>
       <div className="grid min-w-small">
-        <Suspense fallback={<p>Loading...</p>}>
+        <Suspense fallback={<RepsMaxLoadingSkeleton />}>
           <FitnessGroupAndCards uid={uid} />
         </Suspense>
       </div>

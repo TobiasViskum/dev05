@@ -40,7 +40,7 @@ export default function FitnessGroup({
   return (
     <div className="group relative mt-3 flex min-w-small flex-col items-center first:mt-0">
       <button
-        className="grid w-full place-items-center rounded-full border border-solid border-inactive bg-first text-center text-lg"
+        className="grid w-full place-items-center rounded-full bg-second text-center text-lg"
         onClick={handleClick}
       >
         {groupData.name}
