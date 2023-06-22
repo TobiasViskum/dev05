@@ -60,7 +60,7 @@ export default function Header({
   return (
     <>
       <div
-        className="fixed left-0 top-0 z-50 w-full min-w-small"
+        className="fixed left-0 top-0 z-30 w-full min-w-small"
         style={{
           backfaceVisibility: "hidden",
           WebkitBackfaceVisibility: "hidden",

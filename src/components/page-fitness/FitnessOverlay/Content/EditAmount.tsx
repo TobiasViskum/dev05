@@ -1,13 +1,19 @@
 import { useRef, useState } from "react";
 import { usePathname } from "next/navigation";
 import { useRouter } from "next/navigation";
+import { Checkmark, LoadingSpinner } from "@/components/global";
 
 interface Props {
   exerciseData: FitnessData | null;
   closeOverlay: () => void;
+  changeActiveOverlay: (newOverlay: Overlay) => void;
 }
 
-export default function EditAmount({ exerciseData, closeOverlay }: Props) {
+export default function EditAmount({
+  exerciseData,
+  closeOverlay,
+  changeActiveOverlay,
+}: Props) {
   const UNIT_CONVERTER = 2.20462262;
   const MAX_INPUT = 1000;
   const router = useRouter();
@@ -88,7 +94,7 @@ export default function EditAmount({ exerciseData, closeOverlay }: Props) {
   }
 
   async function updateAmountAndUnit(newAmount: number, newUnit: string) {
-    const updateAmount = fetch("/api/fitness/update-amount", {
+    const updateAmount = await fetch("/api/fitness/update-amount", {
       method: "POST",
       body: JSON.stringify({
         id: exerciseData?.id,
@@ -96,23 +102,39 @@ export default function EditAmount({ exerciseData, closeOverlay }: Props) {
         type: exerciseType,
       }),
     });
-    const updateUnit = fetch("/api/fitness/update-unit", {
+    const updateUnit = await fetch("/api/fitness/update-unit", {
       method: "POST",
       body: JSON.stringify({ id: exerciseData?.id, newUnit: newUnit }),
     });
 
     await Promise.all([updateAmount, updateUnit]);
-    router.refresh();
   }
 
-  function handleSaveClick() {
+  async function handleSaveClick() {
+    function isAmountUnchanged() {
+      const amount =
+        exerciseType === "reps" ? exerciseData?.reps : exerciseData?.max;
+      if (inputValue === "") {
+        return amount === Number(placeholderValue.replace(",", "."));
+      } else {
+        return amount === Number(inputValue.replace(",", "."));
+      }
+    }
+
+    const isUnitUnchanged =
+      exerciseData?.unit_name.toLowerCase() === currUnit.toLowerCase();
+
+    if (isAmountUnchanged() && isUnitUnchanged) {
+      closeOverlay();
+      return;
+    }
+
+    changeActiveOverlay("loading");
     let tempAmount = "";
     if (inputValue === "") {
       tempAmount = placeholderValue;
     } else tempAmount = inputValue;
     const newAmount = Number(tempAmount.replace(",", "."));
-
-    updateAmountAndUnit(newAmount, currUnit);
 
     const event = new CustomEvent(`updateExercise${exerciseData?.id}`, {
       detail: {
@@ -121,7 +143,11 @@ export default function EditAmount({ exerciseData, closeOverlay }: Props) {
       },
     });
     document.dispatchEvent(event);
-    closeOverlay();
+    await updateAmountAndUnit(newAmount, currUnit);
+    setTimeout(() => {
+      router.refresh();
+      changeActiveOverlay("animation");
+    }, 200);
   }
 
   return (

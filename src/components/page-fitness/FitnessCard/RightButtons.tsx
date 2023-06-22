@@ -66,7 +66,7 @@ export default function RightButton({
 
   return (
     <>
-      <div className="flex h-9 w-9 flex-col items-center justify-center rounded-lg border-2 border-solid border-[rgba(170,170,170)]">
+      <div className="flex h-9 w-9 flex-col items-center justify-center rounded-lg border-2 border-solid border-[var(--bg-third)]">
         <div className="h-4 w-4">
           <Image priority src={graph} alt="sm" className="image-gray" />
         </div>
@@ -74,7 +74,7 @@ export default function RightButton({
       </div>
 
       {profileData.show_vas_fitness === 1 && (
-        <div className="flex h-9 w-9 flex-col items-center justify-center rounded-lg border-2 border-solid border-[rgba(170,170,170)]">
+        <div className="flex h-9 w-9 flex-col items-center justify-center rounded-lg border-2 border-solid border-[var(--bg-third)]">
           <div className="h-4 w-4">
             <Image
               priority

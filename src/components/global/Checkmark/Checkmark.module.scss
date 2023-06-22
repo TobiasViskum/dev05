@@ -1,0 +1,59 @@
+.checkmark {
+  --animation-speed: 1.4;
+
+  position: absolute;
+  transform: translateX(-50%) translateY(-50%);
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  display: block;
+  stroke-width: 4;
+  stroke: var(--bg-news);
+  stroke-miterlimit: 10;
+  margin: 10% auto;
+  box-shadow: inset 0px 0px 0px var(--bg-third), 0 0 1.5rem white;
+  animation: fill calc(0.4s / var(--animation-speed)) ease-in-out
+      calc(0.4s / var(--animation-speed)) forwards,
+    scale calc(0.3s / var(--animation-speed)) ease-in-out
+      calc(0.9s / var(--animation-speed)) both;
+}
+
+.checkmark__circle {
+  stroke-dasharray: 166;
+  stroke-dashoffset: 166;
+  stroke-width: 5;
+  stroke-miterlimit: 10;
+  stroke: rgba(255, 255, 255, 0.25);
+  fill: none;
+  animation: stroke calc(0.6s / var(--animation-speed))
+    cubic-bezier(0.65, 0, 0.45, 1) forwards;
+}
+
+.checkmark__check {
+  transform-origin: 50% 50%;
+  stroke-dasharray: 48;
+  stroke-dashoffset: 48;
+  animation: stroke calc(0.3s / var(--animation-speed))
+    cubic-bezier(0.65, 0, 0.45, 1) calc(0.8s / var(--animation-speed)) forwards;
+}
+
+@keyframes stroke {
+  100% {
+    stroke-dashoffset: 0;
+  }
+}
+@keyframes scale {
+  0%,
+  100% {
+    transform: none;
+  }
+  50% {
+    transform: scale3d(1.1, 1.1, 1);
+  }
+}
+@keyframes fill {
+  100% {
+    box-shadow: inset 0px 0px 0px 30px rgba(255, 255, 255, 0.25),
+      0 0 1.5rem white;
+  }
+}

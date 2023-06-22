@@ -1,21 +1,21 @@
 "use client";
 
 import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 
 export default function ExerciseAmount({
   exerciseData,
 }: {
   exerciseData: FitnessData;
 }) {
+  const [forceUpdate, setForceUpdate] = useState(false);
   const path = usePathname();
   const splitPath = path.split("/");
   const exerciseType = splitPath[splitPath.length - 1];
-  const [exerciseAmount, setExerciseAmount] = useState(
-    exerciseType === "reps" ? exerciseData.reps : exerciseData.max
-  );
-  const [unitName, setUnitName] = useState(exerciseData.unit_name);
-  const [isLocked, setIsLocked] = useState(exerciseData.is_date_locked);
+  let exerciseAmount =
+    exerciseType === "reps" ? exerciseData.reps : exerciseData.max;
+  let unitName = exerciseData.unit_name;
+  let isLocked = exerciseData.is_date_locked;
   const UNIT_CONVERTER = 2.20462262;
 
   function roundToOneDecimal(number: number) {
@@ -29,8 +29,7 @@ export default function ExerciseAmount({
         newUnit: string;
       }>
     ) => {
-      setExerciseAmount(e.detail.newAmount);
-      setUnitName(e.detail.newUnit);
+      setForceUpdate((prev) => !prev);
     }) as EventListener);
 
     document.addEventListener(`updateExerciseLock${exerciseData.id}`, ((
@@ -38,7 +37,7 @@ export default function ExerciseAmount({
         newState: number;
       }>
     ) => {
-      setIsLocked(e.detail.newState);
+      setForceUpdate((prev) => !prev);
     }) as EventListener);
   }, [exerciseData.id]);
 

@@ -7,19 +7,18 @@ interface Props {
 import { useRef, useEffect, useState } from "react";
 import { twJoin } from "tailwind-merge";
 import { EditAmount, CreateExercise } from "./Content";
+import { LoadingSpinner, Checkmark } from "@/components/global";
 
 export default function FitnessOverlay() {
   const [isActive, setIsActive] = useState(false);
-  const [activeOverlay, setActiveOverlay] = useState<
-    "" | "editAmount" | "createExercise"
-  >("");
+  const [activeOverlay, setActiveOverlay] = useState<Overlay>("");
   const exerciseData = useRef<FitnessData | null>(null);
   const mainRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     document.addEventListener("showFitnessOverlay", ((
       e: CustomEvent<{
-        overlay: "editAmount" | "createExercise";
+        overlay: Overlay;
         exerciseData?: FitnessData;
       }>
     ) => {
@@ -37,6 +36,14 @@ export default function FitnessOverlay() {
       setActiveOverlay("");
     }, 150);
   }
+  function changeActiveOverlay(newOverlay: Overlay) {
+    setActiveOverlay(newOverlay);
+    if (newOverlay === "animation") {
+      setTimeout(() => {
+        closeOverlay();
+      }, 1250);
+    }
+  }
   function handleClose(e: React.MouseEvent<HTMLDivElement, MouseEvent>) {
     if (mainRef.current && e) {
       const dimensions = mainRef.current.getBoundingClientRect();
@@ -46,7 +53,9 @@ export default function FitnessOverlay() {
         e.clientY < dimensions.top ||
         e.clientY > dimensions.bottom
       ) {
-        closeOverlay();
+        if (activeOverlay !== "loading" && activeOverlay !== "animation") {
+          closeOverlay();
+        }
       }
     }
   }
@@ -70,12 +79,29 @@ export default function FitnessOverlay() {
         />
         <div
           ref={mainRef}
-          className="z-10 min-w-small max-w-small rounded bg-first text-first shadow-[0_0_0_0.3rem_rgba(var(--bg-second-preset),_0.75)]"
+          className={twJoin(
+            "z-10 min-w-small max-w-small rounded text-first grid place-items-center",
+            activeOverlay === "animation"
+              ? ""
+              : activeOverlay === "loading"
+              ? ""
+              : "bg-first shadow-[0_0_0_0.3rem_rgba(var(--bg-second-preset),_0.75)]"
+          )}
         >
-          {activeOverlay === "editAmount" ? (
+          {activeOverlay === "loading" || activeOverlay === "animation" ? (
+            <>
+              <LoadingSpinner
+                opacity={
+                  activeOverlay === "animation" ? "opacity-0" : "opacity-100"
+                }
+              />
+              {activeOverlay === "animation" && <Checkmark />}
+            </>
+          ) : activeOverlay === "editAmount" ? (
             <EditAmount
               exerciseData={exerciseData.current}
               closeOverlay={closeOverlay}
+              changeActiveOverlay={changeActiveOverlay}
             />
           ) : activeOverlay === "createExercise" ? (
             <CreateExercise />
