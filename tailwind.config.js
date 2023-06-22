@@ -24,6 +24,7 @@ module.exports = {
       screens: {
         "dt": { "raw": "(hover: hover)" },
         "w-autofill": { "raw": ":-webkit-autofill" },
+        "standalone": { "raw": "(display-mode: standalone)" },
         "tn": "350px",
         "vsm": "564px",
       },

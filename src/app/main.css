@@ -1,8 +1,6 @@
 html {
   --document-padding: 16px;
-  overflow: auto;
   touch-action: var(--touch-actions);
-
   display: flex;
   justify-content: center;
   align-items: center;
