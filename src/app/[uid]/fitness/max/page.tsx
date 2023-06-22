@@ -1,8 +1,5 @@
+import { Suspense } from "react";
 import { Metadata } from "next";
-import { getFitnessData, getProfileData } from "@/lib/db";
-import { getFitnessGroups } from "@/lib/util";
-import { FitnessGroup } from "@/components/page-fitness";
-import { FitnessCard } from "@/components/page-fitness";
 import { FitnessGroupAndCards } from "@/components/page-fitness";
 
 export const metadata: Metadata = {
@@ -14,14 +11,6 @@ export const metadata: Metadata = {
 export default async function MaxPage({ params }: ViskumAppParams) {
   const uid = params.uid;
 
-  const [fitnessData, profileData] = await Promise.all([
-    getFitnessData(uid),
-    getProfileData(uid),
-  ]);
-  if (profileData === null) return <></>;
-
-  const fitnessGroups = getFitnessGroups(fitnessData, "max", profileData);
-
   return (
     <>
       <div className="mb-4 flex items-center gap-x-3">
@@ -30,7 +19,9 @@ export default async function MaxPage({ params }: ViskumAppParams) {
         <h1 className="text-3xl">Max</h1>
       </div>
       <div className="grid min-w-small">
-        <FitnessGroupAndCards fitnessGroups={fitnessGroups} />
+        <Suspense fallback={<p>Loading...</p>}>
+          <FitnessGroupAndCards uid={uid} />
+        </Suspense>
       </div>
       <div className="pt-8" />
     </>

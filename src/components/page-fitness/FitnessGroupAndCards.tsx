@@ -1,17 +1,20 @@
 import { FitnessCard, FitnessGroup } from "@/components/page-fitness";
+import { getFitnessData, getProfileData } from "@/lib/db";
+import { getFitnessGroups } from "@/lib/util";
 
 interface Props {
-  fitnessGroups: {
-    groupData: {
-      name: string;
-      id: number;
-    };
-    exercisesInGroup: FitnessData[];
-    profileData: ProfileData;
-  }[];
+  uid: string;
 }
 
-export default function FitnessGroupAndCards({ fitnessGroups }: Props) {
+export default async function FitnessGroupAndCards({ uid }: Props) {
+  const [fitnessData, profileData] = await Promise.all([
+    getFitnessData(uid),
+    getProfileData(uid),
+  ]);
+  if (profileData === null) return <></>;
+
+  const fitnessGroups = getFitnessGroups(fitnessData, "max", profileData);
+
   return (
     <>
       {fitnessGroups.map((group, index) => {
