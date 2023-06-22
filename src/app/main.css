@@ -1,6 +1,7 @@
 html {
   --document-padding: 16px;
   overflow: auto;
+  overscroll-behavior-y: none;
   touch-action: var(--touch-actions);
 
   display: flex;
