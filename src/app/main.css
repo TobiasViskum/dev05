@@ -17,6 +17,7 @@ body {
   color-scheme: dark;
   min-height: 100svh;
   margin: 0;
+  overscroll-behavior-y: none;
 
   max-width: 1232px;
 

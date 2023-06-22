@@ -65,7 +65,7 @@ export default function FitnessOverlay() {
       <div
         onClick={(e) => handleClose(e)}
         className={twJoin(
-          "fixed left-0 top-0 z-50 grid h-full w-full place-items-center",
+          "fixed left-0 top-0 z-30 grid h-full w-full place-items-center",
           isActive
             ? "visible opacity-100 [transition:_opacity_300ms,_visibility_0ms]"
             : "invisible opacity-0 [transition:_opacity_300ms,_visibility_0ms_300ms]"
