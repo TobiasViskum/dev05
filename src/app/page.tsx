@@ -5,7 +5,7 @@ import { ClientHandler } from "@/components/page-index";
 export default function RootPage() {
   return (
     <>
-      <div className="flex flex-col items-center justify-between h-[100svh] min-w-small overflow-hidden min-h-[650px] relative max-h-[800px]">
+      <div className="flex flex-col items-center justify-between h-[100svh] min-w-small overflow-hidden min-h-[650px] relative max-h-[800px] overscroll-none">
         <div className="font-bold text-center mt-10 flex">
           <h1 className="text-blue-600 text-5xl tn:text-7xl">Viskum</h1>
         </div>
