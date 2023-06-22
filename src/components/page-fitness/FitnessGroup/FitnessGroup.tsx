@@ -1,24 +1,20 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
-import { FitnessCard } from "@/components/page-fitness";
+import { useState } from "react";
 import { hooks } from "@/lib/hooks/page-fitness";
-import { twJoin, twMerge } from "tailwind-merge";
-import { useRouter } from "next/navigation";
-import { isTheme } from "@/lib/util/themes";
+import { twMerge } from "tailwind-merge";
 
 interface Props {
+  children: React.ReactNode;
   strExercisesInGroup: string;
   groupData: { name: string | "Ungrouped"; id: number | null };
-  profileData: ProfileData;
 }
 
 export default function FitnessGroup({
+  children,
   strExercisesInGroup,
   groupData,
-  profileData,
 }: Props) {
-  const router = useRouter();
   const exercisesInGroup: FitnessData[] = JSON.parse(strExercisesInGroup);
   const totalExercises = exercisesInGroup.length;
 
@@ -60,16 +56,7 @@ export default function FitnessGroup({
           transitionDuration: `${200 + 25 * totalExercises}ms`,
         }}
       >
-        {exercisesInGroup.map((exercise, index) => {
-          return (
-            <FitnessCard
-              key={index}
-              exerciseData={exercise}
-              isLast={index === exercisesInGroup.length - 1}
-              profileData={profileData}
-            />
-          );
-        })}
+        {children}
       </div>
     </div>
   );

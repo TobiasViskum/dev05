@@ -1,3 +1,5 @@
+"use client";
+
 import { usePathname } from "next/navigation";
 import dayjs from "dayjs";
 import { twJoin } from "tailwind-merge";

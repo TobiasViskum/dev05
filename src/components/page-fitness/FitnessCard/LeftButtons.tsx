@@ -1,3 +1,5 @@
+"use client";
+
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -41,7 +43,7 @@ export default function LeftButtons({
         className="absolute -bottom-2 -right-2 h-8 w-8 p-2 rounded-full"
         onClick={handleEditClick}
       >
-        <Image src={edit} alt="edit" className="image-blue" />
+        <Image priority src={edit} alt="edit" className="image-blue" />
       </button>
     );
   } else {
@@ -50,7 +52,7 @@ export default function LeftButtons({
         className="absolute -left-2 -top-2 h-8 w-8 p-[9px] rounded-full z-20"
         onClick={handleLockClick}
       >
-        <Image src={locked} alt="edit" className="image-blue" />
+        <Image priority src={locked} alt="edit" className="image-blue" />
       </button>
     );
   }

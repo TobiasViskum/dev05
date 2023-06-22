@@ -1,25 +1,24 @@
-"use client";
-
-import { usePathname } from "next/navigation";
 import { twJoin } from "tailwind-merge";
 import ExerciseAmount from "./ExerciseAmount";
 import LeftButtons from "./LeftButtons";
 import InfoBox from "./InfoBox";
 import Image from "next/image";
-import { graph, notes, settingsPng, veryHappySmiley } from "@/assets/images";
+import { settingsPng } from "@/assets/images";
 import RightButton from "./RightButtons";
 
 interface Props {
-  exerciseData: FitnessData;
+  strExerciseData: string;
   isLast: boolean;
   profileData: ProfileData;
 }
 
 export default function FitnessCard({
-  exerciseData,
+  strExerciseData,
   isLast,
   profileData,
 }: Props) {
+  const exerciseData: FitnessData = JSON.parse(strExerciseData);
+
   return (
     <div className="group overflow-hidden">
       <div className="relative flex min-w-small gap-x-3">
@@ -43,7 +42,7 @@ export default function FitnessCard({
           </div>
         </div>
         <div className="absolute -bottom-1 right-0 h-8 w-8 p-1.5">
-          <Image src={settingsPng} alt="SET" className="image-blue" />
+          <Image priority src={settingsPng} alt="SET" className="image-blue" />
         </div>
       </div>
       <div

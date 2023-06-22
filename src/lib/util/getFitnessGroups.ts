@@ -8,7 +8,11 @@ export function getFitnessGroups(
   profileData: ProfileData
 ) {
   const UNIT_CONVERTER = 2.20462262;
-  let fitnessGroupList: JSX.Element[] = [];
+  let fitnessGroupList: {
+    groupData: { name: string; id: number };
+    exercisesInGroup: FitnessData[];
+    profileData: ProfileData;
+  }[] = [];
   let insertedGroups: { [key: string]: string } = {};
   let sortedData = fitnessData.sort(
     (a, b) =>
@@ -44,14 +48,12 @@ export function getFitnessGroups(
       if (insertedGroups[groupName] == undefined) {
         insertedGroups[groupName] = groupName;
         const exercisesInGroup = getItemsInGroup(groupName);
-        fitnessGroupList.push(
-          <FitnessGroup
-            key={index}
-            strExercisesInGroup={JSON.stringify(exercisesInGroup)}
-            groupData={{ name: groupName, id: groupId }}
-            profileData={profileData}
-          />
-        );
+
+        fitnessGroupList.push({
+          groupData: { name: groupName, id: groupId },
+          exercisesInGroup: exercisesInGroup,
+          profileData: profileData,
+        });
       }
     }
   });

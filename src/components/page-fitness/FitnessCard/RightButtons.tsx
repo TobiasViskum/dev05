@@ -1,3 +1,5 @@
+"use client";
+
 import Image from "next/image";
 import {
   graph,
@@ -66,7 +68,7 @@ export default function RightButton({
     <>
       <div className="flex h-9 w-9 flex-col items-center justify-center rounded-lg border-2 border-solid border-[rgba(170,170,170)]">
         <div className="h-4 w-4">
-          <Image src={graph} alt="sm" className="image-gray" />
+          <Image priority src={graph} alt="sm" className="image-gray" />
         </div>
         <p className="text-center text-6xs text-second">Stats</p>
       </div>
@@ -75,6 +77,7 @@ export default function RightButton({
         <div className="flex h-9 w-9 flex-col items-center justify-center rounded-lg border-2 border-solid border-[rgba(170,170,170)]">
           <div className="h-4 w-4">
             <Image
+              priority
               src={getVasImage()}
               alt="sm"
               className={getVasImageColor()}
