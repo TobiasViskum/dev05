@@ -28,15 +28,11 @@ export default async function RootLayout({
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <SplashScreen />
       </head>
-      <body
-        className={twMerge(inter.className, "min-h-[100svh] w-full bg-first")}
-      >
-        {/* <main className="max-w-[var(--document-max-width)]"> */}
+      <body className={twMerge(inter.className, "w-full bg-first")}>
         <PageLayout>
           <BigScreenLayout>{children}</BigScreenLayout>
         </PageLayout>
         <PwaActions />
-        {/* </main> */}
       </body>
     </html>
   );

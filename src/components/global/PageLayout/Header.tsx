@@ -4,8 +4,12 @@ import BrowserHeader from "./BrowserHeader";
 export default function Header() {
   return (
     <>
-      <div
-        className="fixed left-0 top-0 z-20 w-full min-w-small h-16 standalone:touch:h-12 [transform:_translateZ(0)]" //overflow-auto
+      <header
+        className="sticky left-0 top-0 z-20 w-full min-w-small h-16 standalone:touch:h-12 [transform:_translateZ]" //overflow-auto
+        style={{
+          backfaceVisibility: "hidden",
+          WebkitBackfaceVisibility: "hidden",
+        }}
       >
         <div className="w-full h-full hidden standalone:touch:block">
           <PwaHeader />
@@ -13,8 +17,8 @@ export default function Header() {
         <div className="w-full h-full block standalone:touch:hidden">
           <BrowserHeader />
         </div>
-      </div>
-      <div className="mb-20 standalone:touch:mb-16" />
+      </header>
+      <div className="mb-4" />
     </>
   );
 }

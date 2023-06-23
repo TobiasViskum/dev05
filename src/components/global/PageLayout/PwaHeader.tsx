@@ -58,7 +58,7 @@ export default function PwaHeader() {
 
   return (
     <>
-      <header
+      <div
         className={twMerge(
           "visible flex w-full h-full min-w-[272px] items-center justify-center border-0 border-b border-solid border-first bg-first backdrop-blur-md transition-colors",
           title === "start"
@@ -74,7 +74,7 @@ export default function PwaHeader() {
             title={title}
           />
         </nav>
-      </header>
+      </div>
       <StartShadow title={title} />
       <GoBackButton title={title} splitPath={splitPath} />
       <ProfileIcon isHeaderTitleActive={isHeaderTitleActive} title={title} />

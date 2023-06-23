@@ -6,22 +6,15 @@ html {
   display: flex;
   justify-content: center;
   align-items: center;
-
-  padding-left: var(--document-padding);
-  padding-right: var(--document-padding);
-
-  background-color: var(--bg-first);
   scrollbar-gutter: stable;
-  overflow: auto;
-  overflow-x: hidden;
+  background-color: var(--bg-first);
 }
 
 body {
   color-scheme: dark;
-  min-height: 100svh;
-  margin: 0;
 
-  max-width: var(--document-max-width);
+  overflow: auto;
+  overflow-x: hidden;
 
   color: var(--text-first);
 
