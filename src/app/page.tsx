@@ -1,15 +1,15 @@
 import { logo } from "@/assets/images";
 import Image from "next/image";
 import { ClientHandler } from "@/components/page-index";
-import { twJoin } from "tailwind-merge";
+import { twMerge } from "tailwind-merge";
 
 export default function RootPage() {
   return (
     <>
       <div
-        className={twJoin(
-          "flex flex-col items-center justify-between h-[100svh] min-w-small min-h-[650px] max-h-[800px] relative w-[calc(100svw_-_32px)]",
-          "standalone:fixed standalone:top-0 standalone:left-4"
+        className={twMerge(
+          "flex flex-col items-center justify-between h-[100svh] min-w-small min-h-[650px] max-h-[800px] relative w-full",
+          "standalone:fixed standalone:top-0 standalone:left-4 standalone:w-[calc(100svw_-_32px)]"
         )}
       >
         <div className="font-bold text-center mt-10 flex">

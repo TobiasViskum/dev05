@@ -21,7 +21,7 @@ export default async function MaxPage({ params }: ViskumAppParams) {
         <p className="text-second">{"|"}</p>
         <h1 className="text-3xl">Max</h1>
       </div>
-      <div className="grid min-w-small">
+      <div className="grid min-w-small vsm:gap-y-3">
         <Suspense fallback={<RepsMaxLoadingSkeleton />}>
           <FitnessGroupAndCards uid={uid} type="max" />
         </Suspense>

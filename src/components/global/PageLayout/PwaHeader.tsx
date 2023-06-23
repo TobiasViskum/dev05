@@ -68,7 +68,7 @@ export default function PwaHeader() {
             : ""
         )}
       >
-        <nav className="flex items-center justify-center ">
+        <nav className="flex items-center justify-center max-w-6xl">
           <HeaderTitle
             isHeaderTitleActive={isHeaderTitleActive}
             title={title}

@@ -2,7 +2,7 @@ import "./globals.css";
 import "./main.css";
 import { Inter } from "next/font/google";
 import PwaActions from "./PwaActions";
-import { PageLayout } from "@/components/global";
+import { BigScreenLayout, PageLayout } from "@/components/global";
 import { Metadata } from "next";
 import { twMerge } from "tailwind-merge";
 import SplashScreen from "./SplashScreens";
@@ -29,11 +29,11 @@ export default async function RootLayout({
         <SplashScreen />
       </head>
       <body
-        className={twMerge(
-          inter.className + "min-h-[100svh] w-full max-w-screen-xl bg-first"
-        )}
+        className={twMerge(inter.className, "min-h-[100svh] w-full bg-first")}
       >
-        <PageLayout>{children}</PageLayout>
+        <PageLayout>
+          <BigScreenLayout>{children}</BigScreenLayout>
+        </PageLayout>
         <PwaActions />
       </body>
     </html>
