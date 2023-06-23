@@ -7,11 +7,11 @@ export default function BigScreenLayout({
 }) {
   return (
     <>
-      <div className="flex w-full justify-center relative gap-x-6">
-        <div className="hidden w-full xl:flex relative">
+      <div className="flex w-full justify-center gap-x-6">
+        <div className="hidden w-full xl:flex relative bg-red-700">
           <LeftNavigation />
         </div>
-        <div className="max-w-4xl w-full">{children}</div>
+        <div className="max-w-4xl w-full xl:min-w-[892px]">{children}</div>
       </div>
     </>
   );

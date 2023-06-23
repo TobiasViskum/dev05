@@ -1,5 +1,7 @@
 html {
   --document-padding: 16px;
+  --document-max-width: 1428px;
+
   touch-action: var(--touch-actions);
   display: flex;
   justify-content: center;
@@ -9,6 +11,9 @@ html {
   padding-right: var(--document-padding);
 
   background-color: var(--bg-first);
+  scrollbar-gutter: stable;
+  overflow: auto;
+  overflow-x: hidden;
 }
 
 body {
@@ -16,7 +21,7 @@ body {
   min-height: 100svh;
   margin: 0;
 
-  max-width: 1428px;
+  max-width: var(--document-max-width);
 
   color: var(--text-first);
 

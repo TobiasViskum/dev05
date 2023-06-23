@@ -31,10 +31,12 @@ export default async function RootLayout({
       <body
         className={twMerge(inter.className, "min-h-[100svh] w-full bg-first")}
       >
+        {/* <main className="max-w-[var(--document-max-width)]"> */}
         <PageLayout>
           <BigScreenLayout>{children}</BigScreenLayout>
         </PageLayout>
         <PwaActions />
+        {/* </main> */}
       </body>
     </html>
   );
