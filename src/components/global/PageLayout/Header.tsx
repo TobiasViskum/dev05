@@ -11,7 +11,7 @@ export default function Header() {
           WebkitBackfaceVisibility: "hidden",
         }}
       >
-        <div className="w-full h-full hidden standalone:touch:block">
+        <div className="w-full h-full hidden standalone:touch:block relative">
           <PwaHeader />
         </div>
         <div className="w-full h-full block standalone:touch:hidden">

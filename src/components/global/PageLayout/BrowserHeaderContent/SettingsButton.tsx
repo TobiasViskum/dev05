@@ -16,10 +16,9 @@ export default function SettingsButton() {
     <>
       <Link
         href={`/${uid}/settings?prev=${path}`}
-        className="h-8 ml-auto font-semibold text-lg flex items-center gap-x-2"
+        className="h-8 ml-auto font-semibold text-lg flex items-center"
       >
         <p>Settings</p>
-        <Image src={settingsPng} alt="set" className="h-6 w-6 aspect-square" />
       </Link>
     </>
   );

@@ -19,7 +19,7 @@ export default function PwaActions() {
     if (isMobile() && isPWA() && viewport) {
       viewport.setAttribute(
         "content",
-        "width=device-width, initial-scale=1.0, maximum-scale=1, minimum-scale=1"
+        "width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1"
       );
       documentStyle.setProperty("--touch-actions", "pan-y");
       documentStyle.setProperty("--user-select", "none");

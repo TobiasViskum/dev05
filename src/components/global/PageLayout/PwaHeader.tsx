@@ -60,7 +60,7 @@ export default function PwaHeader() {
     <>
       <div
         className={twMerge(
-          "visible flex w-full h-full min-w-[272px] items-center justify-center border-0 border-b border-solid border-first bg-first backdrop-blur-md transition-colors",
+          "visible fixed h-12 top-0 flex w-full min-w-[272px] items-center justify-center border-0 border-b border-solid border-first bg-first backdrop-blur-md transition-colors",
           title === "start"
             ? "invisible"
             : isHeaderActive
