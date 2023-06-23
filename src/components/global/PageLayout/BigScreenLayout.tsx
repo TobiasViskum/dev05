@@ -11,7 +11,7 @@ export default function BigScreenLayout({
         <div className="hidden w-full xl:flex relative">
           <LeftNavigation />
         </div>
-        <div className="max-w-4xl min-w-[56rem] w-full">{children}</div>
+        <div className="max-w-4xl w-full">{children}</div>
       </div>
     </>
   );
