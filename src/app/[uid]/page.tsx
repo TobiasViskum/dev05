@@ -34,7 +34,7 @@ export default async function page({ params }: ViskumAppParams) {
         <div className="w-full hidden standalone:touch:block">
           <MostVisited profileData={strProfileData} appData={strAppData} />
         </div>
-        <div className="flex standalone:touch:hidden gap-x-4 max-w-[min(80svw,_1024px)]">
+        <div className="standalone:touch:hidden min-w-small w-full">
           <BrowserView profileData={profileData} appData={appData} />
         </div>
       </main>
