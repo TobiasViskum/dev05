@@ -8,7 +8,9 @@ export default async function FitnessLayout({
   return (
     <>
       <FitnessOverlay />
-      {children}
+      <div className="w-[calc(100svw_-_32px)] flex justify-center">
+        <div className="max-w-4xl w-full mr-4">{children}</div>
+      </div>
     </>
   );
 }

@@ -34,7 +34,7 @@ export default function MostVisited(props: Props) {
 
   return (
     <>
-      <h1 className="mt-8 text-3xl font-bold">Recommended</h1>
+      <h1 className="text-3xl font-bold">Recommended</h1>
       <div className="mt-2 grid grid-cols-auto-min-max-1 gap-3">
         {getMostViewed()}
       </div>

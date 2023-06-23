@@ -18,7 +18,7 @@ export default function Header() {
           <BrowserHeader />
         </div>
       </div>
-      <div className="mb-16" />
+      <div className="mb-20 standalone:touch:mb-16" />
     </>
   );
 }

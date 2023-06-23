@@ -2,11 +2,11 @@ import Image from "next/image";
 import { profileTobias } from "@/assets/images";
 
 interface Props {
-  profileData: string;
+  strProfileData: string;
 }
 
-export default function ProfileHolder(props: Props) {
-  const profileData: ProfileData = JSON.parse(props.profileData);
+export default function ProfileHolder({ strProfileData }: Props) {
+  const profileData: ProfileData = JSON.parse(strProfileData);
 
   return (
     <>

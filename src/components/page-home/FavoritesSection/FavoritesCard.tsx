@@ -12,9 +12,9 @@ import { useState } from "react";
 import { usePathname } from "next/navigation";
 
 interface Props {
-  profileData: ProfileData;
-  appData: AppData;
-  instantFavoriteUpdate: (
+  strProfileData: string;
+  strAppData: string;
+  instantFavoriteUpdate?: (
     newFavorites: Favorites,
     action: string,
     passedOldFavorites?: Favorites
@@ -22,10 +22,13 @@ interface Props {
 }
 
 export default function FavoritesCard({
-  profileData,
-  appData,
+  strProfileData,
+  strAppData,
   instantFavoriteUpdate,
 }: Props) {
+  const profileData: ProfileData = JSON.parse(strProfileData);
+  const appData: AppData = JSON.parse(strAppData);
+
   const path = usePathname();
   const [isBorderActive, setIsBorderActive] = useState(false);
   const appImageData = appImages[appData.name_id];

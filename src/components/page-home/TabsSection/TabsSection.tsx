@@ -3,7 +3,7 @@ import TabsCard from "./TabsCard";
 function findTabs(
   appData: AppData[],
   profileData: ProfileData,
-  instantFavoriteUpdate: (newFavorites: Favorites, action: string) => void
+  instantFavoriteUpdate?: (newFavorites: Favorites, action: string) => void
 ) {
   const favorites = profileData.favorites;
 
@@ -20,8 +20,8 @@ function findTabs(
     return (
       <TabsCard
         key={index}
-        appData={app}
-        profileData={profileData}
+        strAppData={JSON.stringify(app)}
+        strProfileData={JSON.stringify(profileData)}
         instantFavoriteUpdate={instantFavoriteUpdate}
       />
     );
@@ -31,7 +31,7 @@ function findTabs(
 interface Props {
   profileData: ProfileData;
   appData: AppData[];
-  instantFavoriteUpdate: (
+  instantFavoriteUpdate?: (
     newFavorites: Favorites,
     action: string,
     passedOldFavorites?: Favorites

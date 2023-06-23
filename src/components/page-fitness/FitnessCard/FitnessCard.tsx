@@ -8,26 +8,42 @@ import RightButton from "./RightButtons";
 
 interface Props {
   strExerciseData: string;
-  isLast: boolean;
+  stylingData: {
+    isTotalExerciseAmountOdd: boolean;
+    isExerciseOdd: boolean;
+    isSecondLast: boolean;
+    isLast: boolean;
+  };
   profileData: ProfileData;
 }
 
 export default function FitnessCard({
   strExerciseData,
-  isLast,
+  stylingData,
   profileData,
 }: Props) {
   const exerciseData: FitnessData = JSON.parse(strExerciseData);
 
   return (
-    <div className="group overflow-hidden">
-      <div className="relative flex min-w-small gap-x-3">
+    <div
+      className={twJoin(
+        "group overflow-hidden",
+        stylingData.isExerciseOdd ? "vsm:-ml-3" : ""
+      )}
+    >
+      <div className="relative flex items-center min-w-small gap-x-3">
+        <div
+          className={twJoin(
+            "hidden h-10 w-[1px] bg-[var(--border-inactive)] mr-3",
+            stylingData.isExerciseOdd && "vsm:block"
+          )}
+        />
         <div className="relative my-1.5 grid place-items-center p-1.5">
           <ExerciseAmount exerciseData={exerciseData} />
           <LeftButtons exerciseData={exerciseData} />
         </div>
 
-        <div className="mt-2.5 flex flex-col gap-y-1 overflow-hidden">
+        <div className="mt-1.5 flex flex-col gap-y-1 overflow-hidden">
           <p className="overflow-hidden text-ellipsis whitespace-nowrap font-medium">
             {exerciseData.name}
           </p>
@@ -48,7 +64,13 @@ export default function FitnessCard({
       <div
         className={twJoin(
           "mt-2 w-full bg-[var(--border-inactive)]",
-          isLast ? "h-0" : "h-[1px]"
+          stylingData.isLast
+            ? "h-0"
+            : stylingData.isSecondLast
+            ? stylingData.isTotalExerciseAmountOdd
+              ? "vsm:h-0"
+              : "h-[1px]"
+            : "h-[1px]"
         )}
       />
     </div>

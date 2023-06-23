@@ -29,9 +29,14 @@ export function UserAuthClient({ uid }: { uid: string }) {
       if (result.message === "failed" || result.message === "error") {
         router.push("/");
       }
+      if (result.uid !== uid) {
+        localStorage.removeItem("sessionKey");
+        localStorage.removeItem("mail");
+        router.push("/");
+      }
     }
     authenticateUser();
-  }, [path, router]);
+  }, [path, router, uid]);
 
   return <></>;
 }

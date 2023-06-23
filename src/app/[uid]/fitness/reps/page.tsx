@@ -23,7 +23,7 @@ export default async function RepsPage({ params }: ViskumAppParams) {
       </div>
       <div className="grid min-w-small">
         <Suspense fallback={<RepsMaxLoadingSkeleton />}>
-          <FitnessGroupAndCards uid={uid} />
+          <FitnessGroupAndCards uid={uid} type="reps" />
         </Suspense>
       </div>
       <div className="pt-8" />

@@ -7,7 +7,7 @@ import { isTheme } from "@/lib/util/themes";
 interface Props {
   profileData: ProfileData;
   appData: AppData;
-  instantFavoriteUpdate: (
+  instantFavoriteUpdate?: (
     newFavorites: Favorites,
     action: string,
     passedOldFavorites?: Favorites
@@ -25,34 +25,38 @@ export default function TabsButton({
     favorites == null ? false : favorites[name_id] ? true : false;
   const newState = !isFavorite;
 
-  async function handleClick(e: React.MouseEvent<HTMLButtonElement>) {
-    e.preventDefault();
-    e.stopPropagation();
-    if (favorites === null) {
-      instantFavoriteUpdate({}, "set");
-    } else {
-      if (newState === false) {
-        let oldFavorites = structuredClone(favorites);
-        delete favorites[name_id];
-        instantFavoriteUpdate(favorites, "set", oldFavorites);
-      } else if (newState) {
-        let oldFavorites = structuredClone(favorites);
-        favorites[name_id] = name_id;
-        instantFavoriteUpdate(favorites, "set", oldFavorites);
-      }
-    }
+  if (instantFavoriteUpdate === undefined) return <></>;
 
-    const result: Response = await fetch("/api/update-favorite", {
-      method: "POST",
-      body: JSON.stringify({
-        uid: profileData.uid,
-        newState: newState,
-        name_id: appData.name_id,
-        favorites: profileData.favorites,
-      }),
-    });
-    const newFavorites = (await result.json()).result;
-    instantFavoriteUpdate(newFavorites, "check");
+  async function handleClick(e: React.MouseEvent<HTMLButtonElement>) {
+    if (instantFavoriteUpdate) {
+      e.preventDefault();
+      e.stopPropagation();
+      if (favorites === null) {
+        instantFavoriteUpdate({}, "set");
+      } else {
+        if (newState === false) {
+          let oldFavorites = structuredClone(favorites);
+          delete favorites[name_id];
+          instantFavoriteUpdate(favorites, "set", oldFavorites);
+        } else if (newState) {
+          let oldFavorites = structuredClone(favorites);
+          favorites[name_id] = name_id;
+          instantFavoriteUpdate(favorites, "set", oldFavorites);
+        }
+      }
+
+      const result: Response = await fetch("/api/update-favorite", {
+        method: "POST",
+        body: JSON.stringify({
+          uid: profileData.uid,
+          newState: newState,
+          name_id: appData.name_id,
+          favorites: profileData.favorites,
+        }),
+      });
+      const newFavorites = (await result.json()).result;
+      instantFavoriteUpdate(newFavorites, "check");
+    }
   }
   return (
     <>

@@ -23,10 +23,10 @@ export default function useChangeCurrTab(
         setCurrTab(["start", uidOrFirstPath]);
       }
     } else if (length >= 2) {
-      if (uidOrFirstPath !== "login") {
+      if (splitPath[1] === "pwa-home-page-secret") {
+        setCurrTab(["home", uidOrFirstPath]);
+      } else {
         setCurrTab([splitPath[1], uidOrFirstPath]);
-      } else if (uidOrFirstPath === "login") {
-        setCurrTab(["login", splitPath[1]]);
       }
     }
   }, [path, setCurrTab]);

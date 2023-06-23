@@ -12,9 +12,9 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 interface Props {
-  appData: AppData;
-  profileData: ProfileData;
-  instantFavoriteUpdate: (
+  strAppData: string;
+  strProfileData: string;
+  instantFavoriteUpdate?: (
     newFavorites: Favorites,
     action: string,
     passedOldFavorites?: Favorites
@@ -22,10 +22,13 @@ interface Props {
 }
 
 export default function TabsCard({
-  appData,
-  profileData,
+  strAppData,
+  strProfileData,
   instantFavoriteUpdate,
 }: Props) {
+  const profileData: ProfileData = JSON.parse(strProfileData);
+  const appData: AppData = JSON.parse(strAppData);
+
   const path = usePathname();
   const [isBorderActive, setIsBorderActive] = useState(false);
   const appImageData = appImages[appData.name_id];

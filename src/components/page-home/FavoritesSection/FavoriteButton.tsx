@@ -7,7 +7,7 @@ import { isTheme } from "@/lib/util/themes";
 interface Props {
   profileData: ProfileData;
   appData: AppData;
-  instantFavoriteUpdate: (
+  instantFavoriteUpdate?: (
     newFavorites: Favorites,
     action: string,
     passedOldFavorites?: Favorites
@@ -22,30 +22,34 @@ export default function FavoriteButton({
   const name_id = appData.name_id;
   const favorites = profileData.favorites;
 
+  if (instantFavoriteUpdate === undefined) return <></>;
+
   async function handleClick(e: React.MouseEvent<HTMLButtonElement>) {
-    e.stopPropagation();
-    e.preventDefault();
+    if (instantFavoriteUpdate) {
+      e.stopPropagation();
+      e.preventDefault();
 
-    if (favorites === null) {
-      instantFavoriteUpdate({}, "set");
-    } else {
-      let oldFavorites = structuredClone(favorites);
-      delete favorites[name_id];
+      if (favorites === null) {
+        instantFavoriteUpdate({}, "set");
+      } else {
+        let oldFavorites = structuredClone(favorites);
+        delete favorites[name_id];
 
-      instantFavoriteUpdate(favorites, "set", oldFavorites);
+        instantFavoriteUpdate(favorites, "set", oldFavorites);
+      }
+
+      const response: Response = await fetch("/api/update-favorite", {
+        method: "POST",
+        body: JSON.stringify({
+          uid: profileData.uid,
+          newState: false,
+          name_id: appData.name_id,
+          favorites: favorites,
+        }),
+      });
+      const newFavorites = (await response.json()).result;
+      instantFavoriteUpdate(newFavorites, "check");
     }
-
-    const response: Response = await fetch("/api/update-favorite", {
-      method: "POST",
-      body: JSON.stringify({
-        uid: profileData.uid,
-        newState: false,
-        name_id: appData.name_id,
-        favorites: favorites,
-      }),
-    });
-    const newFavorites = (await response.json()).result;
-    instantFavoriteUpdate(newFavorites, "check");
   }
   return (
     <>

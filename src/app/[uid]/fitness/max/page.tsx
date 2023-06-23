@@ -23,7 +23,7 @@ export default async function MaxPage({ params }: ViskumAppParams) {
       </div>
       <div className="grid min-w-small">
         <Suspense fallback={<RepsMaxLoadingSkeleton />}>
-          <FitnessGroupAndCards uid={uid} />
+          <FitnessGroupAndCards uid={uid} type="max" />
         </Suspense>
       </div>
       <div className="pt-8" />

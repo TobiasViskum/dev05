@@ -3,7 +3,7 @@ import FavoritesCard from "./FavoritesCard";
 function findFavorites(
   appData: AppData[],
   profileData: ProfileData,
-  instantFavoriteUpdate: (newFavorites: Favorites, action: string) => void
+  instantFavoriteUpdate?: (newFavorites: Favorites, action: string) => void
 ) {
   let hasFoundFavorite = false;
   if (profileData.favorites === null) {
@@ -18,8 +18,8 @@ function findFavorites(
         return (
           <FavoritesCard
             key={index}
-            appData={app}
-            profileData={profileData}
+            strAppData={JSON.stringify(app)}
+            strProfileData={JSON.stringify(profileData)}
             instantFavoriteUpdate={instantFavoriteUpdate}
           />
         );
@@ -38,7 +38,7 @@ function findFavorites(
 interface Props {
   profileData: ProfileData;
   appData: AppData[];
-  instantFavoriteUpdate: (newFavorites: Favorites, action: string) => void;
+  instantFavoriteUpdate?: (newFavorites: Favorites, action: string) => void;
 }
 
 export default function FavoritesSection({
