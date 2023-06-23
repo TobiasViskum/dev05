@@ -1,6 +1,12 @@
+"use client";
+import { usePathname } from "next/navigation";
 import { twJoin } from "tailwind-merge";
 
 export default function LeftNavigation() {
+  const path = usePathname();
+
+  if (path === "/") return <></>;
+
   return (
     <>
       <div

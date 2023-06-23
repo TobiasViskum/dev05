@@ -1,5 +1,6 @@
 "use client";
 import { useEffect } from "react";
+import { usePathname } from "next/navigation";
 
 function isPWA() {
   const isPWA = window.matchMedia("(display-mode: standalone)").matches;
@@ -12,6 +13,8 @@ function isMobile() {
 }
 
 export default function PwaActions() {
+  const path = usePathname();
+
   useEffect(() => {
     const viewport = document.querySelector("meta[name=viewport]");
     const documentStyle = document.documentElement.style;
@@ -24,7 +27,7 @@ export default function PwaActions() {
       documentStyle.setProperty("--touch-actions", "pan-y");
       documentStyle.setProperty("--user-select", "none");
     }
-  }, []);
+  }, [path]);
 
   return <></>;
 }
