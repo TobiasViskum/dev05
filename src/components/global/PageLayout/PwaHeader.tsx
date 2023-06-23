@@ -46,7 +46,13 @@ export default function PwaHeader() {
     }
   }, [path]);
 
-  hooks.useFirstRenderEvent({ updateHeader });
+  if (
+    typeof window !== "undefined" &&
+    window.matchMedia("(display-mode: standalone)").matches &&
+    window.matchMedia("(hover: none)").matches
+  ) {
+    hooks.useFirstRenderEvent({ updateHeader });
+  }
 
   return (
     <>

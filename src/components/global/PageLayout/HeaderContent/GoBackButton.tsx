@@ -32,9 +32,9 @@ export default function GoBackButton({ title, splitPath }: Props) {
         )}
       >
         <div className="h-3 w-3">
-          <Image src={arrowLeft} alt="" className="h-full w-full" />
+          <Image src={arrowLeft} alt="" className="h-full w-full image-blue" />
         </div>
-        <p className="pl-1.5 text-sm">Go Back</p>
+        <p className="pl-1.5 text-sm text-active">Go Back</p>
       </Link>
     </>
   );

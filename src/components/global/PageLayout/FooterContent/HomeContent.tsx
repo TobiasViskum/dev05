@@ -3,23 +3,11 @@
 import { rocket, home } from "@/assets/images";
 import ContentItem from "./ContentItem";
 
-export default function HomeContent({
-  currTab,
-  profileData,
-}: {
-  currTab: string[];
-  profileData: ProfileData | null;
-}) {
+export default function HomeContent({ currTab }: { currTab: string[] }) {
   return (
     <>
+      <ContentItem destPath={`/${currTab[1]}`} image={rocket} text="Start" />
       <ContentItem
-        profileData={profileData}
-        destPath={`/${currTab[1]}`}
-        image={rocket}
-        text="Start"
-      />
-      <ContentItem
-        profileData={profileData}
         destPath={`/${currTab[1]}/home`}
         image={home}
         text="Home"

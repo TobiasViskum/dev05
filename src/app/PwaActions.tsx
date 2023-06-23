@@ -1,7 +1,5 @@
 "use client";
 import { useEffect } from "react";
-import { renderTheme } from "@/lib/util/themes";
-import { validateTheme } from "@/lib/util/themes";
 
 function isPWA() {
   const isPWA = window.matchMedia("(display-mode: standalone)").matches;
@@ -13,26 +11,10 @@ function isMobile() {
   return isMobile;
 }
 
-export default function PwaActions({
-  profileData,
-}: {
-  profileData: ProfileData | null;
-}) {
+export default function PwaActions() {
   useEffect(() => {
     const viewport = document.querySelector("meta[name=viewport]");
     const documentStyle = document.documentElement.style;
-
-    const theme = localStorage.getItem("theme");
-    if (theme === null) {
-      localStorage.setItem("theme", "dark");
-    } else if (theme && profileData) {
-      if (theme !== profileData.color_theme) {
-        localStorage.setItem("theme", profileData.color_theme);
-        renderTheme(profileData.color_theme);
-      } else {
-        renderTheme(profileData.color_theme);
-      }
-    }
 
     if (isMobile() && isPWA() && viewport) {
       viewport.setAttribute(

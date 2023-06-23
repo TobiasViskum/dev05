@@ -3,24 +3,16 @@
 import { info, key } from "@/assets/images";
 import ContentItem from "./ContentItem";
 
-export default function HomeContent({
-  currTab,
-  profileData,
-}: {
-  currTab: string[];
-  profileData: ProfileData | null;
-}) {
+export default function StartContent() {
   return (
     <>
       <ContentItem
-        profileData={profileData}
         destPath={`/`}
         image={info}
         text="Info"
         imageSize="h-5/6 w-5/6"
       />
       <ContentItem
-        profileData={profileData}
         destPath={`/login`}
         image={key}
         text="Login"

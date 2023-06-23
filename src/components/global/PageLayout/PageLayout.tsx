@@ -5,10 +5,8 @@ import Footer from "./Footer";
 import { usePathname } from "next/navigation";
 
 export default function PageLayout({
-  profileData,
   children,
 }: {
-  profileData: ProfileData | null;
   children: React.ReactNode;
 }) {
   const path = usePathname();
@@ -19,9 +17,9 @@ export default function PageLayout({
 
   return (
     <>
-      <Header profileData={profileData} />
+      <Header />
       {children}
-      <Footer profileData={profileData} />
+      <Footer />
     </>
   );
 }

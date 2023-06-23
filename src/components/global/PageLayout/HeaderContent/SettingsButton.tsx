@@ -23,7 +23,11 @@ export default function SettingsButton({ splitPath }: Props) {
         href={`/${uid}/settings?prev=${path}`}
         className="absolute right-2 top-2 aspect-square h-8 w-8"
       >
-        <Image src={settingsPng} alt="settings" className="h-full w-full" />
+        <Image
+          src={settingsPng}
+          alt="settings"
+          className="h-full w-full image-blue"
+        />
       </Link>
     </>
   );

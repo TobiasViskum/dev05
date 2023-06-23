@@ -5,14 +5,12 @@ import { twJoin, twMerge } from "tailwind-merge";
 import { usePathname, useSearchParams } from "next/navigation";
 
 export default function ContentItem({
-  profileData,
   destPath,
   image,
   text,
   imageSize,
   className,
 }: {
-  profileData: ProfileData | null;
   destPath: string;
   image: StaticImageData;
   text: string;
@@ -26,33 +24,17 @@ export default function ContentItem({
     : "";
 
   function getImageColor() {
-    if (profileData?.color_theme === "blue") {
-      if (path === destPath) {
-        return "image-light-blue";
-      } else {
-        return "";
-      }
+    if (path === destPath) {
+      return "image-blue";
     } else {
-      if (path === destPath) {
-        return "image-blue";
-      } else {
-        return "image-gray";
-      }
+      return "image-gray";
     }
   }
   function getTextColor() {
-    if (profileData?.color_theme === "blue") {
-      if (path === destPath) {
-        return "text-second";
-      } else {
-        return "";
-      }
+    if (path === destPath) {
+      return "text-active";
     } else {
-      if (path === destPath) {
-        return "text-active";
-      } else {
-        return "text-second";
-      }
+      return "text-second";
     }
   }
 

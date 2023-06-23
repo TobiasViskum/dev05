@@ -21,15 +21,6 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const getUid: any = children;
-  const uid = getUid?.props?.childProp?.segment[1];
-
-  const profileData = uid
-    ? uid.length === 36
-      ? await getProfileData(uid)
-      : null
-    : null;
-
   return (
     <html lang="en">
       <head>
@@ -41,8 +32,8 @@ export default async function RootLayout({
           inter.className + "min-h-[100svh] w-full max-w-screen-xl bg-first"
         )}
       >
-        <PageLayout profileData={profileData}>{children}</PageLayout>
-        <PwaActions profileData={profileData} />
+        <PageLayout>{children}</PageLayout>
+        <PwaActions />
       </body>
     </html>
   );
