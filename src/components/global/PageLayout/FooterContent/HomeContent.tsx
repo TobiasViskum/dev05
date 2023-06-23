@@ -8,7 +8,7 @@ export default function HomeContent({ currTab }: { currTab: string[] }) {
     <>
       <ContentItem destPath={`/${currTab[1]}`} image={rocket} text="Start" />
       <ContentItem
-        destPath={`/${currTab[1]}/home`}
+        destPath={`/${currTab[1]}/pwa-home-page-secret`}
         image={home}
         text="Home"
         imageSize="h-3/4 w-3/4"
