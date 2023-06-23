@@ -57,10 +57,10 @@ export default function PwaHeader() {
   }
 
   return (
-    <>
+    <div className="fixed top-0 left-0 w-full h-12">
       <div
         className={twMerge(
-          "visible fixed h-12 top-0 flex w-full min-w-[272px] items-center justify-center border-0 border-b border-solid border-first bg-first backdrop-blur-md transition-colors",
+          "visible h-full flex w-full min-w-[272px] items-center justify-center border-0 border-b border-solid border-first bg-first backdrop-blur-md transition-colors",
           title === "start"
             ? "invisible"
             : isHeaderActive
@@ -79,6 +79,6 @@ export default function PwaHeader() {
       <GoBackButton title={title} splitPath={splitPath} />
       <ProfileIcon isHeaderTitleActive={isHeaderTitleActive} title={title} />
       <SettingsButton splitPath={splitPath} />
-    </>
+    </div>
   );
 }
