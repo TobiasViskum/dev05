@@ -16,7 +16,7 @@ export default function useFirstRenderEvent({
     const documentElement = document.documentElement;
 
     function handleHeaderChange() {
-      if (splitPath[2] === "home") {
+      if (splitPath[2] === "pwa-home-page-secret") {
         if (documentElement.scrollTop >= 16) {
           updateHeader(true, "header");
           if (documentElement.scrollTop >= 48) {

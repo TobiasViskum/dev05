@@ -42,7 +42,9 @@ export default function PwaHeader() {
       setTitle("start");
       setIsHeaderTitleActive(false);
     } else if (splitPathname.length >= 3) {
-      setTitle(splitPathname[2].toLowerCase());
+      if (splitPathname[2].toLowerCase() === "pwa-home-page-secret") {
+        setTitle("home");
+      } else setTitle(splitPathname[2].toLowerCase());
     }
   }, [path]);
 
