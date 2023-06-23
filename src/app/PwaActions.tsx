@@ -16,10 +16,10 @@ export default function PwaActions() {
     const viewport = document.querySelector("meta[name=viewport]");
     const documentStyle = document.documentElement.style;
 
-    if (isMobile() && isPWA() && viewport) {
+    if (isPWA() && viewport) {
       viewport.setAttribute(
         "content",
-        "width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1"
+        "width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no"
       );
       documentStyle.setProperty("--touch-actions", "pan-y");
       documentStyle.setProperty("--user-select", "none");
