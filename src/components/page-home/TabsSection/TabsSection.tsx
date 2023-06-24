@@ -19,9 +19,9 @@ function findTabs(
   return sortedApps.map((app, index) => {
     return (
       <TabsCard
+        profileData={profileData}
         key={index}
-        strAppData={JSON.stringify(app)}
-        strProfileData={JSON.stringify(profileData)}
+        strApp={JSON.stringify(app)}
         instantFavoriteUpdate={instantFavoriteUpdate}
       />
     );

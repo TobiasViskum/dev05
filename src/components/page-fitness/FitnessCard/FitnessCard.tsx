@@ -18,15 +18,13 @@ interface Props {
 }
 
 export default function FitnessCard({ strExerciseData, stylingData }: Props) {
-  const profileData = store.getState().userData.profileData;
-
   const exerciseData: FitnessData = JSON.parse(strExerciseData);
 
   return (
     <div
       className={twJoin(
-        "group overflow-hidden",
-        stylingData.isExerciseOdd ? "vsm:-ml-3" : ""
+        "group relative min-w-[300px] overflow-hidden",
+        stylingData.isExerciseOdd ? "vsm:-ml-3 vsm:min-w-[322px]" : ""
       )}
     >
       <div className="relative flex min-w-small items-center gap-x-3">
@@ -48,10 +46,7 @@ export default function FitnessCard({ strExerciseData, stylingData }: Props) {
           <div className="flex flex-row gap-x-3">
             <InfoBox exerciseData={exerciseData} />
             <div className="flex items-end gap-x-3">
-              <RightButton
-                exerciseData={exerciseData}
-                profileData={profileData}
-              />
+              <RightButton exerciseData={exerciseData} />
             </div>
           </div>
         </div>
@@ -66,7 +61,7 @@ export default function FitnessCard({ strExerciseData, stylingData }: Props) {
             ? "h-0"
             : stylingData.isSecondLast
             ? stylingData.isTotalExerciseAmountOdd
-              ? "vsm:h-0"
+              ? "h-[1px] vsm:h-0"
               : "h-[1px]"
             : "h-[1px]"
         )}

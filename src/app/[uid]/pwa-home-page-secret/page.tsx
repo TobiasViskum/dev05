@@ -17,7 +17,7 @@ export default async function HomePage({ params }: ViskumAppParams) {
   return (
     <>
       <main className="grid grid-rows-3-min-content justify-center gap-y-6 transition-grid">
-        <SearchSection profileData={strProfileData} />
+        <SearchSection />
         <SectionHolder
           strProfileData={strProfileData}
           strAppData={strAppData}

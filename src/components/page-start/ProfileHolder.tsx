@@ -1,10 +1,11 @@
 import Image from "next/image";
 import { profileTobias } from "@/assets/images";
-import { store } from "@/store";
 
-export default function ProfileHolder() {
-  const profileData = store.getState().userData.profileData;
-
+export default function ProfileHolder({
+  profileData,
+}: {
+  profileData: ProfileData;
+}) {
   return (
     <>
       <div className="h-48 w-48 min-w-[184px] rounded-full border-4 border-white shadow-circle-4xl shadow-first">

@@ -5,15 +5,14 @@ import { arrow } from "@/assets/images";
 import { appImages } from "@/lib/util";
 import { Box } from "@/components/global";
 import TabsButton from "./TabsButton";
-import { twJoin, twMerge } from "tailwind-merge";
-import { isTheme } from "@/lib/util/themes";
+import { twMerge } from "tailwind-merge";
 import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 interface Props {
-  strAppData: string;
-  strProfileData: string;
+  strApp: string;
+  profileData: ProfileData;
   instantFavoriteUpdate?: (
     newFavorites: Favorites,
     action: string,
@@ -22,23 +21,22 @@ interface Props {
 }
 
 export default function TabsCard({
-  strAppData,
-  strProfileData,
+  strApp,
+  profileData,
   instantFavoriteUpdate,
 }: Props) {
-  const profileData: ProfileData = JSON.parse(strProfileData);
-  const appData: AppData = JSON.parse(strAppData);
+  const app: AppData = JSON.parse(strApp);
 
   const path = usePathname();
   const [isBorderActive, setIsBorderActive] = useState(false);
-  const appImageData = appImages[appData.name_id];
+  const appImageData = appImages[app.name_id];
 
   function handleNavigate() {
     fetch("/api/update-most-visited", {
       method: "POST",
       body: JSON.stringify({
         profileData: profileData,
-        name_id: appData.name_id,
+        name_id: app.name_id,
       }),
     });
   }
@@ -59,14 +57,13 @@ export default function TabsCard({
 
   return (
     <Link
-      href={[appData.href, "?prev=", path].join("")}
+      href={[app.href, "?prev=", path].join("")}
       className="group"
       onClick={handleNavigate}
     >
       <Box
         onMouseMove={(e) => handleHover(e)}
         onMouseLeave={(e) => handleHover(e, true)}
-        profileData={profileData}
         className={twMerge(
           "flex items-center gap-x-3 overflow-hidden p-1.5",
           isBorderActive ? "dt:border-active" : ""
@@ -74,7 +71,7 @@ export default function TabsCard({
       >
         <div
           className="grid aspect-square h-12 w-12 place-items-center rounded-me"
-          style={{ backgroundColor: appData.color }}
+          style={{ backgroundColor: app.color }}
         >
           <Image
             priority
@@ -87,13 +84,13 @@ export default function TabsCard({
           />
         </div>
         <div>
-          <h3 className="text-lg font-semibold">{appData.name}</h3>
-          <p className="text-second">{appData.category}</p>
+          <h3 className="text-lg font-semibold">{app.name}</h3>
+          <p className="text-second">{app.category}</p>
         </div>
         <div className="max-tn:gap-x-0 ml-auto mr-2.5 flex items-center gap-x-4">
           <TabsButton
             profileData={profileData}
-            appData={appData}
+            app={app}
             instantFavoriteUpdate={instantFavoriteUpdate}
           />
           <div className="ml-auto flex aspect-square h-8 w-8 items-center justify-end dt:hidden">
@@ -101,10 +98,7 @@ export default function TabsCard({
               priority
               src={arrow}
               alt="icon"
-              className={twJoin(
-                "h-half w-half",
-                isTheme("blue", profileData) ? "" : "image-gray"
-              )}
+              className="image-gray h-half w-half"
             />
           </div>
         </div>

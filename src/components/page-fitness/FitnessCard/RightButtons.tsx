@@ -12,14 +12,15 @@ import {
 } from "@/assets/images";
 import { usePathname } from "next/navigation";
 import { twJoin } from "tailwind-merge";
+import { useAppSelector } from "@/store/useClient";
 
 export default function RightButton({
   exerciseData,
-  profileData,
 }: {
   exerciseData: FitnessData;
-  profileData: ProfileData;
 }) {
+  const profileData = useAppSelector((state) => state.userData.profileData);
+
   const path = usePathname();
   const splitPath = path.split("/");
   const exerciseType = splitPath[splitPath.length - 1];

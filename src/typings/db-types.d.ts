@@ -43,7 +43,6 @@ interface ProfileDataBefore {
   password: string;
   most_visited: string | null;
   available_apps: string | null;
-  color_theme: string;
   group_uid: string;
   group_name: string;
   group_password: string;
@@ -80,7 +79,6 @@ interface ProfileData {
   password: string;
   most_visited: MostVisited;
   available_apps: AvailableApps;
-  color_theme: string;
   group_uid: string;
   group_name: string;
   group_password: string;

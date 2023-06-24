@@ -5,13 +5,7 @@ import { profileTobias } from "@/assets/images";
 import SearchBar from "./SearchBar";
 import { useEffect, useRef } from "react";
 
-interface Props {
-  profileData: string;
-}
-
-export default function SearchSection(props: Props) {
-  const profileData: ProfileData = JSON.parse(props.profileData);
-
+export default function SearchSection() {
   const iconRef = useRef<HTMLDivElement | null>(null);
   const titleRef = useRef<HTMLHeadingElement | null>(null);
 

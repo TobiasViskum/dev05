@@ -1,12 +1,11 @@
 "use client";
 import Image from "next/image";
 import { star_full } from "@/assets/images";
-import { twJoin } from "tailwind-merge";
-import { isTheme } from "@/lib/util/themes";
+import { useAppSelector } from "@/store/useClient";
 
 interface Props {
+  app: AppData;
   profileData: ProfileData;
-  appData: AppData;
   instantFavoriteUpdate?: (
     newFavorites: Favorites,
     action: string,
@@ -15,11 +14,11 @@ interface Props {
 }
 
 export default function FavoriteButton({
+  app,
   profileData,
-  appData,
   instantFavoriteUpdate,
 }: Props) {
-  const name_id = appData.name_id;
+  const name_id = app.name_id;
   const favorites = profileData.favorites;
 
   if (instantFavoriteUpdate === undefined) return <></>;
@@ -43,7 +42,7 @@ export default function FavoriteButton({
         body: JSON.stringify({
           uid: profileData.uid,
           newState: false,
-          name_id: appData.name_id,
+          name_id: app.name_id,
           favorites: favorites,
         }),
       });
@@ -63,10 +62,7 @@ export default function FavoriteButton({
           priority
           src={star_full}
           alt="icon"
-          className={twJoin(
-            "h-full w-full",
-            isTheme("blue", profileData) ? "image-light-blue" : "image-blue"
-          )}
+          className="image-blue h-full w-full"
         />
       </button>
     </>

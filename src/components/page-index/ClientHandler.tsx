@@ -1,9 +1,8 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import SpinningIcon from "./SpinningIcon";
 import Login from "./Login";
-import { renderTheme } from "@/lib/util/themes";
 import { twJoin } from "tailwind-merge";
 import verifyUser from "./verifyUser";
 
@@ -26,10 +25,6 @@ export default function ClientHandler() {
   }
 
   useEffect(() => {
-    const theme = localStorage.getItem("theme");
-    if (theme) {
-      renderTheme(theme);
-    }
     const sessionKey = localStorage.getItem("sessionKey");
     const mail = localStorage.getItem("mail");
     setTimeout(() => {

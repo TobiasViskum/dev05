@@ -2,7 +2,6 @@ import { FitnessCard, FitnessGroup } from "@/components/page-fitness";
 import { getFitnessData, getProfileData } from "@/lib/db";
 import { getFitnessGroups } from "@/lib/util";
 import { redirect } from "next/navigation";
-import { store } from "@/store";
 
 interface Props {
   uid: string;
@@ -10,10 +9,15 @@ interface Props {
 }
 
 export default async function FitnessGroupAndCards({ uid, type }: Props) {
-  const profileData = store.getState().userData.profileData;
-  const fitnessData = store.getState().userData.fitnessData;
+  const [fitnessData, profileData] = await Promise.all([
+    getFitnessData(uid),
+    getProfileData(uid),
+  ]);
+  if (profileData === null) {
+    redirect("/");
+  }
 
-  const fitnessGroups = getFitnessGroups(type, profileData);
+  const fitnessGroups = getFitnessGroups(fitnessData, type);
 
   return (
     <>

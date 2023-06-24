@@ -6,14 +6,13 @@ import { arrow } from "@/assets/images";
 import { appImages } from "@/lib/util";
 import Link from "next/link";
 import FavoriteButton from "./FavoriteButton";
-import { twJoin, twMerge } from "tailwind-merge";
-import { isTheme } from "@/lib/util/themes";
+import { twMerge } from "tailwind-merge";
 import { useState } from "react";
 import { usePathname } from "next/navigation";
 
 interface Props {
-  strProfileData: string;
-  strAppData: string;
+  strApp: string;
+  profileData: ProfileData;
   instantFavoriteUpdate?: (
     newFavorites: Favorites,
     action: string,
@@ -22,23 +21,22 @@ interface Props {
 }
 
 export default function FavoritesCard({
-  strProfileData,
-  strAppData,
+  strApp,
+  profileData,
   instantFavoriteUpdate,
 }: Props) {
-  const profileData: ProfileData = JSON.parse(strProfileData);
-  const appData: AppData = JSON.parse(strAppData);
+  const app = JSON.parse(strApp);
 
   const path = usePathname();
   const [isBorderActive, setIsBorderActive] = useState(false);
-  const appImageData = appImages[appData.name_id];
+  const appImageData = appImages[app.name_id];
 
   function handleNavigate() {
     fetch("/api/update-most-visited", {
       method: "POST",
       body: JSON.stringify({
         profileData: profileData,
-        name_id: appData.name_id,
+        name_id: app.name_id,
       }),
     });
   }
@@ -59,14 +57,13 @@ export default function FavoritesCard({
 
   return (
     <Link
-      href={[appData.href, "?prev=", path].join("")}
+      href={[app.href, "?prev=", path].join("")}
       className="group"
       onClick={handleNavigate}
     >
       <Box
         onMouseMove={(e) => handleHover(e)}
         onMouseLeave={(e) => handleHover(e, true)}
-        profileData={profileData}
         className={twMerge(
           "flex items-center gap-x-3 overflow-hidden p-1.5",
           isBorderActive ? "dt:border-active" : ""
@@ -74,7 +71,7 @@ export default function FavoritesCard({
       >
         <div
           className="z-10 grid aspect-square h-8 w-8 place-items-center rounded-me"
-          style={{ backgroundColor: appData.color }}
+          style={{ backgroundColor: app.color }}
         >
           <Image
             priority
@@ -86,11 +83,11 @@ export default function FavoritesCard({
             }}
           />
         </div>
-        <h3 className="text-lg font-semibold">{appData.name}</h3>
+        <h3 className="text-lg font-semibold">{app.name}</h3>
         <div className="max-tn:gap-x-0 ml-auto mr-2 flex items-center gap-x-4">
           <FavoriteButton
             profileData={profileData}
-            appData={appData}
+            app={app}
             instantFavoriteUpdate={instantFavoriteUpdate}
           />
           <div className="ml-auto flex aspect-square h-8 w-8 items-center justify-end dt:hidden">
@@ -98,10 +95,7 @@ export default function FavoritesCard({
               priority
               src={arrow}
               alt="icon"
-              className={twJoin(
-                "h-half w-half",
-                isTheme("blue", profileData) ? "" : "image-gray"
-              )}
+              className="image-gray h-half w-half"
             />
           </div>
         </div>

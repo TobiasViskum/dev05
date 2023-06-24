@@ -1,6 +1,7 @@
 import { execute } from "@/lib/db";
 import { profileDataParser } from "./profileDataParser";
 import { updateFromNullToObject } from "../favorites";
+import { redirect } from "next/navigation";
 
 export async function getProfileData(uid: string, byMail: boolean = false) {
   let q =
@@ -14,7 +15,7 @@ export async function getProfileData(uid: string, byMail: boolean = false) {
 
   const result: ProfileDataBefore[] = await execute(q, val);
 
-  if (result.length === 0) return null;
+  if (result.length === 0) redirect("/");
 
   const unSerializedProfileData: ProfileData[] = await profileDataParser(
     result

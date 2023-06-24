@@ -1,10 +1,7 @@
 "use client";
 import ContentItem from "./ContentItem";
 import { max, reps, search, profiles, plus } from "@/assets/images";
-import { isTheme } from "@/lib/util/themes";
 import Image from "next/image";
-import { twJoin } from "tailwind-merge";
-import { useState } from "react";
 
 export default function FitnessContent({ currTab }: { currTab: string[] }) {
   function handleExerciseCreateClick() {
@@ -29,7 +26,7 @@ export default function FitnessContent({ currTab }: { currTab: string[] }) {
       />
       <button
         onClick={handleExerciseCreateClick}
-        className="mt-[-8px] hidden h-14 w-14 rounded-xl shadow-circle-4xl shadow-white tn:grid tn:place-items-center bg-news"
+        className="mt-[-8px] hidden h-14 w-14 rounded-xl bg-news shadow-circle-4xl shadow-white tn:grid tn:place-items-center"
       >
         <div className="h-9 w-9">
           <Image src={plus} alt="" />

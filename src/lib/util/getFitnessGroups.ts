@@ -3,19 +3,13 @@ import { store } from "@/store";
 const nameIfNoGroup = "Ungrouped";
 
 export function getFitnessGroups(
-  type: "max" | "reps",
-  profileData: ProfileData
+  fitnessData: FitnessData[],
+  type: "max" | "reps"
 ) {
-  const gottenFitnessData = store.getState().userData.fitnessData;
-  const fitnessData = [...gottenFitnessData];
-
-  fitnessData.sort((a, b) => a.max - b.max);
-
   const UNIT_CONVERTER = 2.20462262;
   let fitnessGroupList: {
     groupData: { name: string; id: number };
     exercisesInGroup: FitnessData[];
-    profileData: ProfileData;
   }[] = [];
   let insertedGroups: { [key: string]: string } = {};
   let sortedData = fitnessData.sort(
@@ -56,7 +50,6 @@ export function getFitnessGroups(
         fitnessGroupList.push({
           groupData: { name: groupName, id: groupId },
           exercisesInGroup: exercisesInGroup,
-          profileData: profileData,
         });
       }
     }

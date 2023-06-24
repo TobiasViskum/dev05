@@ -1,7 +1,6 @@
 "use client";
 import { FavoritesSection, TabsSection } from "@/components/page-home";
-import { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
+import { useState } from "react";
 
 interface Props {
   strProfileData: string;
@@ -9,7 +8,8 @@ interface Props {
 }
 
 export default function SectionHolder({ strProfileData, strAppData }: Props) {
-  const appData: AppData[] = JSON.parse(strAppData);
+  const appData = JSON.parse(strAppData);
+
   const [profileData, setProfileData] = useState<ProfileData>(
     JSON.parse(strProfileData)
   );

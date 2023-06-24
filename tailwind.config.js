@@ -28,7 +28,7 @@ module.exports = {
         "standalone": { "raw": "(display-mode: standalone)" },
         "browser": { "raw": "(display-mode: browser)" },
         "tn": "350px",
-        "vsm": "564px",
+        "vsm": "660px",
       },
       backgroundColor: {
         "first": "var(--bg-first)",

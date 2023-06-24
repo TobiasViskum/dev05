@@ -1,12 +1,11 @@
 "use client";
 import Image from "next/image";
 import { star_full, star_outline } from "@/assets/images";
-import { twJoin } from "tailwind-merge";
-import { isTheme } from "@/lib/util/themes";
+import { useAppSelector } from "@/store/useClient";
 
 interface Props {
+  app: AppData;
   profileData: ProfileData;
-  appData: AppData;
   instantFavoriteUpdate?: (
     newFavorites: Favorites,
     action: string,
@@ -15,11 +14,11 @@ interface Props {
 }
 
 export default function TabsButton({
+  app,
   profileData,
-  appData,
   instantFavoriteUpdate,
 }: Props) {
-  const name_id = appData.name_id;
+  const name_id = app.name_id;
   const favorites = profileData.favorites;
   const isFavorite =
     favorites == null ? false : favorites[name_id] ? true : false;
@@ -50,7 +49,7 @@ export default function TabsButton({
         body: JSON.stringify({
           uid: profileData.uid,
           newState: newState,
-          name_id: appData.name_id,
+          name_id: app.name_id,
           favorites: profileData.favorites,
         }),
       });
@@ -70,10 +69,7 @@ export default function TabsButton({
           priority
           src={isFavorite ? star_full : star_outline}
           alt="icon"
-          className={twJoin(
-            "h-full w-full",
-            isTheme("blue", profileData) ? "image-light-blue" : "image-blue"
-          )}
+          className="image-blue h-full w-full"
         />
       </button>
     </>

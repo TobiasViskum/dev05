@@ -3,7 +3,6 @@ import Image from "next/image";
 import { search } from "@/assets/images";
 import { twJoin } from "tailwind-merge";
 import { Input } from "@/components/global";
-import { isTheme } from "@/lib/util/themes";
 import { useAppSelector } from "@/store/useClient";
 
 export default function SearchBar() {
@@ -16,9 +15,7 @@ export default function SearchBar() {
       <div
         className={twJoin(
           "flex w-full min-w-small max-w-small items-center rounded-md bg-first text-base",
-          isTheme("blue", profileData)
-            ? "border-none bg-second"
-            : "border border-solid border-inactive"
+          "border border-solid border-inactive"
         )}
         id="searchbar"
       >
@@ -27,29 +24,17 @@ export default function SearchBar() {
             priority
             src={search}
             alt="search icon"
-            className={twJoin(
-              "h-full w-full",
-              isTheme("blue", profileData) ? "image-light-blue" : "image-gray"
-            )}
+            className="image-gray h-full w-full"
           />
         </div>
-        <div
-          className={twJoin(
-            "h-4 w-2 border-0 border-l border-solid",
-            isTheme("blue", profileData)
-              ? "border-[var(--text-second)]"
-              : "border-inactive"
-          )}
-        />
+        <div className="h-4 w-2 border-0 border-l border-solid border-inactive" />
         <Input
           id="searchInput"
           spellCheck={false}
           placeholder="Search..."
           onFocus={(e) => handleFocus(true)}
           onBlur={() => handleFocus(false)}
-          className={twJoin(
-            "mr-2 w-full border-0 py-0 text-base text-first outline-0"
-          )}
+          className="mr-2 w-full border-0 py-0 text-base text-first outline-0"
         />
       </div>
     </>

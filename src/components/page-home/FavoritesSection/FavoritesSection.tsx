@@ -18,8 +18,8 @@ function findFavorites(
         return (
           <FavoritesCard
             key={index}
-            strAppData={JSON.stringify(app)}
-            strProfileData={JSON.stringify(profileData)}
+            profileData={profileData}
+            strApp={JSON.stringify(app)}
             instantFavoriteUpdate={instantFavoriteUpdate}
           />
         );

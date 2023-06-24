@@ -1,29 +1,18 @@
-import { twJoin } from "tailwind-merge";
-import { isTheme } from "@/lib/util/themes";
+import { twMerge } from "tailwind-merge";
 
 interface BoxProps
   extends React.DetailedHTMLProps<
     React.HTMLAttributes<HTMLDivElement>,
     HTMLDivElement
-  > {
-  profileData: ProfileData | null;
-}
+  > {}
 
-export default function Box({
-  className,
-  children,
-  profileData,
-  ...props
-}: BoxProps) {
+export default function Box({ className, children, ...props }: BoxProps) {
   return (
     <>
       <div
-        className={twJoin(
+        className={twMerge(
           className,
-          "rounded-md",
-          isTheme("blue", profileData)
-            ? "bg-second"
-            : "border border-solid border-inactive bg-first"
+          "rounded-md border border-solid border-inactive bg-first"
         )}
         {...props}
       >

@@ -1,5 +1,4 @@
 import { arrowLeft } from "@/assets/images";
-import { isTheme } from "@/lib/util/themes";
 import Image from "next/image";
 import Link from "next/link";
 import { twJoin } from "tailwind-merge";
@@ -32,7 +31,7 @@ export default function GoBackButton({ title, splitPath }: Props) {
         )}
       >
         <div className="h-3 w-3">
-          <Image src={arrowLeft} alt="" className="h-full w-full image-blue" />
+          <Image src={arrowLeft} alt="" className="image-blue h-full w-full" />
         </div>
         <p className="pl-1.5 text-sm text-active">Go Back</p>
       </Link>
