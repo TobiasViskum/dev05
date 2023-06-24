@@ -3,6 +3,7 @@ import Image from "next/image";
 import SearchBar from "../page-home/SearchSection/SearchBar";
 import { FavoritesSection } from "../page-home";
 import { TabsSection } from "../page-home";
+import { store } from "@/store";
 
 export default function BrowserView({
   profileData,

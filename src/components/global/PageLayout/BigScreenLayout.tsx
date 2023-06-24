@@ -1,5 +1,4 @@
 import LeftNavigation from "./BigScreenLayout/LeftNavigation";
-import ClientWrapper from "./ClientWrapper";
 
 export default function BigScreenLayout({
   children,
@@ -13,12 +12,7 @@ export default function BigScreenLayout({
           <div className="relative hidden w-full xl:flex">
             <LeftNavigation />
           </div>
-          <div className="w-full max-w-4xl xl:min-w-[892px]">
-            <div className="hidden standalone:touch:block">
-              <ClientWrapper>{children}</ClientWrapper>
-            </div>
-            <div className="block standalone:touch:hidden">{children}</div>
-          </div>
+          <div className="w-full max-w-4xl xl:min-w-[892px]">{children}</div>
         </div>
       </main>
     </>

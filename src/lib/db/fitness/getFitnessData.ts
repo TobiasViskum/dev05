@@ -7,5 +7,7 @@ export async function getFitnessData(uid: string) {
 
   const fitnessData: FitnessData[] = await execute(q, val);
 
-  return fitnessData;
+  const serializedData: FitnessData[] = JSON.parse(JSON.stringify(fitnessData));
+
+  return serializedData;
 }

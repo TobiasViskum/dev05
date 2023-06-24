@@ -1,12 +1,9 @@
 import Image from "next/image";
 import { profileTobias } from "@/assets/images";
+import { store } from "@/store";
 
-interface Props {
-  strProfileData: string;
-}
-
-export default function ProfileHolder({ strProfileData }: Props) {
-  const profileData: ProfileData = JSON.parse(strProfileData);
+export default function ProfileHolder() {
+  const profileData = store.getState().userData.profileData;
 
   return (
     <>

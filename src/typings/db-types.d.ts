@@ -45,6 +45,8 @@ interface ProfileDataBefore {
   available_apps: string | null;
   color_theme: string;
   group_uid: string;
+  group_name: string;
+  group_password: string;
 }
 
 type Favorites = { [key: string]: string } | null;
@@ -80,6 +82,8 @@ interface ProfileData {
   available_apps: AvailableApps;
   color_theme: string;
   group_uid: string;
+  group_name: string;
+  group_password: string;
 }
 
 interface AppData {

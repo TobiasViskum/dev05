@@ -4,13 +4,12 @@ import { search } from "@/assets/images";
 import { twJoin } from "tailwind-merge";
 import { Input } from "@/components/global";
 import { isTheme } from "@/lib/util/themes";
+import { useAppSelector } from "@/store/useClient";
 
-export default function SearchBar({
-  profileData,
-}: {
-  profileData: ProfileData;
-}) {
+export default function SearchBar() {
   function handleFocus(newState: boolean) {}
+
+  const profileData = useAppSelector((state) => state.userData.profileData);
 
   return (
     <>

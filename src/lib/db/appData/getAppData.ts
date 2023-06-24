@@ -16,5 +16,7 @@ export async function getAppData(profileData: ProfileData) {
     }
   });
 
-  return appData;
+  const serializedData: AppData[] = JSON.parse(JSON.stringify(appData));
+
+  return serializedData;
 }

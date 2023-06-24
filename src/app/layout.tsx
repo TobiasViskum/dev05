@@ -5,7 +5,6 @@ import PwaActions from "./PwaActions";
 import { BigScreenLayout, PageLayout } from "@/components/global";
 import { Metadata } from "next";
 import { twMerge } from "tailwind-merge";
-import ClientWrapper from "@/components/global/PageLayout/ClientWrapper";
 
 const inter = Inter({ subsets: ["latin"] });
 

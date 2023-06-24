@@ -16,7 +16,14 @@ export async function getProfileData(uid: string, byMail: boolean = false) {
 
   if (result.length === 0) return null;
 
-  const [profileData]: ProfileData[] = await profileDataParser(result);
+  const unSerializedProfileData: ProfileData[] = await profileDataParser(
+    result
+  );
+  const serializedProfileData: ProfileData[] = JSON.parse(
+    JSON.stringify(unSerializedProfileData)
+  );
+
+  const profileData = serializedProfileData[0];
 
   if (profileData.favorites === null && result.length > 0) {
     await updateFromNullToObject(uid);

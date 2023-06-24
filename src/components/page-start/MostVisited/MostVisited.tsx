@@ -1,14 +1,10 @@
 import MostVisitedCard from "./MostVisitedCard";
 import { findMostViewed } from "@/lib/util";
+import { store } from "@/store";
 
-interface Props {
-  appData: string;
-  profileData: string;
-}
-
-export default function MostVisited(props: Props) {
-  const profileData: ProfileData = JSON.parse(props.profileData);
-  const appData: AppData[] = JSON.parse(props.appData);
+export default function MostVisited() {
+  const profileData = store.getState().userData.profileData;
+  const appData = store.getState().userData.appData;
 
   const topThreeMostViewed: { [key: string]: number }[] = findMostViewed(
     profileData,
