@@ -5,6 +5,7 @@ import InfoBox from "./InfoBox";
 import Image from "next/image";
 import { settingsPng } from "@/assets/images";
 import RightButton from "./RightButtons";
+import { useAppSelector } from "@/store/useClient";
 
 interface Props {
   strExerciseData: string;
@@ -14,14 +15,11 @@ interface Props {
     isSecondLast: boolean;
     isLast: boolean;
   };
-  profileData: ProfileData;
 }
 
-export default function FitnessCard({
-  strExerciseData,
-  stylingData,
-  profileData,
-}: Props) {
+export default function FitnessCard({ strExerciseData, stylingData }: Props) {
+  const profileData = useAppSelector((state) => state.userData.profileData);
+
   const exerciseData: FitnessData = JSON.parse(strExerciseData);
 
   return (

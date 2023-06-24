@@ -2,6 +2,7 @@ import { FitnessCard, FitnessGroup } from "@/components/page-fitness";
 import { getFitnessData, getProfileData } from "@/lib/db";
 import { getFitnessGroups } from "@/lib/util";
 import { redirect } from "next/navigation";
+import { store } from "@/store";
 
 interface Props {
   uid: string;
@@ -9,13 +10,8 @@ interface Props {
 }
 
 export default async function FitnessGroupAndCards({ uid, type }: Props) {
-  const [fitnessData, profileData] = await Promise.all([
-    getFitnessData(uid),
-    getProfileData(uid),
-  ]);
-  if (profileData === null) {
-    redirect("/");
-  }
+  const profileData = store.getState().userData.profileData;
+  const fitnessData = store.getState().userData.fitnessData;
 
   const fitnessGroups = getFitnessGroups(fitnessData, type, profileData);
 
@@ -42,7 +38,6 @@ export default async function FitnessGroupAndCards({ uid, type }: Props) {
                         group.exercisesInGroup.length - 2 === index2,
                       isLast: group.exercisesInGroup.length - 1 === index2,
                     }}
-                    profileData={group.profileData}
                   />
                 );
               })}
