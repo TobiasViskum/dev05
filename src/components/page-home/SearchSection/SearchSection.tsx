@@ -58,7 +58,7 @@ export default function SearchSection(props: Props) {
         </h1>
       </div>
       <div className="flex items-center overflow-hidden">
-        <SearchBar profileData={profileData} />
+        <SearchBar />
       </div>
     </div>
   );
