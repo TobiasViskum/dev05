@@ -1,4 +1,7 @@
+"use client";
+
 import LeftNavigation from "./BigScreenLayout/LeftNavigation";
+import { AnimatePresence } from "framer-motion";
 
 export default function BigScreenLayout({
   children,
@@ -8,11 +11,13 @@ export default function BigScreenLayout({
   return (
     <>
       <main className="flex w-full justify-center px-[var(--document-padding)]">
-        <div className="w-full max-w-[var(--document-max-width)] flex justify-center">
-          <div className="hidden w-full xl:flex relative">
+        <div className="flex w-full max-w-[var(--document-max-width)] justify-center">
+          <div className="relative hidden w-full xl:flex">
             <LeftNavigation />
           </div>
-          <div className="max-w-4xl w-full xl:min-w-[892px]">{children}</div>
+          <div className="w-full max-w-4xl xl:min-w-[892px]">
+            <AnimatePresence mode="wait">{children}</AnimatePresence>
+          </div>
         </div>
       </main>
     </>

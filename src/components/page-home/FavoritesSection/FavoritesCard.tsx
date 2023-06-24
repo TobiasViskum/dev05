@@ -73,7 +73,7 @@ export default function FavoritesCard({
         )}
       >
         <div
-          className="grid aspect-square h-8 w-8 place-items-center rounded-me z-10"
+          className="z-10 grid aspect-square h-8 w-8 place-items-center rounded-me"
           style={{ backgroundColor: appData.color }}
         >
           <Image
@@ -87,7 +87,7 @@ export default function FavoritesCard({
           />
         </div>
         <h3 className="text-lg font-semibold">{appData.name}</h3>
-        <div className="ml-auto mr-2 flex items-center gap-x-4 max-tn:gap-x-0">
+        <div className="max-tn:gap-x-0 ml-auto mr-2 flex items-center gap-x-4">
           <FavoriteButton
             profileData={profileData}
             appData={appData}

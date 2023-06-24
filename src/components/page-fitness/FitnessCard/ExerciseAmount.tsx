@@ -75,7 +75,7 @@ export default function ExerciseAmount({
 
   return (
     <div
-      className="grid h-[72px] w-[72px] grid-rows-[50%_50%] justify-center rounded-full border-4 border-solid border-inactive cursor-pointer"
+      className="grid h-[72px] w-[72px] cursor-pointer grid-rows-[50%_50%] justify-center rounded-full border-4 border-solid border-inactive"
       onClick={handleEditClick}
     >
       <div className="flex flex-row items-end justify-center gap-x-1">

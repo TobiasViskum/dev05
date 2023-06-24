@@ -14,7 +14,7 @@ export default function AccountSettings() {
       <div>E-mail (change and view)</div>
       <div>Password (change and view)</div>
       <button
-        className="bg-[var(--text-active)] flex w-36 text-center justify-center items-center py-2 rounded-md font-bold"
+        className="flex w-36 items-center justify-center rounded-md bg-[var(--text-active)] py-2 text-center font-bold"
         onClick={handleLogout}
       >
         Log Out

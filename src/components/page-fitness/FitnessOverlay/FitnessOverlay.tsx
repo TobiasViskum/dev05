@@ -80,7 +80,7 @@ export default function FitnessOverlay() {
         <div
           ref={mainRef}
           className={twJoin(
-            "z-10 min-w-small max-w-small rounded text-first grid place-items-center",
+            "z-10 grid min-w-small max-w-small place-items-center rounded text-first",
             activeOverlay === "animation"
               ? ""
               : activeOverlay === "loading"

@@ -57,10 +57,10 @@ export default function PwaHeader() {
   }
 
   return (
-    <div className="fixed top-0 left-0 w-full h-12">
+    <div className="fixed left-0 top-0 h-12 w-full">
       <div
         className={twMerge(
-          "visible h-full flex w-full min-w-[272px] items-center justify-center border-0 border-b border-solid border-first bg-first backdrop-blur-md transition-colors",
+          "visible flex h-full w-full min-w-[272px] items-center justify-center border-0 border-b border-solid border-first bg-first backdrop-blur-md transition-colors",
           title === "start"
             ? "invisible"
             : isHeaderActive
@@ -68,7 +68,7 @@ export default function PwaHeader() {
             : ""
         )}
       >
-        <nav className="flex items-center justify-center max-w-6xl">
+        <nav className="flex max-w-6xl items-center justify-center">
           <HeaderTitle
             isHeaderTitleActive={isHeaderTitleActive}
             title={title}

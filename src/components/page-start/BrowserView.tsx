@@ -14,20 +14,20 @@ export default function BrowserView({
   return (
     <>
       <div className="flex flex-col gap-y-6">
-        <div className="flex gap-x-4 max-w-small overflow-hidden">
-          <div className="hidden tn:block h-32 w-32 aspect-square rounded-full border-4 border-white">
+        <div className="flex max-w-small gap-x-4 overflow-hidden">
+          <div className="hidden aspect-square h-32 w-32 rounded-full border-4 border-white tn:block">
             <Image
               priority
               src={profileTobias}
               alt="profileIcon"
-              className="rounded-full w-full h-full"
+              className="h-full w-full rounded-full"
             />
           </div>
-          <div className="flex flex-col items-start gap-y-2 justify-center">
-            <h1 className="text-4xl font-bold break-keep">
+          <div className="flex flex-col items-start justify-center gap-y-2">
+            <h1 className="break-keep text-4xl font-bold">
               {profileData?.name} {profileData?.last_name}
             </h1>
-            <p className="text-second line-clamp-2 vsm:line-clamp-3">
+            <p className="line-clamp-2 text-second vsm:line-clamp-3">
               Tell others about yourself or what you are up to!
             </p>
           </div>

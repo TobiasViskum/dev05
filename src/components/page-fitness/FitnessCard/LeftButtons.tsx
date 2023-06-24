@@ -40,7 +40,7 @@ export default function LeftButtons({
   if (isLocked === 0) {
     return (
       <button
-        className="absolute -bottom-2 -right-2 h-8 w-8 p-2 rounded-full"
+        className="absolute -bottom-2 -right-2 h-8 w-8 rounded-full p-2"
         onClick={handleEditClick}
       >
         <Image priority src={edit} alt="edit" className="image-blue" />
@@ -49,7 +49,7 @@ export default function LeftButtons({
   } else {
     return (
       <button
-        className="absolute -left-2 -top-2 h-8 w-8 p-[9px] rounded-full z-20"
+        className="absolute -left-2 -top-2 z-20 h-8 w-8 rounded-full p-[9px]"
         onClick={handleLockClick}
       >
         <Image priority src={locked} alt="edit" className="image-blue" />

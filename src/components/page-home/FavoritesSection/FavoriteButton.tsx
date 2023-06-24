@@ -55,7 +55,7 @@ export default function FavoriteButton({
     <>
       <button
         aria-label="hideBorder"
-        className="aspect-square h-8 w-8 p-2 hidden standalone:touch:block"
+        className="hidden aspect-square h-8 w-8 p-2 standalone:touch:block"
         onClick={(e) => handleClick(e)}
       >
         <Image

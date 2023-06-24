@@ -13,8 +13,8 @@ export default function BrowserHeader() {
 
   return (
     <>
-      <div className="flex w-full h-full min-w-[272px] items-center justify-center border-0 border-b border-solid border-inactive bg-first-transparent backdrop-blur-md transition-colors">
-        <nav className="h-full w-full flex justify-between items-center px-2 max-w-[var(--document-max-width)]">
+      <div className="flex h-full w-full min-w-[272px] items-center justify-center border-0 border-b border-solid border-inactive bg-first-transparent backdrop-blur-md transition-colors">
+        <nav className="flex h-full w-full max-w-[var(--document-max-width)] items-center justify-between px-2">
           <GoBack />
           {splitPath.length === 2 ? <SettingsButton /> : <div></div>}
         </nav>

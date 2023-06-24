@@ -152,14 +152,14 @@ export default function EditAmount({
 
   return (
     <>
-      <div className="flex flex-col items-center gap-y-2 pb-5 pt-3">
+      <div className="flex flex-col items-center gap-y-2 pb-5 pt-3 ">
         <div>
           <h3 className="text-center font-medium">EDIT AMOUNT</h3>
           <p className="text-center text-second">
             {exerciseData && exerciseData.name}
           </p>
         </div>
-        <div className="flex gap-x-2 items-center justify-center mb-2 mt-1">
+        <div className="mb-2 mt-1 flex items-center justify-center gap-x-2">
           <input
             value={inputValue}
             onChange={(e) => handleInput(e)}
@@ -170,7 +170,7 @@ export default function EditAmount({
             pattern="[0-9],*"
           />
           <button
-            className="bg-first border-2 border-solid w-8 border-inactive py-1 rounded-lg text-base"
+            className="w-8 rounded-lg border-2 border-solid border-inactive bg-first py-1 text-base"
             onClick={handleUnitChange}
           >
             {currUnit}

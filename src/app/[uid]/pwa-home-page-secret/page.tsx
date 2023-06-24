@@ -1,6 +1,7 @@
 import { getProfileData, getAppData } from "@/lib/db";
 import { SectionHolder, SearchSection } from "@/components/page-home";
 import { Metadata } from "next";
+import { PageWrapper } from "@/components/global";
 
 export const metadata: Metadata = {
   title: "Home",
@@ -15,9 +16,14 @@ export default async function HomePage({ params }: ViskumAppParams) {
   const strAppData = JSON.stringify(appData);
 
   return (
-    <main className="grid grid-rows-3-min-content justify-center gap-y-6 transition-grid">
-      <SearchSection profileData={strProfileData} />
-      <SectionHolder strProfileData={strProfileData} strAppData={strAppData} />
-    </main>
+    <PageWrapper>
+      <main className="grid grid-rows-3-min-content justify-center gap-y-6 transition-grid">
+        <SearchSection profileData={strProfileData} />
+        <SectionHolder
+          strProfileData={strProfileData}
+          strAppData={strAppData}
+        />
+      </main>
+    </PageWrapper>
   );
 }

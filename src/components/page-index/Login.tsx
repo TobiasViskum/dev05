@@ -74,7 +74,7 @@ export default function Login({}: {}) {
 
   if (hasLoggedIn) {
     return (
-      <div className="text-center place-items-center gap-y-3 grid">
+      <div className="grid place-items-center gap-y-3 text-center">
         <SpinningIcon />
         <h2 className="font-medium">Welcome back, {nameRef.current}!</h2>
       </div>
@@ -82,10 +82,10 @@ export default function Login({}: {}) {
   } else {
     return (
       <>
-        <div className="z-10 relative w-full grid place-items-center">
-          <div className="flex flex-col items-center gap-y-4 w-full min-w-small max-w-[calc(var(--max-width-small)_*_1.1)]">
+        <div className="relative z-10 grid w-full place-items-center">
+          <div className="flex w-full min-w-small max-w-[calc(var(--max-width-small)_*_1.1)] flex-col items-center gap-y-4">
             <h2 className="text-3xl font-semibold">Login</h2>
-            <form className="w-full grid place-items-center">
+            <form className="grid w-full place-items-center">
               <fieldset className={twJoin(divTw)}>
                 <legend className="ml-4 px-1 text-base font-bold text-second">
                   E-mail
@@ -117,7 +117,7 @@ export default function Login({}: {}) {
             </form>
             <button
               onClick={handleFormSubmit}
-              className="bg-[var(--text-active)] text-first font-bold w-1/2 max-w-tiny py-2 rounded-md"
+              className="w-1/2 max-w-tiny rounded-md bg-[var(--text-active)] py-2 font-bold text-first"
             >
               Login
             </button>
@@ -125,7 +125,7 @@ export default function Login({}: {}) {
           {loginResponse}
         </div>
 
-        <div className="flex flex-col gap-x-1 bottom-8 absolute z-10">
+        <div className="absolute bottom-8 z-10 flex flex-col gap-x-1">
           <p>
             Don{"'"}t have an account{"?"}
           </p>

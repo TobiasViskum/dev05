@@ -90,7 +90,7 @@ export default function TabsCard({
           <h3 className="text-lg font-semibold">{appData.name}</h3>
           <p className="text-second">{appData.category}</p>
         </div>
-        <div className="ml-auto mr-2.5 flex items-center gap-x-4 max-tn:gap-x-0">
+        <div className="max-tn:gap-x-0 ml-auto mr-2.5 flex items-center gap-x-4">
           <TabsButton
             profileData={profileData}
             appData={appData}

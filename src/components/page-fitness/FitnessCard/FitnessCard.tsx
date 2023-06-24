@@ -31,10 +31,10 @@ export default function FitnessCard({
         stylingData.isExerciseOdd ? "vsm:-ml-3" : ""
       )}
     >
-      <div className="relative flex items-center min-w-small gap-x-3">
+      <div className="relative flex min-w-small items-center gap-x-3">
         <div
           className={twJoin(
-            "hidden h-10 w-[1px] bg-[var(--border-inactive)] mr-3",
+            "mr-3 hidden h-10 w-[1px] bg-[var(--border-inactive)]",
             stylingData.isExerciseOdd && "vsm:block"
           )}
         />
