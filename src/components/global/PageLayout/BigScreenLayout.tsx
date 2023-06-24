@@ -16,7 +16,10 @@ export default function BigScreenLayout({
             <LeftNavigation />
           </div>
           <div className="w-full max-w-4xl xl:min-w-[892px]">
-            <AnimatePresence mode="wait">{children}</AnimatePresence>
+            <div className="hidden standalone:touch:block">
+              <AnimatePresence mode="wait">{children}</AnimatePresence>
+            </div>
+            <div className="block standalone:touch:hidden">{children}</div>
           </div>
         </div>
       </main>
