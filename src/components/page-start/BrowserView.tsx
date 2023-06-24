@@ -33,7 +33,7 @@ export default function BrowserView({
             </p>
           </div>
         </div>
-        <SearchBar profileData={profileData} />
+        <SearchBar />
         <div>
           <FavoritesSection profileData={profileData} appData={appData} />
         </div>
