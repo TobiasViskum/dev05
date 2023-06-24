@@ -1,7 +1,16 @@
+"use client";
+
 import PwaHeader from "./PwaHeader";
 import BrowserHeader from "./BrowserHeader";
+import { usePathname } from "next/navigation";
 
 export default function Header() {
+  const path = usePathname();
+
+  if (path === "/") {
+    return <></>;
+  }
+
   return (
     <>
       <header

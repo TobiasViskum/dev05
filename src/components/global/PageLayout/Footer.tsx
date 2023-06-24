@@ -1,3 +1,5 @@
+"use client";
+
 import { usePathname } from "next/navigation";
 import { useState } from "react";
 import { HomeContent, StartContent, FitnessContent } from "./FooterContent";
@@ -12,6 +14,10 @@ export default function Footer() {
   useChangeCurrTab(setCurrTab);
 
   const tw = "w-full min-w-small max-w-small justify-items-center";
+
+  if (path === "/") {
+    return <></>;
+  }
 
   return (
     <>

@@ -1,7 +1,5 @@
-"use client";
-
 import LeftNavigation from "./BigScreenLayout/LeftNavigation";
-import { AnimatePresence } from "framer-motion";
+import ClientWrapper from "./ClientWrapper";
 
 export default function BigScreenLayout({
   children,
@@ -17,7 +15,7 @@ export default function BigScreenLayout({
           </div>
           <div className="w-full max-w-4xl xl:min-w-[892px]">
             <div className="hidden standalone:touch:block">
-              <AnimatePresence mode="wait">{children}</AnimatePresence>
+              <ClientWrapper>{children}</ClientWrapper>
             </div>
             <div className="block standalone:touch:hidden">{children}</div>
           </div>

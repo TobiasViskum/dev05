@@ -4,7 +4,6 @@ import {
   FitnessGroupAndCards,
   RepsMaxLoadingSkeleton,
 } from "@/components/page-fitness";
-import { PageWrapper } from "@/components/global";
 
 export const metadata: Metadata = {
   title: {
@@ -16,7 +15,7 @@ export default async function MaxPage({ params }: ViskumAppParams) {
   const uid = params.uid;
 
   return (
-    <PageWrapper>
+    <>
       <div className="mb-4 flex items-center gap-x-3">
         <h1 className="text-3xl">Exercises</h1>
         <p className="text-second">{"|"}</p>
@@ -28,6 +27,6 @@ export default async function MaxPage({ params }: ViskumAppParams) {
         </Suspense>
       </div>
       <div className="pt-8" />
-    </PageWrapper>
+    </>
   );
 }

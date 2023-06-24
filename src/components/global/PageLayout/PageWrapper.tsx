@@ -10,15 +10,14 @@ export default function PageWrapper({
     <>
       <div className="hidden standalone:touch:block">
         <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 0.2 }}
+          initial={{ opacity: 0, x: 500 }}
+          animate={{ opacity: 1, x: 0 }}
+          exit={{ opacity: 1, x: -500 }}
+          transition={{ duration: 0.5 }}
         >
           {children}
         </motion.div>
       </div>
-      <div className="block standalone:touch:hidden">{children}</div>
     </>
   );
 }
