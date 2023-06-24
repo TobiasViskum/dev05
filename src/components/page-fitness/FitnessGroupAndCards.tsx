@@ -13,7 +13,7 @@ export default async function FitnessGroupAndCards({ uid, type }: Props) {
   const profileData = store.getState().userData.profileData;
   const fitnessData = store.getState().userData.fitnessData;
 
-  const fitnessGroups = getFitnessGroups(fitnessData, type, profileData);
+  const fitnessGroups = getFitnessGroups(type, profileData);
 
   return (
     <>

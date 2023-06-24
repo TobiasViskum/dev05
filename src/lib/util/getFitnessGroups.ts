@@ -1,12 +1,16 @@
 import { FitnessGroup } from "@/components/page-fitness";
-
+import { store } from "@/store";
 const nameIfNoGroup = "Ungrouped";
 
 export function getFitnessGroups(
-  fitnessData: FitnessData[],
   type: "max" | "reps",
   profileData: ProfileData
 ) {
+  const gottenFitnessData = store.getState().userData.fitnessData;
+  const fitnessData = [...gottenFitnessData];
+
+  fitnessData.sort((a, b) => a.max - b.max);
+
   const UNIT_CONVERTER = 2.20462262;
   let fitnessGroupList: {
     groupData: { name: string; id: number };
