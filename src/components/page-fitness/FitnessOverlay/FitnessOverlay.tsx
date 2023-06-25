@@ -1,9 +1,5 @@
 "use client";
 
-interface Props {
-  profileData: ProfileData;
-  type: "reps" | "max";
-}
 import { useRef, useEffect, useState } from "react";
 import { twJoin } from "tailwind-merge";
 import { EditAmount, CreateExercise } from "./Content";
@@ -12,19 +8,14 @@ import { LoadingSpinner, Checkmark } from "@/components/global";
 export default function FitnessOverlay() {
   const [isActive, setIsActive] = useState(false);
   const [activeOverlay, setActiveOverlay] = useState<Overlay>("");
-  const exerciseData = useRef<FitnessData | null>(null);
   const mainRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     document.addEventListener("showFitnessOverlay", ((
       e: CustomEvent<{
         overlay: Overlay;
-        exerciseData?: FitnessData;
       }>
     ) => {
-      exerciseData.current = e.detail.exerciseData
-        ? e.detail.exerciseData
-        : null;
       setIsActive(true);
       setActiveOverlay(e.detail.overlay);
     }) as EventListener);
@@ -99,7 +90,6 @@ export default function FitnessOverlay() {
             </>
           ) : activeOverlay === "editAmount" ? (
             <EditAmount
-              exerciseData={exerciseData.current}
               closeOverlay={closeOverlay}
               changeActiveOverlay={changeActiveOverlay}
             />

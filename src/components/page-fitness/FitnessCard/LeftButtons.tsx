@@ -4,12 +4,15 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { edit, locked } from "@/assets/images";
+import { useAppDispatch } from "@/store/useClient";
+import { setExerciseData } from "@/store/fitnessStateSlice";
 
 export default function LeftButtons({
   exerciseData,
 }: {
   exerciseData: FitnessData;
 }) {
+  const dispatch = useAppDispatch();
   const router = useRouter();
   const [isLocked, setIsLocked] = useState(exerciseData.is_date_locked);
 
@@ -31,8 +34,9 @@ export default function LeftButtons({
   }
 
   function handleEditClick() {
+    dispatch(setExerciseData(exerciseData));
     const event = new CustomEvent("showFitnessOverlay", {
-      detail: { overlay: "editAmount", exerciseData: exerciseData },
+      detail: { overlay: "editAmount" },
     });
     document.dispatchEvent(event);
   }

@@ -2,13 +2,20 @@
 import ContentItem from "./ContentItem";
 import { max, reps, search, profiles, plus } from "@/assets/images";
 import Image from "next/image";
+import { usePathname } from "next/navigation";
+import { twMerge } from "tailwind-merge";
 
 export default function FitnessContent({ currTab }: { currTab: string[] }) {
+  const path = usePathname();
+  const canCreateExercise = path.endsWith("max") || path.endsWith("reps");
+
   function handleExerciseCreateClick() {
-    const event = new CustomEvent("showFitnessOverlay", {
-      detail: { overlay: "createExercise" },
-    });
-    document.dispatchEvent(event);
+    if (canCreateExercise) {
+      const event = new CustomEvent("showFitnessOverlay", {
+        detail: { overlay: "createExercise" },
+      });
+      document.dispatchEvent(event);
+    }
   }
 
   return (
@@ -26,10 +33,22 @@ export default function FitnessContent({ currTab }: { currTab: string[] }) {
       />
       <button
         onClick={handleExerciseCreateClick}
-        className="mt-[-8px] hidden h-14 w-14 rounded-xl bg-news shadow-circle-4xl shadow-white tn:grid tn:place-items-center"
+        className={twMerge(
+          "mt-[-8px] hidden h-14 w-14 rounded-xl bg-news opacity-100 shadow-circle-4xl shadow-white transition-all tn:grid tn:place-items-center",
+          canCreateExercise === false
+            ? "bg-green-900 shadow-none"
+            : "shadow-circle-4xl"
+        )}
       >
         <div className="h-9 w-9">
-          <Image src={plus} alt="" />
+          <Image
+            src={plus}
+            alt=""
+            className={twMerge(
+              "transition-all",
+              canCreateExercise === false ? "image-gray" : ""
+            )}
+          />
         </div>
       </button>
       <ContentItem

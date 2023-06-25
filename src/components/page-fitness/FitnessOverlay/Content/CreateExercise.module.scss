@@ -1,0 +1,36 @@
+.input {
+  -webkit-appearance: none;
+  appearance: none;
+
+  margin: 0;
+  aspect-ratio: 1/1;
+
+  color: var(--text-second);
+  width: 24px;
+  height: 24px;
+  border: 0.15rem solid var(--bg-second);
+  border-radius: 0.25rem;
+
+  display: grid;
+  place-content: center;
+  background: var(--bg-third);
+
+  cursor: pointer;
+}
+
+.input::before {
+  content: "";
+  width: 16px;
+  height: 16px;
+  clip-path: polygon(14% 44%, 0 65%, 50% 100%, 100% 16%, 80% 0%, 43% 62%);
+  transform: scale(0);
+  transform-origin: bottom left;
+  transition: 0.15s transform ease-in-out;
+
+  background: var(--bg-news);
+  filter: brightness(125%);
+}
+
+.input:checked::before {
+  transform: scale(1);
+}

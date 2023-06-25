@@ -2,12 +2,15 @@
 
 import { usePathname } from "next/navigation";
 import { useEffect, useState, useRef } from "react";
+import { useAppDispatch } from "@/store/useClient";
+import { setExerciseData } from "@/store/fitnessStateSlice";
 
 export default function ExerciseAmount({
   exerciseData,
 }: {
   exerciseData: FitnessData;
 }) {
+  const dispatch = useAppDispatch();
   const [forceUpdate, setForceUpdate] = useState(false);
   const path = usePathname();
   const splitPath = path.split("/");
@@ -66,8 +69,9 @@ export default function ExerciseAmount({
 
   function handleEditClick() {
     if (isLocked === 0) {
+      dispatch(setExerciseData(exerciseData));
       const event = new CustomEvent("showFitnessOverlay", {
-        detail: { overlay: "editAmount", exerciseData: exerciseData },
+        detail: { overlay: "editAmount" },
       });
       document.dispatchEvent(event);
     }

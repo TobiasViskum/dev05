@@ -2,18 +2,20 @@ import { useRef, useState } from "react";
 import { usePathname } from "next/navigation";
 import { useRouter } from "next/navigation";
 import { Checkmark, LoadingSpinner } from "@/components/global";
+import { useAppSelector } from "@/store/useClient";
 
 interface Props {
-  exerciseData: FitnessData | null;
   closeOverlay: () => void;
   changeActiveOverlay: (newOverlay: Overlay) => void;
 }
 
 export default function EditAmount({
-  exerciseData,
   closeOverlay,
   changeActiveOverlay,
 }: Props) {
+  const exerciseData = useAppSelector(
+    (state) => state.fitnessState.exerciseData
+  );
   const UNIT_CONVERTER = 2.20462262;
   const MAX_INPUT = 1000;
   const router = useRouter();
