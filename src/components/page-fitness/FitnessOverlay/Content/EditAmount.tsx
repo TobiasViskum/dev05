@@ -154,14 +154,14 @@ export default function EditAmount({
 
   return (
     <>
-      <div className="flex flex-col items-center gap-y-2 pb-5 pt-3 ">
-        <div>
+      <div className="flex flex-col items-center gap-y-2">
+        <div className="mt-2">
           <h3 className="text-center font-medium">EDIT AMOUNT</h3>
           <p className="text-center text-second">
             {exerciseData && exerciseData.name}
           </p>
         </div>
-        <div className="mb-2 mt-1 flex items-center justify-center gap-x-2">
+        <div className="mb-2 flex items-center justify-center gap-x-2">
           <input
             value={inputValue}
             onChange={(e) => handleInput(e)}
@@ -179,7 +179,7 @@ export default function EditAmount({
           </button>
         </div>
         <button
-          className="w-2/5 rounded-lg bg-news shadow-circle-lg shadow-white"
+          className="mb-4 w-2/5 rounded-lg bg-news shadow-circle-lg shadow-white"
           onClick={handleSaveClick}
         >
           Save

@@ -11,7 +11,7 @@ export default function CreateExercise() {
 
   return (
     <>
-      <div className="flex flex-col items-center gap-y-3">
+      <div className="mx-10 flex flex-col items-center gap-y-3">
         <div className="text-center">
           <p className="text-second">NEW</p>
           <h3 className="text-lg font-semibold">Fitness Exercise</h3>

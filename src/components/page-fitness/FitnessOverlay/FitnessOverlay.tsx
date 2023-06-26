@@ -4,11 +4,13 @@ import { useRef, useEffect, useState } from "react";
 import { twJoin } from "tailwind-merge";
 import { EditAmount, CreateExercise } from "./Content";
 import { LoadingSpinner, Checkmark } from "@/components/global";
+import { Dialog } from "@/components/global/Dialog";
 
 export default function FitnessOverlay() {
-  const [isActive, setIsActive] = useState(false);
+  const [isClosed, setIsClosed] = useState(false);
   const [activeOverlay, setActiveOverlay] = useState<Overlay>("");
-  const mainRef = useRef<HTMLDivElement | null>(null);
+  const [isClosable, setIsClosable] = useState(true);
+  const dialogRef = useRef<HTMLDialogElement | null>(null);
 
   useEffect(() => {
     document.addEventListener("showFitnessOverlay", ((
@@ -16,13 +18,16 @@ export default function FitnessOverlay() {
         overlay: Overlay;
       }>
     ) => {
-      setIsActive(true);
+      setIsClosed(false);
+      if (dialogRef.current?.open === false) {
+        dialogRef.current?.showModal();
+      }
       setActiveOverlay(e.detail.overlay);
     }) as EventListener);
   }, []);
 
   function closeOverlay() {
-    setIsActive(false);
+    setIsClosed(true);
     setTimeout(() => {
       setActiveOverlay("");
     }, 150);
@@ -35,25 +40,51 @@ export default function FitnessOverlay() {
       }, 1250);
     }
   }
-  function handleClose(e: React.MouseEvent<HTMLDivElement, MouseEvent>) {
-    if (mainRef.current && e) {
-      const dimensions = mainRef.current.getBoundingClientRect();
-      if (
-        e.clientX < dimensions.left ||
-        e.clientX > dimensions.right ||
-        e.clientY < dimensions.top ||
-        e.clientY > dimensions.bottom
-      ) {
-        if (activeOverlay !== "loading" && activeOverlay !== "animation") {
-          closeOverlay();
-        }
-      }
+
+  useEffect(() => {
+    if (activeOverlay === "loading" || activeOverlay === "animation") {
+      setIsClosable(false);
+    } else {
+      setIsClosable(true);
     }
-  }
+  }, [activeOverlay]);
 
   return (
     <>
-      <div
+      <Dialog
+        closable={isClosable}
+        closed={isClosed}
+        className={twJoin(
+          "rounded-md",
+          activeOverlay === "loading"
+            ? "bg-transparent shadow-none"
+            : activeOverlay === "animation"
+            ? "bg-transparent shadow-none"
+            : "bg-first shadow-[0_0_0_0.3rem_rgba(var(--bg-second-preset),_0.75)]"
+        )}
+        ref={dialogRef}
+      >
+        {activeOverlay === "loading" || activeOverlay === "animation" ? (
+          <>
+            <LoadingSpinner
+              opacity={
+                activeOverlay === "animation" ? "opacity-0" : "opacity-100"
+              }
+            />
+            {activeOverlay === "animation" && <Checkmark />}
+          </>
+        ) : activeOverlay === "editAmount" ? (
+          <EditAmount
+            closeOverlay={closeOverlay}
+            changeActiveOverlay={changeActiveOverlay}
+          />
+        ) : activeOverlay === "createExercise" ? (
+          <CreateExercise />
+        ) : (
+          <></>
+        )}
+      </Dialog>
+      {/* <div
         onClick={(e) => handleClose(e)}
         className={twJoin(
           "fixed left-0 top-0 z-30 grid h-full w-full place-items-center",
@@ -99,7 +130,7 @@ export default function FitnessOverlay() {
             <></>
           )}
         </div>
-      </div>
+      </div> */}
     </>
   );
 }

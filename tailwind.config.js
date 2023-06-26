@@ -7,6 +7,20 @@ module.exports = {
   ],
   theme: {
     extend: {
+      keyframes: {
+        "fade-in": {
+          "0%": { opacity: "0%" },
+          "100%": { opacity: "100%" },
+        },
+        "fade-out": {
+          "100%": { opacity: "100%" },
+          "0%": { opacity: "0%" },
+        },
+      },
+      animation: {
+        "fade-in": "fade-in 0.25s ease-in-out",
+        "fade-out": "fade-out 0.25s ease-in-out",
+      },
       fontSize: {
         "2xs": "0.7rem",
         "3xs": "0.675rem",
@@ -96,6 +110,7 @@ module.exports = {
       },
       transitionProperty: {
         "grid": "var(--transition-prop-grid)",
+        "modal": "opacity, background-color",
       },
       boxShadowColor: {
         "first": "var(--box-shadow-first)",

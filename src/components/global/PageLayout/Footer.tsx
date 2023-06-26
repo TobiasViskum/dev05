@@ -23,7 +23,7 @@ export default function Footer() {
     <>
       <footer
         className={twJoin(
-          "fixed bottom-0 left-0 z-20 hidden h-20 w-[100svw] min-w-[272px] justify-center bg-second-transparent backdrop-blur-xl standalone:touch:flex",
+          "fixed bottom-0 left-0 z-20 h-20 w-[100svw] min-w-[272px] justify-center bg-second-transparent backdrop-blur-xl standalone:touch:flex",
           "border-0 border-t border-solid border-second"
         )}
       >
