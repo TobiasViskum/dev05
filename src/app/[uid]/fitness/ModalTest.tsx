@@ -10,9 +10,20 @@ export default function ModalText() {
     setIsModalOpen(true);
   }, 1000);
 
+  function onDateChange(e: Date) {
+    console.log(e);
+  }
+
   return (
     <>
-      <Dialog ref={datePickerRef} className="bg-red-300" />
+      <DatePicker
+        ref={datePickerRef}
+        className=""
+        onDateChange={onDateChange}
+        startDate={new Date(2023, 2, 5)}
+      >
+        hej
+      </DatePicker>
       <button onClick={() => datePickerRef.current?.showModal()}>
         Click Me
       </button>

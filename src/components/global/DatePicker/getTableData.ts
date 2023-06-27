@@ -1,30 +1,26 @@
 import prototypes from "@/prototypes";
 prototypes();
 
-function getAllDaysInMonth() {
-  const today = new Date();
-  const currYear = today.getFullYear();
-  const currMonth = today.getMonth();
-
-  const date = new Date(currYear, currMonth, 1);
+function getAllDaysInMonth(year: number, month: number) {
+  const date = new Date(year, month, 1);
   const dates = [];
 
-  while (date.getMonth() === currMonth) {
+  while (date.getMonth() === month) {
     dates.push(new Date(date));
     date.setDate(date.getDate() + 1);
   }
   return dates;
 }
 
-export default function getTableData() {
-  const emptyWeekObject: { [key: number]: number | null } = {
-    1: null,
-    2: null,
-    3: null,
-    4: null,
-    5: null,
-    6: null,
-    7: null,
+export default function getTableData(year: number, month: number) {
+  const emptyWeekObject: { [key: number]: number } = {
+    0: 0,
+    1: 0,
+    2: 0,
+    3: 0,
+    4: 0,
+    5: 0,
+    6: 0,
   };
 
   const tableData = [
@@ -35,7 +31,15 @@ export default function getTableData() {
     structuredClone(emptyWeekObject),
   ];
 
-  const datesInCurrMonth = getAllDaysInMonth();
+  const datesInPrevMonth = getAllDaysInMonth(
+    month === 0 ? year - 1 : year,
+    month === 0 ? 11 : month - 1
+  );
+  const datesInCurrMonth = getAllDaysInMonth(year, month);
+  const datesInNextMonth = getAllDaysInMonth(
+    month === 11 ? year + 1 : year,
+    month === 11 ? 0 : month + 1
+  );
 
   let weekCount = 0;
   const startWeek = datesInCurrMonth[0].getWeek();
@@ -45,7 +49,7 @@ export default function getTableData() {
       weekCount += 1;
     }
 
-    const day = (item.getDay() - 1 < 0 ? 6 : item.getDay() - 1) + 1;
+    const day = item.getDay() - 1 < 0 ? 6 : item.getDay() - 1;
     tableData[weekCount][day] = item.getDate();
   });
 
