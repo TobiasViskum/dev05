@@ -13,7 +13,6 @@ html {
 body {
   color-scheme: dark;
 
-  overflow-y: auto;
   overflow-x: hidden;
 
   color: var(--text-first);

@@ -5,8 +5,11 @@ import { Dialog } from "@/components/global/Dialog";
 import DateNodes from "./DateNodes";
 import { StylingProps } from "./types";
 import WeekDays from "./WeekDays";
-import { getFutureDate } from "./functions";
+import { compareDates, getFutureDate } from "./functions";
 import DateNodesContent from "./DateNodesContent";
+import Carousel from "./Carousel";
+import ContextProvider from "./ContextProvider";
+import getTableData from "./getTableData";
 
 interface DatePickerProps
   extends React.DetailedHTMLProps<
@@ -31,30 +34,38 @@ const DatePicker = forwardRef<HTMLDialogElement, DatePickerProps>(
       startDate ? startDate : null
     );
 
+    const [forceUpdate, setForceUpdate] = useState(false);
     const currAction = useRef<"backwards" | "forwards" | "">("");
+    const [dateAndTranslate, setDateAndTranslate] = useState({
+      year: startDate ? startDate.getFullYear() : new Date().getFullYear(),
+      month: startDate ? startDate.getMonth() : new Date().getMonth(),
+      translateX: 0,
+    });
 
-    const dateNodesHolderRef = useRef<HTMLDivElement | null>(null);
+    const canSwitchMonth = useRef<boolean>(true);
     const datePickerRef = useRef<HTMLDialogElement | null>(null);
 
     useEffect(() => {
       datePickerRef.current?.addEventListener("close", (e: Event) => {
         if (startDate === undefined) {
           setActiveDateNode(null);
-          setCurrDate({
+          setDateAndTranslate({
             year: new Date().getFullYear(),
             month: new Date().getMonth(),
+            translateX: 0,
           });
         } else if (startDate) {
           setActiveDateNode(startDate);
-          setCurrDate({
+          setDateAndTranslate({
             year: startDate.getFullYear(),
             month: startDate.getMonth(),
+            translateX: 0,
           });
         }
       });
     }, [startDate]);
 
-    const mainClass = "bg-white text-black text-center py-3 rounded-lg";
+    const mainClass = "bg-white text-black text-center pt-3 rounded-lg";
     const dateNodeClass =
       "rounded-full bg-gray-600 bg-opacity-0 hover:dt:bg-opacity-25";
     const dateNodeActiveClass =
@@ -62,15 +73,33 @@ const DatePicker = forwardRef<HTMLDialogElement, DatePickerProps>(
     const weekDayTextClass = "";
 
     function changeCurrentDate(action: "backwards" | "forwards") {
-      currAction.current = action;
-      setCurrDate({
-        year: getFutureDate("year", action, currDate),
-        month: getFutureDate("month", action, currDate),
-      });
+      setTimeout(() => {
+        setDateAndTranslate({
+          year: getFutureDate("year", action, dateAndTranslate),
+          month: getFutureDate("month", action, dateAndTranslate),
+          translateX: 0,
+        });
+      }, 120);
+    }
+
+    function handleAction(action: "backwards" | "forwards") {
+      if (canSwitchMonth.current) {
+        canSwitchMonth.current = false;
+        setForceUpdate((prev) => !prev);
+        currAction.current = action;
+        changeCurrentDate(action);
+        setTimeout(() => {
+          canSwitchMonth.current = true;
+        }, 250);
+      }
     }
 
     return (
-      <>
+      <ContextProvider
+        classes={{ mainClass: "" }}
+        action={currAction.current}
+        currDate={currDate}
+      >
         <Dialog
           className={twMerge(mainClass, className, "min-w-[272px]")}
           {...props}
@@ -86,23 +115,23 @@ const DatePicker = forwardRef<HTMLDialogElement, DatePickerProps>(
           <div className="flex justify-center gap-x-10 pb-1">
             <button
               className="w-4 bg-blue-500"
-              onClick={() => changeCurrentDate("backwards")}
+              onClick={() => handleAction("backwards")}
             >
               B
             </button>
             <p>
-              Y: {currDate.year} - M: {currDate.month}
+              Y: {dateAndTranslate.year} - M: {dateAndTranslate.month}
             </p>
             <button
               className="w-4 bg-blue-500"
-              onClick={() => changeCurrentDate("forwards")}
+              onClick={() => handleAction("forwards")}
             >
               F
             </button>
           </div>
           <div className="flex flex-col">
             <div className="grid justify-center gap-y-2 overflow-hidden">
-              <div className="relative flex h-52 justify-center">
+              <div className="relative flex h-64 justify-center">
                 <div className="absolute grid gap-y-2">
                   <WeekDays
                     props={{
@@ -110,7 +139,172 @@ const DatePicker = forwardRef<HTMLDialogElement, DatePickerProps>(
                       weekDayTextClass: weekDayTextClass,
                     }}
                   />
-                  <DateNodesContent
+                  <Carousel
+                    handleAction={handleAction}
+                    forceUpdate={forceUpdate}
+                    dateAndTranslate={dateAndTranslate}
+                    changeCurrentDate={changeCurrentDate}
+                  >
+                    <div
+                      className="absolute grid gap-y-2"
+                      style={{ transform: "translateX(-110%)" }}
+                    >
+                      {getTableData(
+                        getFutureDate("year", "backwards", dateAndTranslate),
+                        getFutureDate("month", "backwards", dateAndTranslate)
+                      ).map((weekRow, index1) => {
+                        return (
+                          <div
+                            key={index1}
+                            className="grid grid-flow-col gap-x-2"
+                          >
+                            {Object.keys(weekRow).map((dateNode, index2) => {
+                              const noteDate = new Date(
+                                getFutureDate(
+                                  "year",
+                                  "backwards",
+                                  dateAndTranslate
+                                ),
+                                getFutureDate(
+                                  "month",
+                                  "backwards",
+                                  dateAndTranslate
+                                ),
+                                weekRow[index2]
+                              );
+
+                              return (
+                                <button
+                                  key={index2}
+                                  className={twMerge(
+                                    dateNodeClass,
+                                    styling?.dateNode,
+                                    compareDates(activeDateNode, noteDate) &&
+                                      dateNodeActiveClass,
+                                    compareDates(activeDateNode, noteDate) &&
+                                      styling?.dateNodeActive,
+                                    "aspect-square w-7 text-sm"
+                                  )}
+                                  // onClick={() => {
+                                  //   handleClick(noteDate);
+                                  // }}
+                                >
+                                  {weekRow[index2]}
+                                </button>
+                              );
+                            })}
+                          </div>
+                        );
+                      })}
+                    </div>
+                    <div className="absolute grid gap-y-2">
+                      {getTableData(
+                        dateAndTranslate.year,
+                        dateAndTranslate.month
+                      ).map((weekRow, index1) => {
+                        return (
+                          <div
+                            key={index1}
+                            className="grid grid-flow-col gap-x-2"
+                          >
+                            {Object.keys(weekRow).map((dateNode, index2) => {
+                              const noteDate = new Date(
+                                dateAndTranslate.year,
+                                dateAndTranslate.month,
+                                weekRow[index2]
+                              );
+
+                              return (
+                                <button
+                                  key={index2}
+                                  className={twMerge(
+                                    dateNodeClass,
+                                    styling?.dateNode,
+                                    compareDates(activeDateNode, noteDate) &&
+                                      dateNodeActiveClass,
+                                    compareDates(activeDateNode, noteDate) &&
+                                      styling?.dateNodeActive,
+                                    "aspect-square w-7 text-sm"
+                                  )}
+                                  // onClick={() => {
+                                  //   handleClick(noteDate);
+                                  // }}
+                                >
+                                  {weekRow[index2]}
+                                </button>
+                              );
+                            })}
+                          </div>
+                        );
+                      })}
+                    </div>
+                    <div
+                      className="absolute grid gap-y-2"
+                      style={{ transform: "translateX(110%)" }}
+                    >
+                      {getTableData(
+                        getFutureDate("year", "forwards", dateAndTranslate),
+                        getFutureDate("month", "forwards", dateAndTranslate)
+                      ).map((weekRow, index1) => {
+                        return (
+                          <div
+                            key={index1}
+                            className="grid grid-flow-col gap-x-2"
+                          >
+                            {Object.keys(weekRow).map((dateNode, index2) => {
+                              const noteDate = new Date(
+                                getFutureDate(
+                                  "year",
+                                  "forwards",
+                                  dateAndTranslate
+                                ),
+                                getFutureDate(
+                                  "month",
+                                  "forwards",
+                                  dateAndTranslate
+                                ),
+                                weekRow[index2]
+                              );
+
+                              return (
+                                <button
+                                  key={index2}
+                                  className={twMerge(
+                                    dateNodeClass,
+                                    styling?.dateNode,
+                                    compareDates(activeDateNode, noteDate) &&
+                                      dateNodeActiveClass,
+                                    compareDates(activeDateNode, noteDate) &&
+                                      styling?.dateNodeActive,
+                                    "aspect-square w-7 text-sm"
+                                  )}
+                                  // onClick={() => {
+                                  //   handleClick(noteDate);
+                                  // }}
+                                >
+                                  {weekRow[index2]}
+                                </button>
+                              );
+                            })}
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </Carousel>
+                </div>
+              </div>
+            </div>
+          </div>
+        </Dialog>
+      </ContextProvider>
+    );
+  }
+);
+
+export default DatePicker;
+
+{
+  /* <DateNodesContent
                     currDate={currDate}
                     currAction={currAction.current}
                     activeDateNode={activeDateNode}
@@ -119,15 +313,5 @@ const DatePicker = forwardRef<HTMLDialogElement, DatePickerProps>(
                     onDateChange={onDateChange}
                     setActiveDateNode={setActiveDateNode}
                     styling={styling}
-                  />
-                </div>
-              </div>
-            </div>
-          </div>
-        </Dialog>
-      </>
-    );
-  }
-);
-
-export default DatePicker;
+                  /> */
+}

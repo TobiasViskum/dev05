@@ -29,6 +29,7 @@ export default function getTableData(year: number, month: number) {
     structuredClone(emptyWeekObject),
     structuredClone(emptyWeekObject),
     structuredClone(emptyWeekObject),
+    structuredClone(emptyWeekObject),
   ];
 
   const datesInPrevMonth = getAllDaysInMonth(
@@ -36,6 +37,7 @@ export default function getTableData(year: number, month: number) {
     month === 0 ? 11 : month - 1
   );
   const datesInCurrMonth = getAllDaysInMonth(year, month);
+
   const datesInNextMonth = getAllDaysInMonth(
     month === 11 ? year + 1 : year,
     month === 11 ? 0 : month + 1
@@ -44,13 +46,36 @@ export default function getTableData(year: number, month: number) {
   let weekCount = 0;
   const startWeek = datesInCurrMonth[0].getWeek();
 
+  function adjustWeek(date: Date) {
+    if (date.getWeek() < startWeek) return date.getWeek() + startWeek;
+
+    return date.getWeek();
+  }
+
   datesInCurrMonth.forEach((item, index) => {
-    if (item.getWeek() - startWeek !== weekCount) {
-      weekCount += 1;
+    if (adjustWeek(item) - startWeek !== weekCount) {
+      if (
+        item.getMonth() === 11 &&
+        (item.getDate() === 30 || item.getDate() === 31)
+      ) {
+        if (
+          adjustWeek(item) !== adjustWeek(item) - startWeek &&
+          weekCount <= 4
+        ) {
+          weekCount += 1;
+        }
+      } else {
+        weekCount += 1;
+      }
     }
 
     const day = item.getDay() - 1 < 0 ? 6 : item.getDay() - 1;
-    tableData[weekCount][day] = item.getDate();
+
+    try {
+      tableData[weekCount][day] = item.getDate();
+    } catch (err) {
+      console.log("error");
+    }
   });
 
   return tableData;

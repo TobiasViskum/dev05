@@ -28,7 +28,6 @@ const Dialog = forwardRef<HTMLDialogElement, DialogProps>(function Dialog(
   const [canBeClosed, setCanBeClosed] = useState(true);
 
   const dialogRef = useRef<HTMLDialogElement | null>(null);
-  const htmlOverflow = useRef(document.documentElement.style.overflow);
 
   function onTransitionEnd(e: TransitionEvent) {
     if (e.target === dialogRef.current) {
@@ -62,10 +61,8 @@ const Dialog = forwardRef<HTMLDialogElement, DialogProps>(function Dialog(
     if (blockScroll) {
       if (dialogRef.current?.open === true) {
         document.body.style.overflowY = "hidden";
-        document.documentElement.style.overflow = "hidden";
       } else {
         document.body.style.overflowY = "auto";
-        document.documentElement.style.overflow = htmlOverflow.current;
       }
     }
   }, [closeAnimation, canBeClosed, blockScroll]);

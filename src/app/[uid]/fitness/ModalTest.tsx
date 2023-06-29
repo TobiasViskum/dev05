@@ -20,7 +20,7 @@ export default function ModalText() {
         ref={datePickerRef}
         className=""
         onDateChange={onDateChange}
-        startDate={new Date(2023, 2, 5)}
+        startDate={new Date(2023, 1)}
       >
         hej
       </DatePicker>
