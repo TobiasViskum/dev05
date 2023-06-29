@@ -79,7 +79,7 @@ const DatePicker = forwardRef<HTMLDialogElement, DatePickerProps>(
           month: getFutureDate("month", action, dateAndTranslate),
           translateX: 0,
         });
-      }, 100);
+      }, 50);
     }
 
     function handleAction(action: "backwards" | "forwards") {
