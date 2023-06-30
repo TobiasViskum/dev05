@@ -26,10 +26,7 @@ export default async function RootLayout({
         <link rel="manifest" href="/manifest.json" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       </head>
-      <body
-        className={twMerge(inter.className, "w-full bg-first")}
-        style={{ overflow: "auto" }}
-      >
+      <body className={twMerge(inter.className, "w-full bg-first")}>
         <PageLayout>
           <BigScreenLayout>{children}</BigScreenLayout>
         </PageLayout>

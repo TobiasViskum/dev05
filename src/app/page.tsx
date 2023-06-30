@@ -8,16 +8,16 @@ export default function RootPage() {
     <>
       <div
         className={twMerge(
-          "flex flex-col items-center justify-between h-[100svh] min-w-small min-h-[650px] max-h-[800px] relative w-full",
-          "standalone:fixed standalone:top-0 standalone:left-4 standalone:w-[calc(100svw_-_32px)]"
+          "relative flex h-[100svh] max-h-[800px] min-h-[650px] w-full min-w-small flex-col items-center justify-between",
+          "standalone:fixed standalone:left-4 standalone:top-0 standalone:w-[calc(100svw_-_32px)]"
         )}
       >
-        <div className="font-bold text-center mt-10 flex">
-          <h1 className="text-blue-600 text-5xl tn:text-7xl">Viskum</h1>
+        <div className="mt-10 flex text-center font-bold">
+          <h1 className="text-5xl text-blue-600 tn:text-7xl">Viskum</h1>
         </div>
         <ClientHandler />
-        <div className="fixed top-0 w-[calc(100%_-_32px)] left-4 h-full min-h-[650px] max-h-[800px] grid place-items-center min-w-small select-none z-0">
-          <div className="w-48 h-48 tn:w-64 tn:h-64 opacity-20">
+        <div className="fixed left-4 top-0 z-0 grid h-full max-h-[800px] min-h-[650px] w-[calc(100%_-_32px)] min-w-small select-none place-items-center">
+          <div className="h-48 w-48 opacity-20 tn:h-64 tn:w-64">
             <Image src={logo} alt="logo" />
           </div>
         </div>

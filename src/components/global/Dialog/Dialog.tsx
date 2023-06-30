@@ -60,9 +60,9 @@ const Dialog = forwardRef<HTMLDialogElement, DialogProps>(function Dialog(
   useEffect(() => {
     if (blockScroll) {
       if (dialogRef.current?.open === true) {
-        document.body.style.overflowY = "hidden";
+        document.documentElement.style.overflow = "hidden";
       } else {
-        document.body.style.overflowY = "auto";
+        document.documentElement.style.overflow = "";
       }
     }
   }, [closeAnimation, canBeClosed, blockScroll]);
