@@ -9,7 +9,10 @@ const db = mysql({
   },
 });
 
-export async function execute<ReceivedType>(q: string, val: any[]): Promise<ReceivedType> {
+export async function execute<ReceivedType>(
+  q: string,
+  val: any[]
+): Promise<ReceivedType> {
   if (q == undefined || val[0] == undefined) return ["failed"] as ReceivedType;
 
   try {
@@ -19,5 +22,7 @@ export async function execute<ReceivedType>(q: string, val: any[]): Promise<Rece
   } catch (error) {
     console.log(error);
     throw error;
+  } finally {
+    await db.end();
   }
 }
