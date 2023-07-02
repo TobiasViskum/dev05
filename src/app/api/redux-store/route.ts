@@ -3,7 +3,7 @@ import { store } from "@/store";
 import { getProfileData, getAppData, getFitnessData } from "@/lib/db";
 
 export async function GET(request: NextRequest) {
-  const uid = request.nextUrl.searchParams.get("uid");
+  const uid = request.nextUrl.searchParams.get("uid") as Uid | null;
 
   if (!uid)
     return NextResponse.json({
