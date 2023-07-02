@@ -1,6 +1,15 @@
 "use client";
 import ContentItem from "./ContentItem";
-import { max, reps, search, profiles, plus } from "@/assets/images";
+import {
+  max,
+  reps,
+  search,
+  profiles,
+  plus,
+  running,
+  cycling,
+  swimming,
+} from "@/assets/images";
 import Image from "next/image";
 import { usePathname, useParams } from "next/navigation";
 import { twMerge } from "tailwind-merge";
@@ -28,13 +37,12 @@ export default function CardioContent({ currTab }: { currTab: string[] }) {
     <>
       <ContentItem
         destPath={`/${uid}/cardio/running`}
-        image={max}
+        image={running}
         text="Running"
-        imageSize="h-5/6 w-5/6"
       />
       <ContentItem
         destPath={`/${uid}/cardio/cycling`}
-        image={reps}
+        image={cycling}
         text="Cycling"
       />
       <button
@@ -59,7 +67,7 @@ export default function CardioContent({ currTab }: { currTab: string[] }) {
       </button>
       <ContentItem
         destPath={`/${uid}/cardio/swimming`}
-        image={search}
+        image={swimming}
         text="Swimming"
       />
       <ContentItem

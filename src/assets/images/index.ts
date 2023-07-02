@@ -32,6 +32,9 @@ import littleSadSmiley from "./littleSadSmiley.png";
 import verySadSmiley from "./verySadSmiley.png";
 import notes from "./notes.png";
 import logo from "./logo.png";
+import cycling from "./cycling.png";
+import running from "./running.png";
+import swimming from "./swimming.png";
 
 export {
   profileTobias,
@@ -68,4 +71,7 @@ export {
   verySadSmiley,
   notes,
   logo,
+  cycling,
+  running,
+  swimming,
 };

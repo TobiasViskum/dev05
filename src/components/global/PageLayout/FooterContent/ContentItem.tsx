@@ -43,8 +43,9 @@ export default function ContentItem({
       href={[destPath, prevParam].join("")}
       className={twMerge("mt-2 flex w-11 flex-col items-center", className)}
     >
-      <div className="grid h-7 w-7 place-items-center">
+      <div className="grid aspect-square h-7 w-7 place-items-center">
         <Image
+          priority
           src={image}
           alt="logo"
           className={twJoin(imageSize, getImageColor())}
