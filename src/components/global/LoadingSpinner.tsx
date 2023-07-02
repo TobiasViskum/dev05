@@ -3,10 +3,12 @@
 import { useContext } from "react";
 import { CardioOverlayContext } from "../page-cardio/CardioOverlay/CardioOverlay";
 
-export default function LoadingSpinner() {
+export default function LoadingSpinner({ opacity }: { opacity?: string }) {
   const context = useContext(CardioOverlayContext);
-  const opacity =
-    context.activeOverlay === "animation" ? "opacity-0" : "opacity-100";
+  const opacityTw =
+    opacity || context.activeOverlay === "animation"
+      ? "opacity-0"
+      : "opacity-100";
 
   return (
     <>
