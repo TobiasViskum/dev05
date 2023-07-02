@@ -61,18 +61,18 @@ export default function EditAmount() {
     if (timeToChange === "hours") max = 100;
 
     function action() {
-      if (timeToChange === "hours") {
-        hoursRef.current?.blur();
+      if (hoursRef.current && minutesRef.current && secondsRef.current) {
+        if (timeToChange === "hours") {
+          hoursRef.current.blur();
+          minutesRef.current.focus();
+        } else if (timeToChange === "minutes") {
+          minutesRef.current.blur();
 
-        minutesRef.current?.focus();
-      } else if (timeToChange === "minutes") {
-        minutesRef.current?.blur();
-
-        secondsRef.current?.focus();
-      } else if (timeToChange === "seconds") {
-        secondsRef.current?.blur();
+          secondsRef.current.focus();
+        } else if (timeToChange === "seconds") {
+          secondsRef.current.blur();
+        }
       }
-      return;
     }
 
     if (value === 0) {
@@ -111,12 +111,11 @@ export default function EditAmount() {
 
     if (value < min || value > max) return;
 
+    changeInputFocusHandler(timeToChange, value);
     setTimeValue((prev) => ({
       ...prev,
       [timeToChange]: value.toString(),
     }));
-
-    changeInputFocusHandler(timeToChange, value);
   }
 
   function changeUnitTo(prevValue: string, unit: "km" | "mi") {
