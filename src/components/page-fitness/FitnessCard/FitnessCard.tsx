@@ -1,4 +1,4 @@
-import { twJoin } from "tailwind-merge";
+import { twJoin, twMerge } from "tailwind-merge";
 import ExerciseAmount from "./ExerciseAmount";
 import LeftButtons from "./LeftButtons";
 import InfoBox from "./InfoBox";
@@ -27,7 +27,7 @@ export default function FitnessCard({ strExerciseData, stylingData }: Props) {
         stylingData.isExerciseOdd ? "vsm:-ml-3 vsm:min-w-[322px]" : ""
       )}
     >
-      <div className="relative flex min-w-small items-center gap-x-3">
+      <div className="relative flex min-w-small items-center gap-x-1">
         <div
           className={twJoin(
             "mr-3 hidden h-10 w-[1px] bg-[var(--border-inactive)]",
@@ -40,7 +40,13 @@ export default function FitnessCard({ strExerciseData, stylingData }: Props) {
         </div>
 
         <div className="mt-1.5 flex flex-col gap-y-1 overflow-hidden">
-          <p className="overflow-hidden text-ellipsis whitespace-nowrap font-medium">
+          <p
+            className={twMerge(
+              "overflow-hidden text-ellipsis whitespace-nowrap font-medium",
+              exerciseData.name.length > 30 && "py-0.5 text-sm",
+              exerciseData.name.length > 45 && "py-1 text-xs"
+            )}
+          >
             {exerciseData.name}
           </p>
           <div className="flex flex-row gap-x-3">

@@ -1,6 +1,6 @@
 interface ViskumAppParams {
   params: {
-    uid: string;
+    uid: Uid;
   };
   searchParams: {
     [key: string]: string | undefined;

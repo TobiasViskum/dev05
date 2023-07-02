@@ -4,7 +4,7 @@ import { updateFavorite } from "@/lib/db";
 
 export async function POST(request: NextRequest) {
   const body: {
-    uid: string;
+    uid: Uid;
     newState: boolean;
     name_id: string;
     favorites: { [key: string]: string };

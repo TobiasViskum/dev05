@@ -17,6 +17,8 @@ export async function profileDataParser(
     );
   }
   const tempProfileData = JSON.stringify(profileDataUnparsed);
-  const profileData: ProfileData[] = JSON.parse(tempProfileData);
+  const profileData: ProfileData[] = JSON.parse(
+    JSON.stringify(profileDataUnparsed)
+  );
   return profileData;
 }

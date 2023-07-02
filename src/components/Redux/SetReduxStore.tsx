@@ -14,7 +14,7 @@ interface ReduxData {
   fitnessData: FitnessData[];
 }
 
-export default function SetReduxStore({ uid }: { uid: string }) {
+export default function SetReduxStore({ uid }: { uid: Uid }) {
   const dispatch = useAppDispatch();
 
   useEffect(() => {

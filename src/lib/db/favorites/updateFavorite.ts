@@ -1,7 +1,7 @@
 import { insertFavorite, deleteFavorite, updateFromNullToObject } from ".";
 
 interface Props {
-  uid: string;
+  uid: Uid;
   newState: boolean;
   name_id: string;
   favorites: Favorites;

@@ -7,7 +7,7 @@ export const metadata: Metadata = {
   title: "Start",
 };
 
-export default async function page({ params }: ViskumAppParams) {
+export default async function Page({ params }: ViskumAppParams) {
   const uid = params.uid;
   const profileData = await getProfileData(uid);
   const appData = await getAppData(profileData);

@@ -2,7 +2,12 @@
 
 import { usePathname } from "next/navigation";
 import { useState } from "react";
-import { HomeContent, StartContent, FitnessContent } from "./FooterContent";
+import {
+  HomeContent,
+  StartContent,
+  FitnessContent,
+  CardioContent,
+} from "./FooterContent";
 import { twMerge, twJoin } from "tailwind-merge";
 import BrowserBottomShadow from "./FooterContent/BrowserBottomShadow";
 import useChangeCurrTab from "./useChangeCurrTab";
@@ -34,6 +39,10 @@ export default function Footer() {
         ) : currTab[0] === "fitness" ? (
           <div className={twMerge(tw, "grid grid-cols-4 tn:grid-cols-5")}>
             <FitnessContent currTab={currTab} />
+          </div>
+        ) : currTab[0] === "cardio" ? (
+          <div className={twMerge(tw, "grid grid-cols-4 tn:grid-cols-5")}>
+            <CardioContent currTab={currTab} />
           </div>
         ) : (
           ""

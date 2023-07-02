@@ -4,6 +4,7 @@ import { indexStaticPages } from "./staticPages";
 import { firstLetterUppercase } from "./functions";
 import { findMostViewed } from "./findMostViewed";
 import { getFitnessGroups } from "./getFitnessGroups";
+import { getCardioGroups } from "./getCardioGroups";
 
 export {
   translator,
@@ -12,4 +13,5 @@ export {
   firstLetterUppercase,
   findMostViewed,
   getFitnessGroups,
+  getCardioGroups,
 };

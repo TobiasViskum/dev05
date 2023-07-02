@@ -3,7 +3,7 @@
 import { usePathname } from "next/navigation";
 import { useEffect, useState, useRef } from "react";
 import { useAppDispatch } from "@/store/useClient";
-import { setExerciseData } from "@/store/fitnessStateSlice";
+import { setFitnessExercise } from "@/store/exerciseStateSlice";
 
 export default function ExerciseAmount({
   exerciseData,
@@ -69,7 +69,7 @@ export default function ExerciseAmount({
 
   function handleEditClick() {
     if (isLocked === 0) {
-      dispatch(setExerciseData(exerciseData));
+      dispatch(setFitnessExercise(exerciseData));
       const event = new CustomEvent("showFitnessOverlay", {
         detail: { overlay: "editAmount" },
       });
@@ -79,7 +79,7 @@ export default function ExerciseAmount({
 
   return (
     <div
-      className="grid h-[72px] w-[72px] cursor-pointer grid-rows-[50%_50%] justify-center rounded-full border-4 border-solid border-inactive"
+      className="grid h-20 w-20 cursor-pointer grid-rows-[50%_50%] justify-center rounded-full border-4 border-solid border-inactive"
       onClick={handleEditClick}
     >
       <div className="flex flex-row items-end justify-center gap-x-1">

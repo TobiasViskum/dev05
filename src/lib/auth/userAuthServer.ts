@@ -1,7 +1,7 @@
 import { execute } from "@/lib/db";
 import { redirect } from "next/navigation";
 
-export async function userAuthServer(uid: string) {
+export async function userAuthServer(uid: Uid) {
   if (uid == undefined) redirect("/");
 
   const q = "SELECT * FROM dim_profile WHERE uid=(?)";

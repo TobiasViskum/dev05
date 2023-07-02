@@ -1,9 +1,7 @@
 import { Suspense } from "react";
 import { Metadata } from "next";
-import {
-  FitnessGroupAndCards,
-  RepsMaxLoadingSkeleton,
-} from "@/components/page-fitness";
+import { FitnessGroupAndCards } from "@/components/page-fitness";
+import { LoadingSkeleton } from "@/components/fitness-cardio";
 
 export const metadata: Metadata = {
   title: {
@@ -22,7 +20,7 @@ export default async function RepsPage({ params }: ViskumAppParams) {
         <h1 className="text-3xl">Reps</h1>
       </div>
       <div className="grid min-w-small vsm:gap-y-3">
-        <Suspense fallback={<RepsMaxLoadingSkeleton />}>
+        <Suspense fallback={<LoadingSkeleton />}>
           <FitnessGroupAndCards uid={uid} type="reps" />
         </Suspense>
       </div>

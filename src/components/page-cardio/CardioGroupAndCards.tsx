@@ -1,30 +1,32 @@
-import { FitnessCard, FitnessGroup } from "@/components/page-fitness";
-import { getFitnessData, getProfileData } from "@/lib/db";
-import { getFitnessGroups } from "@/lib/util";
+import { FitnessCard } from "@/components/page-fitness";
+import { getCardioData, getProfileData } from "@/lib/db";
+import { getCardioGroups } from "@/lib/util";
+import CardioGroup from "./CardioGroup/CardioGroup";
+import CardioCard from "./CardioCard/CardioCard";
 
 interface Props {
   uid: Uid;
-  type: "reps" | "max";
+  discipline: "cycling" | "running" | "swimming";
 }
 
-export default async function FitnessGroupAndCards({ uid, type }: Props) {
-  const fitnessData = await getFitnessData(uid);
+export default async function CardioGroupAndCards({ uid, discipline }: Props) {
+  const cardioData = await getCardioData(uid);
 
-  const fitnessGroups = getFitnessGroups(fitnessData, type);
+  const cardioGroup = getCardioGroups(cardioData, discipline);
 
   return (
     <>
-      {fitnessGroups.map((group, index) => {
+      {cardioGroup.map((group, index) => {
         return (
           <>
-            <FitnessGroup
+            <CardioGroup
               key={index}
               strExercisesInGroup={JSON.stringify(group.exercisesInGroup)}
               groupData={group.groupData}
             >
               {group.exercisesInGroup.map((exercise, index2) => {
                 return (
-                  <FitnessCard
+                  <CardioCard
                     key={index2}
                     strExerciseData={JSON.stringify(exercise)}
                     stylingData={{
@@ -38,7 +40,7 @@ export default async function FitnessGroupAndCards({ uid, type }: Props) {
                   />
                 );
               })}
-            </FitnessGroup>
+            </CardioGroup>
           </>
         );
       })}

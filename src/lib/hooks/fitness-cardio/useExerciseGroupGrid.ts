@@ -7,7 +7,7 @@ interface Props {
   changeGridRows: (action: "small device" | "big device") => void;
 }
 
-export function useFitnessGroupGrid({ changeGridRows }: Props) {
+export function useExerciseGroupGrid({ changeGridRows }: Props) {
   let onResize: any = useRef();
   const path = usePathname();
 

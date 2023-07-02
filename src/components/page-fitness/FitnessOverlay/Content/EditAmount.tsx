@@ -14,7 +14,7 @@ export default function EditAmount({
   changeActiveOverlay,
 }: Props) {
   const exerciseData = useAppSelector(
-    (state) => state.fitnessState.exerciseData
+    (state) => state.exerciseState.fitnessExercise
   );
   const UNIT_CONVERTER = 2.20462262;
   const MAX_INPUT = 1000;

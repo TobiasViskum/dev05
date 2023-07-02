@@ -10,12 +10,12 @@ interface Props {
   groupData: { name: string | "Ungrouped"; id: number | null };
 }
 
-export default function FitnessGroup({
+export default function CardioGroup({
   children,
   strExercisesInGroup,
   groupData,
 }: Props) {
-  const exercisesInGroup: FitnessData[] = JSON.parse(strExercisesInGroup);
+  const exercisesInGroup: CardioData[] = JSON.parse(strExercisesInGroup);
   const totalExercises = exercisesInGroup.length;
 
   const [gridRows, setGridRows] = useState(`repeat(${totalExercises}, 1fr)`);

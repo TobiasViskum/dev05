@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 import { usePathname } from "next/navigation";
 import { useEffect } from "react";
 
-export function UserAuthClient({ uid }: { uid: string }) {
+export function UserAuthClient({ uid }: { uid: Uid }) {
   const router = useRouter();
   const path = usePathname();
 

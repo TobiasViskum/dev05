@@ -1,5 +1,3 @@
-import { FitnessGroup } from "@/components/page-fitness";
-import { store } from "@/store";
 const nameIfNoGroup = "Ungrouped";
 
 export function getFitnessGroups(
