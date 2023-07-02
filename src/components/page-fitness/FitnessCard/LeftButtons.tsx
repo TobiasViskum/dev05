@@ -18,9 +18,7 @@ export default function LeftButtons({
 
   async function handleLockClick() {
     const newState = isLocked === 1 ? 0 : 1;
-    const event = new CustomEvent(`updateExerciseLock${exerciseData.id}`, {
-      detail: { newState: newState },
-    });
+    const event = new CustomEvent(`updateExerciseLock${exerciseData.id}`);
     document.dispatchEvent(event);
     setIsLocked(newState);
     await fetch("/api/fitness/update-lock", {

@@ -7,8 +7,10 @@ interface Props {
   changeGridRows: (action: "small device" | "big device") => void;
 }
 
+type HandleResize = () => void;
+
 export function useExerciseGroupGrid({ changeGridRows }: Props) {
-  let onResize: any = useRef();
+  let onResize = useRef<HandleResize | null>(null);
   const path = usePathname();
 
   return useEffect(() => {
@@ -17,7 +19,9 @@ export function useExerciseGroupGrid({ changeGridRows }: Props) {
     } else {
       changeGridRows("small device");
     }
-    window.removeEventListener("resize", onResize.current);
+    if (onResize.current) {
+      window.removeEventListener("resize", onResize.current);
+    }
     onResize.current = function handleResize() {
       if (window.innerWidth >= 564) {
         changeGridRows("big device");

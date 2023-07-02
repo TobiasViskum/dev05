@@ -4,6 +4,8 @@ import { usePathname } from "next/navigation";
 import { useEffect, useState, useRef } from "react";
 import { useAppDispatch } from "@/store/useClient";
 import { setFitnessExercise } from "@/store/exerciseStateSlice";
+import { twJoin } from "tailwind-merge";
+import { roundToOneDecimal } from "@/lib/util";
 
 export default function ExerciseAmount({
   exerciseData,
@@ -21,27 +23,14 @@ export default function ExerciseAmount({
   let isLocked = exerciseData.is_date_locked;
   const UNIT_CONVERTER = 2.20462262;
 
-  function roundToOneDecimal(number: number) {
-    return number.toFixed(1).replace(/\.0+$/, "");
-  }
-
   useEffect(() => {
-    document.addEventListener(`updateExercise${exerciseData.id}`, ((
-      e: CustomEvent<{
-        newAmount: number;
-        newUnit: string;
-      }>
-    ) => {
+    document.addEventListener(`updateExercise${exerciseData.id}`, () => {
       setForceUpdate((prev) => !prev);
-    }) as EventListener);
+    });
 
-    document.addEventListener(`updateExerciseLock${exerciseData.id}`, ((
-      e: CustomEvent<{
-        newState: number;
-      }>
-    ) => {
+    document.addEventListener(`updateExerciseLock${exerciseData.id}`, () => {
       setForceUpdate((prev) => !prev);
-    }) as EventListener);
+    });
   }, [exerciseData.id]);
 
   function getExerciseAmount(whatToGet: "primary" | "secondary") {
@@ -50,10 +39,10 @@ export default function ExerciseAmount({
     } else if (whatToGet === "secondary") {
       if (unitName.toLowerCase() === "kg") {
         const amount = exerciseAmount * UNIT_CONVERTER;
-        return roundToOneDecimal(amount).replace(".", ",");
+        return roundToOneDecimal(amount);
       } else if (unitName.toLowerCase() === "lbs") {
         const amount = exerciseAmount / UNIT_CONVERTER;
-        return roundToOneDecimal(amount).replace(".", ",");
+        return roundToOneDecimal(amount);
       }
     }
   }
@@ -79,7 +68,10 @@ export default function ExerciseAmount({
 
   return (
     <div
-      className="grid h-20 w-20 cursor-pointer grid-rows-[50%_50%] justify-center rounded-full border-4 border-solid border-inactive"
+      className={twJoin(
+        "grid h-20 w-20 grid-rows-[50%_50%] justify-center rounded-full border-4 border-solid border-inactive",
+        exerciseData.is_date_locked ? "cursor-auto" : "cursor-pointer"
+      )}
       onClick={handleEditClick}
     >
       <div className="flex flex-row items-end justify-center gap-x-1">

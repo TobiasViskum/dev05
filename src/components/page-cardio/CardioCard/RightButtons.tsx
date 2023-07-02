@@ -61,15 +61,15 @@ export default function RightButton() {
 
   return (
     <>
-      <div className="flex h-9 w-9 flex-col items-center justify-center rounded-lg border-2 border-solid border-[var(--bg-third)]">
+      <button className="flex h-9 w-9 flex-col items-center justify-center rounded-lg border-2 border-solid border-[var(--bg-third)]">
         <div className="h-4 w-4">
           <Image priority src={graph} alt="sm" className="image-gray" />
         </div>
         <p className="text-center text-6xs text-second">Stats</p>
-      </div>
+      </button>
 
       {profileData.show_vas_fitness === 1 && (
-        <div className="flex h-9 w-9 flex-col items-center justify-center rounded-lg border-2 border-solid border-[var(--bg-third)]">
+        <button className="flex h-9 w-9 flex-col items-center justify-center rounded-lg border-2 border-solid border-[var(--bg-third)]">
           <div className="h-4 w-4">
             <Image
               priority
@@ -81,7 +81,7 @@ export default function RightButton() {
           <p className={twJoin("text-center text-6xs", getVasTextColor())}>
             VAS
           </p>
-        </div>
+        </button>
       )}
     </>
   );

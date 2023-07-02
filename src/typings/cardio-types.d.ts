@@ -22,6 +22,9 @@ interface CardioDataUnparsed {
   discipline_id: number;
   discipline_name: string;
   is_sprint: number;
+  unit_id: number;
+  unit_name: string;
+  unit_full_name: string;
 }
 
 type TimeAmount = {
@@ -54,4 +57,7 @@ interface CardioData {
   discipline_id: number;
   discipline_name: string;
   is_sprint: number;
+  unit_id: number;
+  unit_name: string;
+  unit_full_name: string;
 }

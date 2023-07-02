@@ -46,6 +46,7 @@ interface ProfileDataBefore {
   group_uid: Uid;
   group_name: string;
   group_password: string;
+  default_cardio_page: string;
 }
 
 type Favorites = { [key: string]: string } | null;
@@ -82,6 +83,7 @@ interface ProfileData {
   group_uid: Uid;
   group_name: string;
   group_password: string;
+  default_cardio_page: string;
 }
 
 interface AppData {

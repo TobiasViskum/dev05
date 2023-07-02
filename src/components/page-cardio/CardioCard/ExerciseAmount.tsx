@@ -4,6 +4,8 @@ import { useEffect, useState, useContext } from "react";
 import { useAppDispatch } from "@/store/useClient";
 import { setCardioExercise } from "@/store/exerciseStateSlice";
 import { CardContext } from "./CardProvider";
+import { twJoin } from "tailwind-merge";
+import { roundToOneDecimal, roundToTwoDecimals } from "@/lib/util";
 
 export default function ExerciseAmount() {
   const context = useContext(CardContext);
@@ -13,13 +15,6 @@ export default function ExerciseAmount() {
   const [forceUpdate, setForceUpdate] = useState(false);
 
   let isLocked = exerciseData.is_date_locked;
-
-  function roundToOneDecimal(number: number) {
-    return number.toFixed(1).toString().replace(/\.0+$/, "").replace(".", ",");
-  }
-  function roundToTwoDecimals(number: number) {
-    return number.toFixed(2).toString().replace(/\.0+$/, "").replace(".", ",");
-  }
 
   useEffect(() => {
     document.addEventListener(`updateExercise${exerciseData.id}`, ((
@@ -70,7 +65,7 @@ export default function ExerciseAmount() {
   function handleEditClick() {
     if (isLocked === 0) {
       dispatch(setCardioExercise(exerciseData));
-      const event = new CustomEvent("showFitnessOverlay", {
+      const event = new CustomEvent("showCardioOverlay", {
         detail: { overlay: "editAmount" },
       });
       document.dispatchEvent(event);
@@ -79,7 +74,10 @@ export default function ExerciseAmount() {
 
   return (
     <div
-      className="grid h-20 w-20 cursor-pointer grid-rows-[50%_50%] justify-center rounded-full border-4 border-solid border-inactive"
+      className={twJoin(
+        "grid h-20 w-20 grid-rows-[50%_50%] justify-center rounded-full border-4 border-solid border-inactive",
+        exerciseData.is_date_locked ? "cursor-auto" : "cursor-pointer"
+      )}
       onClick={handleEditClick}
     >
       <div className="flex flex-row items-end justify-center gap-x-1">

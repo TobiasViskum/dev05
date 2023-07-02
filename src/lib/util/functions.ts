@@ -3,3 +3,10 @@ export function firstLetterUppercase(str: string) {
 
   return capitalizedStr;
 }
+
+export function roundToOneDecimal(number: number) {
+  return number.toFixed(1).toString().replace(/\.0+$/, "").replace(".", ",");
+}
+export function roundToTwoDecimals(number: number) {
+  return number.toFixed(2).toString().replace(/\.0+$/, "").replace(".", ",");
+}

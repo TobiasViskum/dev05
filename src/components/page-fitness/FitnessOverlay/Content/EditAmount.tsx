@@ -1,7 +1,6 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
 import { useRouter } from "next/navigation";
-import { Checkmark, LoadingSpinner } from "@/components/global";
 import { useAppSelector } from "@/store/useClient";
 
 interface Props {
@@ -16,6 +15,7 @@ export default function EditAmount({
   const exerciseData = useAppSelector(
     (state) => state.exerciseState.fitnessExercise
   );
+
   const UNIT_CONVERTER = 2.20462262;
   const MAX_INPUT = 1000;
   const router = useRouter();
@@ -24,21 +24,26 @@ export default function EditAmount({
   const exerciseType = path.split("/").slice(-1)[0];
   const [inputValue, setInputValue] = useState("");
   const [placeholderValue, setPlaceholderValue] = useState(
-    exerciseData
-      ? exerciseType === "reps"
+    exerciseType === "reps"
+      ? exerciseData.reps.toString()
+      : exerciseType === "max"
+      ? exerciseData.max.toString()
+      : "0"
+  );
+  const [currUnit, setCurrUnit] = useState(
+    exerciseData.unit_name.toLowerCase() === "kg" ? "KG" : "lbs"
+  );
+
+  useEffect(() => {
+    setPlaceholderValue(
+      exerciseType === "reps"
         ? exerciseData.reps.toString()
         : exerciseType === "max"
         ? exerciseData.max.toString()
         : "0"
-      : "0"
-  );
-  const [currUnit, setCurrUnit] = useState(
-    exerciseData === null
-      ? "KG"
-      : exerciseData.unit_name === "kg"
-      ? "KG"
-      : "lbs"
-  );
+    );
+    setCurrUnit(exerciseData.unit_name.toLowerCase() === "kg" ? "KG" : "lbs");
+  }, [exerciseType, exerciseData]);
 
   function changeUnitTo(prevValue: string | undefined, unit: "KG" | "lbs") {
     let tempValue = Number(prevValue?.replace(",", "."));
@@ -96,17 +101,17 @@ export default function EditAmount({
   }
 
   async function updateAmountAndUnit(newAmount: number, newUnit: string) {
-    const updateAmount = await fetch("/api/fitness/update-amount", {
+    const updateAmount = fetch("/api/fitness/update-amount", {
       method: "POST",
       body: JSON.stringify({
-        id: exerciseData?.id,
+        id: exerciseData.id,
         newAmount: newAmount,
         type: exerciseType,
       }),
     });
-    const updateUnit = await fetch("/api/fitness/update-unit", {
+    const updateUnit = fetch("/api/fitness/update-unit", {
       method: "POST",
-      body: JSON.stringify({ id: exerciseData?.id, newUnit: newUnit }),
+      body: JSON.stringify({ id: exerciseData.id, newUnit: newUnit }),
     });
 
     await Promise.all([updateAmount, updateUnit]);
@@ -170,6 +175,13 @@ export default function EditAmount({
             placeholder={placeholderValue.replace(".", ",")}
             inputMode="decimal"
             pattern="[0-9],*"
+            onFocus={(e) => {
+              e.target.placeholder = "";
+              e.target.select();
+            }}
+            onBlur={(e) =>
+              (e.target.placeholder = placeholderValue.replace(".", ","))
+            }
           />
           <button
             className="w-8 rounded-lg border-2 border-solid border-inactive bg-first py-1 text-base"

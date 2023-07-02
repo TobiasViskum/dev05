@@ -29,7 +29,7 @@ export default function useFirstRenderEvent({
             updateHeader(false, "header");
           }
         }
-      } else if (splitPath[2] === "fitness") {
+      } else if (splitPath[2] === "fitness" || splitPath[2] === "cardio") {
         updateHeader(true, "title");
         if (documentElement.scrollTop >= 24) {
           updateHeader(true, "header");

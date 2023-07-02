@@ -1,4 +1,13 @@
-export default function LoadingSpinner({ opacity }: { opacity: string }) {
+"use client";
+
+import { useContext } from "react";
+import { CardioOverlayContext } from "../page-cardio/CardioOverlay/CardioOverlay";
+
+export default function LoadingSpinner() {
+  const context = useContext(CardioOverlayContext);
+  const opacity =
+    context.activeOverlay === "animation" ? "opacity-0" : "opacity-100";
+
   return (
     <>
       <div className={`h-8 w-8 bg-transparent transition-opacity ${opacity}`}>

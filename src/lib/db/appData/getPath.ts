@@ -10,6 +10,8 @@ export function getPath(name_id: string, profileData: ProfileData) {
 
   if (name_id === "fitness") {
     return fitnessPath(initialPath, profileData);
+  } else if (name_id === "cardio") {
+    return [initialPath, profileData.default_cardio_page].join("/");
   } else {
     return [initialPath].join("/");
   }
