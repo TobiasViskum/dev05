@@ -3,7 +3,10 @@ import { profileDataParser } from "./profileDataParser";
 import { updateFromNullToObject } from "../favorites";
 import { redirect } from "next/navigation";
 
-export async function getProfileData(uid: Uid, byMail: boolean = false) {
+export async function getProfileData(
+  uid: Uid | string,
+  byMail: boolean = false
+) {
   let q =
     "SELECT * FROM dim_profile AS A INNER JOIN dim_profile_group AS B ON A.profile_group_id = B.id WHERE A.uid=(?)";
   if (byMail === true) {
@@ -27,7 +30,7 @@ export async function getProfileData(uid: Uid, byMail: boolean = false) {
   const profileData = serializedProfileData[0];
 
   if (profileData.favorites === null && result.length > 0) {
-    await updateFromNullToObject(uid);
+    await updateFromNullToObject(uid, byMail);
   }
 
   return profileData;
