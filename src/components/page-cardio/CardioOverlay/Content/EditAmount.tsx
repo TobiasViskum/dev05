@@ -111,11 +111,12 @@ export default function EditAmount() {
 
     if (value < min || value > max) return;
 
-    changeInputFocusHandler(timeToChange, value);
     setTimeValue((prev) => ({
       ...prev,
       [timeToChange]: value.toString(),
     }));
+
+    changeInputFocusHandler(timeToChange, value);
   }
 
   function changeUnitTo(prevValue: string, unit: "km" | "mi") {
@@ -230,12 +231,11 @@ export default function EditAmount() {
     e: React.FocusEvent<HTMLInputElement>,
     timeToChange: "hours" | "minutes" | "seconds"
   ) {
-    flushSync(() => {
-      setTimeValue((prev) => ({
-        ...prev,
-        [timeToChange]: prev[timeToChange].replace(/[a-zA-Z]/g, ""),
-      }));
-    });
+    setTimeValue((prev) => ({
+      ...prev,
+      [timeToChange]: prev[timeToChange].replace(/[a-zA-Z]/g, ""),
+    }));
+    e.target.value = timeValue[timeToChange].replace(/[a-zA-Z]/g, "");
     e.target.placeholder = "";
     e.target.select();
   }
@@ -279,7 +279,9 @@ export default function EditAmount() {
             placeholder={[getTimeAmount().hours, "h"].join("")}
             inputMode="decimal"
             pattern="[0-9],*"
-            onFocus={(e) => onTimeInputFocus(e, "hours")}
+            onFocus={(e) => {
+              onTimeInputFocus(e, "hours");
+            }}
             onBlur={(e) => {
               e.target.placeholder = [getTimeAmount().hours, "h"].join("");
               e.target.value !== "" &&
