@@ -10,6 +10,11 @@ import { roundToOneDecimal, roundToTwoDecimals } from "@/lib/util";
 export default function ExerciseAmount() {
   const context = useContext(CardContext);
   const exerciseData = context.exerciseData;
+  const UNIT_CONVERTER = 0.62137119;
+  const distance =
+    exerciseData.unit_name.toLowerCase() === "mi"
+      ? exerciseData.distance * UNIT_CONVERTER
+      : exerciseData.distance;
 
   const dispatch = useAppDispatch();
   const [forceUpdate, setForceUpdate] = useState(false);
@@ -38,27 +43,33 @@ export default function ExerciseAmount() {
   function getAverageSpeed() {
     const time_amount = exerciseData.time_amount;
     if (!time_amount) return 0;
-    if (exerciseData.distance === 0) return 0;
+    if (distance === 0) return 0;
 
     const hours = time_amount.hours ? time_amount.hours : 0;
     const minutes = time_amount.minutes ? time_amount.minutes : 0;
     const seconds = time_amount.seconds ? time_amount.seconds : 0;
 
-    return exerciseData.distance / (hours + minutes / 60 + seconds / 3600);
+    return distance / (hours + minutes / 60 + seconds / 3600);
   }
 
   function getPrimaryTitle() {
     if (exerciseData.is_sprint === 1) {
-      return [roundToOneDecimal(getAverageSpeed()), "km/h"].join(" ");
+      return [
+        roundToOneDecimal(getAverageSpeed()),
+        `${exerciseData.unit_name}/h`,
+      ].join(" ");
     } else {
-      return [roundToTwoDecimals(exerciseData.distance), "km"].join(" ");
+      return [roundToTwoDecimals(distance), exerciseData.unit_name].join(" ");
     }
   }
   function getSecondaryTitle() {
     if (exerciseData.is_sprint === 1) {
-      return [roundToTwoDecimals(exerciseData.distance), "km"].join(" ");
+      return [roundToTwoDecimals(distance), exerciseData.unit_name].join(" ");
     } else {
-      return [roundToOneDecimal(getAverageSpeed()), "km/h"].join(" ");
+      return [
+        roundToOneDecimal(getAverageSpeed()),
+        `${exerciseData.unit_name}/h`,
+      ].join(" ");
     }
   }
 

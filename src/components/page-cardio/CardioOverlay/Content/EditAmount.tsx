@@ -16,8 +16,6 @@ export default function EditAmount() {
   const MAX_INPUT = 1000;
   const router = useRouter();
   const inputRef = useRef<HTMLInputElement | null>(null);
-  const path = usePathname();
-  const exerciseType = path.split("/").slice(-1)[0];
   const [inputValue, setInputValue] = useState("");
   const [placeholderValue, setPlaceholderValue] = useState(
     exerciseData.distance.toString()
@@ -65,10 +63,11 @@ export default function EditAmount() {
         if (timeToChange === "hours") {
           hoursRef.current.blur();
           minutesRef.current.focus();
+          minutesRef.current.select();
         } else if (timeToChange === "minutes") {
           minutesRef.current.blur();
-
           secondsRef.current.focus();
+          secondsRef.current.select();
         } else if (timeToChange === "seconds") {
           secondsRef.current.blur();
         }
@@ -170,57 +169,101 @@ export default function EditAmount() {
     }
   }
 
-  async function updateAmountAndUnit(newDistance: number, newUnit: string) {
-    // const updateAmount = fetch("/api/cardio/update-distance", {
-    //   method: "POST",
-    //   body: JSON.stringify({
-    //     id: exerciseData.id,
-    //     newDistance: newDistance,
-    //     type: exerciseType,
-    //   }),
-    // });
-    // const updateUnit = fetch("/api/cardio/update-unit", {
-    //   method: "POST",
-    //   body: JSON.stringify({ id: exerciseData.id, newUnit: newUnit }),
-    // });
-    // await Promise.all([updateAmount, updateUnit]);
+  async function updateAmountAndUnit(
+    newDistance: number,
+    newUnit: string,
+    hours: number,
+    minutes: number,
+    seconds: number
+  ) {
+    await fetch("/api/cardio/update-distance-unit-time", {
+      method: "POST",
+      body: JSON.stringify({
+        id: exerciseData.id,
+        newDistance: newDistance,
+        newUnit: newUnit,
+        newTime: {
+          hours: hours, //number
+          minutes: minutes, //number
+          seconds: seconds, //number
+        },
+      }),
+    });
   }
 
   async function handleSaveClick() {
-    console.log(inputValue, currUnit, timeValue);
+    function getNewTimeValue() {
+      const timeAmount = exerciseData.time_amount;
+      let tempTimeValue = !timeAmount
+        ? { hours: 0, minutes: 0, seconds: 0 }
+        : {
+            hours: timeAmount.hours || 0,
+            minutes: timeAmount.minutes || 0,
+            seconds: timeAmount.seconds || 0,
+          };
+      tempTimeValue.hours =
+        timeValue.hours === ""
+          ? tempTimeValue.hours
+          : Number(timeValue.hours.replace(/[a-zA-Z]/g, ""));
+      tempTimeValue.minutes =
+        timeValue.minutes === ""
+          ? tempTimeValue.minutes
+          : Number(timeValue.minutes.replace(/[a-zA-Z]/g, ""));
+      tempTimeValue.seconds =
+        timeValue.seconds === ""
+          ? tempTimeValue.seconds
+          : Number(timeValue.seconds.replace(/[a-zA-Z]/g, ""));
+      return tempTimeValue;
+    }
 
     function isAmountUnchanged() {
       const amount = exerciseData.distance;
-      if (inputValue === "") {
-        return amount === Number(placeholderValue.replace(",", "."));
-      } else {
-        return amount === Number(inputValue.replace(",", "."));
-      }
+      if (inputValue === "") return true;
+
+      return amount === Number(inputValue.replace(",", "."));
     }
 
     const isUnitUnchanged =
-      exerciseData?.unit_name.toLowerCase() === currUnit.toLowerCase();
+      exerciseData.unit_name.toLowerCase() === currUnit.toLowerCase();
 
-    if (isAmountUnchanged() && isUnitUnchanged) {
+    function isTimeUnchanged() {
+      if (
+        timeValue.hours === "" &&
+        timeValue.minutes === "" &&
+        timeValue.seconds === ""
+      )
+        return true;
+
+      return false;
+    }
+
+    if (isAmountUnchanged() && isUnitUnchanged && isTimeUnchanged()) {
       context.closeOverlay();
       return;
     }
 
     context.changeActiveOverlay("loading");
-    let tempAmount = "";
-    if (inputValue === "") {
-      tempAmount = placeholderValue;
-    } else tempAmount = inputValue;
-    const newAmount = Number(tempAmount.replace(",", "."));
+    const newDistance =
+      inputValue === ""
+        ? exerciseData.distance
+        : Number(inputValue.replace(",", "."));
+    const newTimeValue = getNewTimeValue();
 
     const event = new CustomEvent(`updateExercise${exerciseData?.id}`, {
       detail: {
-        newAmount: newAmount.toString(),
+        newDistance: newDistance,
         newUnit: currUnit,
+        newTimeValue: newTimeValue,
       },
     });
     document.dispatchEvent(event);
-    await updateAmountAndUnit(newAmount, currUnit);
+    await updateAmountAndUnit(
+      newDistance,
+      currUnit,
+      newTimeValue.hours,
+      newTimeValue.minutes,
+      newTimeValue.seconds
+    );
     setTimeout(() => {
       router.refresh();
       context.changeActiveOverlay("animation");
@@ -233,11 +276,25 @@ export default function EditAmount() {
   ) {
     setTimeValue((prev) => ({
       ...prev,
-      [timeToChange]: prev[timeToChange].slice(0, -1),
+      [timeToChange]: prev[timeToChange].replace(/[a-zA-Z]/g, ""),
     }));
-    e.target.value = timeValue[timeToChange].slice(0, -1);
+    e.target.value = timeValue[timeToChange].replace(/[a-zA-Z]/g, "");
     e.target.placeholder = "";
     e.target.select();
+  }
+  function onTimeInputBlur(
+    e: React.FocusEvent<HTMLInputElement>,
+    timeToChange: "hours" | "minutes" | "seconds"
+  ) {
+    e.target.placeholder = [getTimeAmount().hours, timeToChange.charAt(0)].join(
+      ""
+    );
+    if (e.target.value !== "") {
+      setTimeValue((prev) => ({
+        ...prev,
+        [timeToChange]: [prev[timeToChange], timeToChange.charAt(0)].join(""),
+      }));
+    }
   }
 
   return (
@@ -282,14 +339,7 @@ export default function EditAmount() {
             onFocus={(e) => {
               onTimeInputFocus(e, "hours");
             }}
-            onBlur={(e) => {
-              e.target.placeholder = [getTimeAmount().hours, "h"].join("");
-              e.target.value !== "" &&
-                setTimeValue((prev) => ({
-                  ...prev,
-                  hours: [prev.hours, "h"].join(""),
-                }));
-            }}
+            onBlur={(e) => onTimeInputBlur(e, "hours")}
           />
           {":"}
           <input
@@ -301,14 +351,7 @@ export default function EditAmount() {
             inputMode="decimal"
             pattern="[0-9],*"
             onFocus={(e) => onTimeInputFocus(e, "minutes")}
-            onBlur={(e) => {
-              e.target.placeholder = [getTimeAmount().minutes, "m"].join("");
-              e.target.value !== "" &&
-                setTimeValue((prev) => ({
-                  ...prev,
-                  minutes: [prev.minutes, "m"].join(""),
-                }));
-            }}
+            onBlur={(e) => onTimeInputBlur(e, "minutes")}
           />
           {":"}
           <input
@@ -320,14 +363,7 @@ export default function EditAmount() {
             inputMode="decimal"
             pattern="[0-9],*"
             onFocus={(e) => onTimeInputFocus(e, "seconds")}
-            onBlur={(e) => {
-              e.target.placeholder = [getTimeAmount().seconds, "s"].join("");
-              e.target.value !== "" &&
-                setTimeValue((prev) => ({
-                  ...prev,
-                  seconds: [prev.seconds, "s"].join(""),
-                }));
-            }}
+            onBlur={(e) => onTimeInputBlur(e, "seconds")}
           />
         </div>
         <button
