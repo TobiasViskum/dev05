@@ -65,11 +65,12 @@ export default function CreateExercise() {
           <div className="flex flex-col items-center gap-y-2">
             <p className="text-sm text-second">Name:</p>
             <input
+              spellCheck={false}
               onChange={(e) => handleInputChange(e)}
               value={inputValue}
               placeholder={getPlaceholderText()}
               className={twJoin(
-                "w-full rounded-lg border-2 border-solid border-inactive bg-first py-0.5 text-center text-sm text-first placeholder-[var(--text-second)] outline-none"
+                "w-full rounded-md border border-solid border-inactive bg-first py-0.5 text-center text-sm text-first placeholder-[var(--text-second)] outline-none"
               )}
               onFocus={(e) => (e.target.placeholder = "")}
               onBlur={(e) =>

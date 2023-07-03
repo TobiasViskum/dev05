@@ -102,7 +102,7 @@ const Dialog = forwardRef<HTMLDialogElement, DialogProps>(function Dialog(
           "overflow-hidden bg-white p-0 text-center transition-opacity duration-200 backdrop:transition-colors backdrop:duration-200",
           closeAnimation
             ? "opacity-0 backdrop:bg-opacity-0 backdrop:backdrop-blur-0"
-            : "opacity-100 backdrop:bg-black backdrop:bg-opacity-50 backdrop:backdrop-blur-[2px] open:animate-fade-in open:backdrop:animate-fade-in",
+            : "opacity-100 backdrop:bg-black backdrop:bg-opacity-50 backdrop:backdrop-blur-[1px] open:animate-fade-in open:backdrop:animate-fade-in",
           className
         )}
       >

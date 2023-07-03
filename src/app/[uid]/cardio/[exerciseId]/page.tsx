@@ -1,3 +1,4 @@
+import { EditName } from "@/components/page-cardio/CardioSettings";
 import { getCardioExercise } from "@/lib/db/cardio";
 import Link from "next/link";
 import { twJoin } from "tailwind-merge";
@@ -11,10 +12,10 @@ export default async function page({ params }: ExtendedViskumAppParams) {
   return (
     <>
       <h1 className="mt-2 text-lg tn:text-2xl">{exerciseData.name}</h1>
-      <div className="h-3 w-32 border-b border-inactive" />
-      <div className="flex flex-col gap-y-2">
-        <div>
-          <p>Name:</p>
+      <div className="mb-4 h-3 w-32 border-b border-inactive" />
+      <div className="flex w-full flex-col items-center gap-y-2">
+        <div className="flex w-full items-center">
+          <EditName />
         </div>
       </div>
     </>

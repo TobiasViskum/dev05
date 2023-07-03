@@ -317,7 +317,7 @@ export default function EditAmount() {
             value={inputValue}
             onChange={(e) => handleInput(e)}
             ref={inputRef}
-            className="w-3/5 rounded-lg border-2 border-solid border-inactive bg-first py-1 text-center text-first placeholder-[var(--text-second)] outline-none"
+            className="w-3/5 rounded-md border border-solid border-inactive bg-first py-1 text-center text-first placeholder-[var(--text-second)] outline-none"
             placeholder={placeholderValue.replace(".", ",")}
             inputMode="decimal"
             pattern="[0-9],*"
@@ -327,7 +327,7 @@ export default function EditAmount() {
             }
           />
           <button
-            className="w-8 rounded-lg border-2 border-solid border-inactive bg-first py-1 text-base"
+            className="w-8 rounded-md border border-solid border-inactive bg-first py-1 text-base"
             onClick={handleUnitChange}
           >
             {currUnit}
@@ -338,7 +338,7 @@ export default function EditAmount() {
             value={timeValue.hours}
             onChange={(e) => handleTimeChange(e, "hours")}
             ref={hoursRef}
-            className="w-14 rounded-lg border-2 border-solid border-inactive bg-first py-1 text-center text-first placeholder-[var(--text-second)] outline-none"
+            className="w-14 rounded-md border border-solid border-inactive bg-first py-1 text-center text-first placeholder-[var(--text-second)] outline-none"
             placeholder={[getTimeAmount().hours, "h"].join("")}
             inputMode="decimal"
             pattern="[0-9],*"
@@ -352,7 +352,7 @@ export default function EditAmount() {
             value={timeValue.minutes}
             onChange={(e) => handleTimeChange(e, "minutes")}
             ref={minutesRef}
-            className="w-14 rounded-lg border-2 border-solid border-inactive bg-first py-1 text-center text-first placeholder-[var(--text-second)] outline-none"
+            className="w-14 rounded-md border border-solid border-inactive bg-first py-1 text-center text-first placeholder-[var(--text-second)] outline-none"
             placeholder={[getTimeAmount().minutes, "m"].join("")}
             inputMode="decimal"
             pattern="[0-9],*"
@@ -364,7 +364,7 @@ export default function EditAmount() {
             value={timeValue.seconds}
             onChange={(e) => handleTimeChange(e, "seconds")}
             ref={secondsRef}
-            className="w-14 rounded-lg border-2 border-solid border-inactive bg-first py-1 text-center text-first placeholder-[var(--text-second)] outline-none"
+            className="w-14 rounded-md border border-solid border-inactive bg-first py-1 text-center text-first placeholder-[var(--text-second)] outline-none"
             placeholder={[getTimeAmount().seconds, "s"].join("")}
             inputMode="decimal"
             pattern="[0-9],*"
