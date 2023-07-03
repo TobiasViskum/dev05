@@ -233,9 +233,9 @@ export default function EditAmount() {
   ) {
     setTimeValue((prev) => ({
       ...prev,
-      [timeToChange]: prev[timeToChange].replace(/[a-zA-Z]/g, ""),
+      [timeToChange]: prev[timeToChange].slice(0, -1),
     }));
-    e.target.value = timeValue[timeToChange].replace(/[a-zA-Z]/g, "");
+    e.target.value = timeValue[timeToChange].slice(0, -1);
     e.target.placeholder = "";
     e.target.select();
   }
