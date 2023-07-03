@@ -6,6 +6,7 @@ import Image from "next/image";
 import { settingsPng } from "@/assets/images";
 import RightButton from "./RightButtons";
 import { store } from "@/store";
+import Link from "next/link";
 
 interface Props {
   strExerciseData: string;
@@ -56,9 +57,12 @@ export default function FitnessCard({ strExerciseData, stylingData }: Props) {
             </div>
           </div>
         </div>
-        <div className="absolute -bottom-1 right-0 h-8 w-8 p-1.5">
+        <Link
+          href={`/${exerciseData.uid}/fitness/${exerciseData.id}`}
+          className="absolute -bottom-1 right-0 h-8 w-8 rounded-full p-1.5"
+        >
           <Image priority src={settingsPng} alt="SET" className="image-blue" />
-        </div>
+        </Link>
       </div>
       <div
         className={twJoin(

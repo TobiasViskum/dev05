@@ -2,18 +2,21 @@ import { arrowLeft } from "@/assets/images";
 import Image from "next/image";
 import Link from "next/link";
 import { twJoin } from "tailwind-merge";
-import { useSearchParams } from "next/navigation";
+import { useSearchParams, useParams } from "next/navigation";
 
 interface Props {
   title: string;
-  splitPath: string[];
 }
 
-export default function GoBackButton({ title, splitPath }: Props) {
+export default function GoBackButton({ title }: Props) {
   const searchParams = useSearchParams();
   const prevParam = searchParams.get("prev");
+  const matcherParam = searchParams.get("matcher");
+  const params = useParams();
 
-  const newHref = prevParam ? prevParam : `/${splitPath[1]}`;
+  const newHref = prevParam
+    ? [prevParam, matcherParam && `?matcher=${matcherParam}`].join("")
+    : [`/${params.uid}`, matcherParam && `?matcher=${matcherParam}`].join("");
 
   return (
     <>

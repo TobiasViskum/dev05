@@ -37,16 +37,18 @@ export default function PwaHeader() {
   }
 
   useEffect(() => {
-    const splitPathname = path.split("/");
-    if (splitPathname.length == 2) {
+    const lastPathSection = splitPath.slice(-1)[0];
+    if (splitPath.length == 2) {
       setTitle("start");
       setIsHeaderTitleActive(false);
-    } else if (splitPathname.length >= 3) {
-      if (splitPathname[2].toLowerCase() === "pwa-home-page-secret") {
+    } else if (splitPath.length >= 3) {
+      if (splitPath[2].toLowerCase() === "pwa-home-page-secret") {
         setTitle("home");
-      } else setTitle(splitPathname[2].toLowerCase());
+      } else if (!isNaN(Number(lastPathSection))) {
+        setTitle("Edit");
+      } else setTitle(splitPath[2].toLowerCase());
     }
-  }, [path]);
+  }, [splitPath]);
 
   if (
     typeof window !== "undefined" &&
@@ -76,7 +78,7 @@ export default function PwaHeader() {
         </nav>
       </div>
       <StartShadow title={title} />
-      <GoBackButton title={title} splitPath={splitPath} />
+      <GoBackButton title={title} />
       <ProfileIcon isHeaderTitleActive={isHeaderTitleActive} title={title} />
       <SettingsButton splitPath={splitPath} />
     </div>

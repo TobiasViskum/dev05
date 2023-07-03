@@ -8,7 +8,9 @@ import {
 } from "@/lib/db";
 
 export async function GET(request: NextRequest) {
-  const uid = request.nextUrl.searchParams.get("uid") as Uid | null;
+  const searchParams = request.nextUrl.searchParams;
+  const uid = searchParams.get("uid") as Uid | null;
+  const getSpecific = searchParams.get("getSpecific");
 
   if (!uid)
     return NextResponse.json({
@@ -16,6 +18,13 @@ export async function GET(request: NextRequest) {
       appData: [],
       fitnessData: [],
     });
+
+  if (getSpecific) {
+    if (getSpecific === "cardioData") {
+      const cardioData = await getCardioData(uid);
+      return NextResponse.json({ cardioData: cardioData });
+    }
+  }
 
   const [profileData, fitnessData, cardioData] = await Promise.all([
     getProfileData(uid),

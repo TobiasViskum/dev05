@@ -10,12 +10,14 @@ export default function ContentItem({
   text,
   imageSize,
   className,
+  matcher,
 }: {
   destPath: string;
   image: StaticImageData;
   text: string;
   imageSize?: string;
   className?: string;
+  matcher?: string;
 }) {
   const path = usePathname();
   const searchParams = useSearchParams();
@@ -23,15 +25,29 @@ export default function ContentItem({
     ? `?prev=${searchParams.get("prev")}`
     : "";
 
+  const matcherParam = searchParams.get("matcher");
+
   function getImageColor() {
-    if (path === destPath) {
+    if (
+      matcher &&
+      matcherParam &&
+      matcher.toLowerCase() === matcherParam.toLowerCase()
+    ) {
+      return "image-blue";
+    } else if (path === destPath) {
       return "image-blue";
     } else {
       return "image-gray";
     }
   }
   function getTextColor() {
-    if (path === destPath) {
+    if (
+      matcher &&
+      matcherParam &&
+      matcher.toLowerCase() === matcherParam.toLowerCase()
+    ) {
+      return "text-active";
+    } else if (path === destPath) {
       return "text-active";
     } else {
       return "text-second";

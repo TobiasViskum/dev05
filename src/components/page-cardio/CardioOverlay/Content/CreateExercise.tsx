@@ -4,8 +4,11 @@ import React, { useContext, useState } from "react";
 import { firstLetterUppercase } from "@/lib/util";
 import { twJoin } from "tailwind-merge";
 import { CardioOverlayContext } from "../CardioOverlay";
+import { useAppDispatch } from "@/store/useClient";
+import { setCardioData } from "@/store/userDataSlice";
 
 export default function CreateExercise() {
+  const dispatch = useAppDispatch();
   const router = useRouter();
   const context = useContext(CardioOverlayContext);
   const path = usePathname();
@@ -37,6 +40,12 @@ export default function CreateExercise() {
         discipline: discipline,
       }),
     });
+    const response = await fetch(
+      `/api/redux-store?uid=${uid}&getSpecific=cardioData`
+    );
+    const result: { cardioData: CardioData[] } = await response.json();
+    dispatch(setCardioData(result.cardioData));
+
     setTimeout(() => {
       router.refresh();
       context.changeActiveOverlay("animation");

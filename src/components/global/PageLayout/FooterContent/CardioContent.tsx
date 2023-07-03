@@ -39,11 +39,13 @@ export default function CardioContent({ currTab }: { currTab: string[] }) {
         destPath={`/${uid}/cardio/running`}
         image={running}
         text="Running"
+        matcher="running"
       />
       <ContentItem
         destPath={`/${uid}/cardio/cycling`}
         image={cycling}
         text="Cycling"
+        matcher="cycling"
       />
       <button
         onClick={handleExerciseCreateClick}
@@ -69,6 +71,7 @@ export default function CardioContent({ currTab }: { currTab: string[] }) {
         destPath={`/${uid}/cardio/swimming`}
         image={swimming}
         text="Swimming"
+        matcher="swimming"
       />
       <ContentItem
         destPath={`/${uid}/cardio/search`}

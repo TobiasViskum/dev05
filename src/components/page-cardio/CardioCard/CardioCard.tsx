@@ -6,6 +6,7 @@ import Image from "next/image";
 import { settingsPng } from "@/assets/images";
 import RightButton from "./RightButtons";
 import CardProvider from "./CardProvider";
+import Link from "next/link";
 
 interface Props {
   strExerciseData: string;
@@ -19,12 +20,13 @@ interface Props {
 
 export default function CardioCard({ strExerciseData, stylingData }: Props) {
   const exerciseData: CardioData = JSON.parse(strExerciseData);
+  const discipline = exerciseData.discipline_name.toLowerCase();
 
   return (
     <CardProvider exerciseData={exerciseData}>
       <div
         className={twJoin(
-          "group relative min-w-[300px] overflow-hidden",
+          "group relative min-w-[300px] overflow-hidden transition-all",
           stylingData.isExerciseOdd ? "vsm:-ml-3 vsm:min-w-[322px]" : ""
         )}
       >
@@ -57,14 +59,17 @@ export default function CardioCard({ strExerciseData, stylingData }: Props) {
               </div>
             </div>
           </div>
-          <div className="absolute -bottom-1 right-0 h-8 w-8 p-1.5">
+          <Link
+            href={`/${exerciseData.uid}/cardio/${exerciseData.id}?matcher=${discipline}&prev=/${exerciseData.uid}/cardio/${discipline}`}
+            className="absolute -bottom-1 right-0 h-8 w-8 rounded-full p-1.5"
+          >
             <Image
               priority
               src={settingsPng}
               alt="SET"
               className="image-blue"
             />
-          </div>
+          </Link>
         </div>
         <div
           className={twJoin(
