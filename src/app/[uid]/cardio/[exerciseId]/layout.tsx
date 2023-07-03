@@ -1,5 +1,5 @@
 import { getCardioExercise } from "@/lib/db/cardio";
-import SetReduxState from "./setReduxState";
+import SetReduxState from "./SetReduxState";
 
 export default async function CardioSettingsRoot({
   children,
