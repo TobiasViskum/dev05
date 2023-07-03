@@ -18,7 +18,9 @@ export default function EditAmount() {
   const inputRef = useRef<HTMLInputElement | null>(null);
   const [inputValue, setInputValue] = useState("");
   const [placeholderValue, setPlaceholderValue] = useState(
-    exerciseData.distance.toString()
+    exerciseData.unit_name.toLowerCase() === "mi"
+      ? roundToTwoDecimals(exerciseData.distance * UNIT_CONVERTER).toString()
+      : roundToTwoDecimals(exerciseData.distance).toString()
   );
   const [currUnit, setCurrUnit] = useState(exerciseData.unit_name);
   const [timeValue, setTimeValue] = useState({
@@ -32,7 +34,11 @@ export default function EditAmount() {
   const secondsRef = useRef<HTMLInputElement | null>(null);
 
   useEffect(() => {
-    setPlaceholderValue(exerciseData.distance.toString());
+    setPlaceholderValue(
+      exerciseData.unit_name.toLowerCase() === "mi"
+        ? roundToTwoDecimals(exerciseData.distance * UNIT_CONVERTER).toString()
+        : roundToTwoDecimals(exerciseData.distance).toString()
+    );
     setCurrUnit(exerciseData.unit_name);
     setInputValue("");
     setTimeValue({ hours: "", minutes: "", seconds: "" });
