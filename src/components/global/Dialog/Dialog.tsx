@@ -4,7 +4,7 @@ import { forwardRef, useRef, useState, useEffect } from "react";
 
 interface DialogProps
   extends React.DetailedHTMLProps<
-    React.HTMLAttributes<HTMLDialogElement>,
+    React.DialogHTMLAttributes<HTMLDialogElement>,
     HTMLDialogElement
   > {
   children?: React.ReactNode;

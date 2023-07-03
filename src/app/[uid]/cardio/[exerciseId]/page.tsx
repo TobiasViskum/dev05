@@ -10,14 +10,14 @@ export default async function page({ params }: ExtendedViskumAppParams) {
   const exerciseData = await getCardioExercise(exerciseId);
 
   return (
-    <>
+    <div className="flex w-full flex-col items-center">
       <h1 className="mt-2 text-lg tn:text-2xl">{exerciseData.name}</h1>
-      <div className="mb-4 h-3 w-32 border-b border-inactive" />
+      <div className="mb-6 h-2 w-48 border-b border-inactive" />
       <div className="flex w-full flex-col items-center gap-y-2">
         <div className="flex w-full items-center">
           <EditName />
         </div>
       </div>
-    </>
+    </div>
   );
 }

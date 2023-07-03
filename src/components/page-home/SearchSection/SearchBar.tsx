@@ -2,7 +2,6 @@
 import Image from "next/image";
 import { search } from "@/assets/images";
 import { twJoin } from "tailwind-merge";
-import { Input } from "@/components/global";
 import { useAppSelector } from "@/store/useClient";
 
 export default function SearchBar() {
@@ -28,13 +27,13 @@ export default function SearchBar() {
           />
         </div>
         <div className="h-4 w-2 border-0 border-l border-solid border-inactive" />
-        <Input
+        <input
           id="searchInput"
           spellCheck={false}
           placeholder="Search..."
           onFocus={(e) => handleFocus(true)}
           onBlur={() => handleFocus(false)}
-          className="mr-2 w-full border-0 py-0 text-base text-first outline-0"
+          className="mr-2 w-full border-0 bg-first py-0 text-base text-first placeholder-[var(--text-second)] outline-0"
         />
       </div>
     </>
