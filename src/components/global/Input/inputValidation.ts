@@ -1,9 +1,3 @@
-function maxCharacters(newInput: string, maxCharacters: number | undefined) {
-  if (typeof maxCharacters === "undefined") return true;
-  if (newInput.length <= maxCharacters) return true;
-  return false;
-}
-
 function onlyLetters(newInput: string, onlyLetters: boolean | undefined) {
   if (typeof onlyLetters === "undefined") return true;
   if (/^[a-zA-Z]+$/.test(newInput)) return true;
@@ -70,7 +64,6 @@ function maxDecimals(
 }
 
 export const inputValidation = {
-  maxCharacters: maxCharacters,
   onlyLetters: onlyLetters,
   onlyIntegers: onlyIntegers,
   onlyNumbers: onlyNumbers,

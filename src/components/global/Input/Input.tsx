@@ -18,6 +18,7 @@ interface InputProps
   maxValue?: number;
   useComma?: boolean;
   maxDecimals?: number;
+  showFullKeyboard?: boolean;
 }
 
 const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
@@ -30,6 +31,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
     maxValue,
     useComma,
     maxDecimals,
+    showFullKeyboard,
     className,
     inputMode,
     pattern,
@@ -43,18 +45,20 @@ const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
   },
   ref
 ) {
-  const [inputValue, setInputValue] = useState("");
+  const [inputValue, setInputValue] = useState(value || "");
 
   propValidation();
 
   const inputRef = useRef<HTMLInputElement | null>(null);
 
   function getInputMode() {
+    if (showFullKeyboard) return inputMode;
     if (onlyIntegers || onlyNumbers) {
       return "decimal";
     } else return inputMode;
   }
   function getPattern() {
+    if (showFullKeyboard) return pattern;
     if (onlyIntegers) {
       return "[0-9]*";
     } else if (onlyNumbers) {
@@ -67,7 +71,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
   return (
     <>
       <input
-        value={inputValue}
+        value={inputValue || value}
         spellCheck={false}
         ref={(node) => {
           inputRef.current = node;
@@ -84,8 +88,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
           const value = e.target.value;
           if (
             value === "" ||
-            (inputValidation.maxCharacters(value, maxCharacters) &&
-              inputValidation.onlyLetters(value, onlyLetters) &&
+            (inputValidation.onlyLetters(value, onlyLetters) &&
               inputValidation.onlyIntegers(value, onlyIntegers) &&
               inputValidation.onlyNumbers(value, onlyNumbers, useComma) &&
               inputValidation.minMaxValue(value, minValue, maxValue) &&
