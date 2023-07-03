@@ -24,7 +24,7 @@ export function getFitnessGroups(
         item[`group_name_${type}`] === null
           ? nameIfNoGroup
           : item[`group_name_${type}`];
-      if (itemGroup === group) {
+      if (itemGroup === group && item[`has_${type}`] === 1) {
         exercisesInGroup.push(item);
       }
     });
@@ -40,7 +40,8 @@ export function getFitnessGroups(
       groupChecker[`group_name_${type}`] === null
         ? nameIfNoGroup
         : groupChecker[`group_name_${type}`];
-    if (groupChecker[`has_${type}`] && groupName && groupId) {
+
+    if (groupChecker[`has_${type}`] === 1 && groupName && groupId) {
       if (insertedGroups[groupName] == undefined) {
         insertedGroups[groupName] = groupName;
         const exercisesInGroup = getItemsInGroup(groupName);
@@ -52,5 +53,6 @@ export function getFitnessGroups(
       }
     }
   });
+
   return fitnessGroupList;
 }

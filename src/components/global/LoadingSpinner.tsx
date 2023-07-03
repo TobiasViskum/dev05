@@ -5,10 +5,11 @@ import { CardioOverlayContext } from "../page-cardio/CardioOverlay/CardioOverlay
 
 export default function LoadingSpinner({ opacity }: { opacity?: string }) {
   const context = useContext(CardioOverlayContext);
-  const opacityTw =
-    opacity || context.activeOverlay === "animation"
-      ? "opacity-0"
-      : "opacity-100";
+  const superMan =
+    context.activeOverlay === "animation" ? "opacity-0" : "opacity-100";
+  const opacityTw = opacity || superMan;
+
+  console.log(opacityTw, superMan);
 
   return (
     <>
