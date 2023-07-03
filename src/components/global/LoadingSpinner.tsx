@@ -9,8 +9,6 @@ export default function LoadingSpinner({ opacity }: { opacity?: string }) {
     context.activeOverlay === "animation" ? "opacity-0" : "opacity-100";
   const opacityTw = opacity || superMan;
 
-  console.log(opacityTw, superMan);
-
   return (
     <>
       <div className={`h-8 w-8 bg-transparent transition-opacity ${opacityTw}`}>

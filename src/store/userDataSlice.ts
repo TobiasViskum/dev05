@@ -4,12 +4,14 @@ interface InitialState {
   profileData: ProfileData;
   appData: AppData[];
   fitnessData: FitnessData[];
+  cardioData: CardioData[];
 }
 
 const initialState: InitialState = {
   profileData: {} as ProfileData,
   appData: [],
   fitnessData: [],
+  cardioData: [],
 };
 
 const userDataSlice = createSlice({
@@ -25,9 +27,12 @@ const userDataSlice = createSlice({
     setFitnessData: (state, action: PayloadAction<FitnessData[]>) => {
       state.fitnessData = action.payload;
     },
+    setCardioData: (state, action: PayloadAction<CardioData[]>) => {
+      state.cardioData = action.payload;
+    },
   },
 });
 
-export const { setProfileData, setAppData, setFitnessData } =
+export const { setProfileData, setAppData, setFitnessData, setCardioData } =
   userDataSlice.actions;
 export default userDataSlice.reducer;

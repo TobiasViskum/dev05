@@ -1,6 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
 import { store } from "@/store";
-import { getProfileData, getAppData, getFitnessData } from "@/lib/db";
+import {
+  getProfileData,
+  getAppData,
+  getFitnessData,
+  getCardioData,
+} from "@/lib/db";
 
 export async function GET(request: NextRequest) {
   const uid = request.nextUrl.searchParams.get("uid") as Uid | null;
@@ -12,9 +17,10 @@ export async function GET(request: NextRequest) {
       fitnessData: [],
     });
 
-  const [profileData, fitnessData] = await Promise.all([
+  const [profileData, fitnessData, cardioData] = await Promise.all([
     getProfileData(uid),
     getFitnessData(uid),
+    getCardioData(uid),
   ]);
 
   if (!profileData)
@@ -30,5 +36,6 @@ export async function GET(request: NextRequest) {
     profileData: profileData,
     appData: appData,
     fitnessData: fitnessData,
+    cardioData: cardioData,
   });
 }

@@ -6,12 +6,14 @@ import {
   setProfileData,
   setAppData,
   setFitnessData,
+  setCardioData,
 } from "@/store/userDataSlice";
 
 interface ReduxData {
   profileData: ProfileData;
   appData: AppData[];
   fitnessData: FitnessData[];
+  cardioData: CardioData[];
 }
 
 export default function SetReduxStore({ uid }: { uid: Uid }) {
@@ -26,6 +28,7 @@ export default function SetReduxStore({ uid }: { uid: Uid }) {
       dispatch(setProfileData(data.profileData));
       dispatch(setAppData(data.appData));
       dispatch(setFitnessData(data.fitnessData));
+      dispatch(setCardioData(data.cardioData));
     }
     getData();
   }, [uid, dispatch]);
