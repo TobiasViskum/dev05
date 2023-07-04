@@ -1,20 +1,23 @@
 "use client";
 import { useAppSelector } from "@/store/useClient";
-import { twJoin } from "tailwind-merge";
 import { Input } from "@/components/global/Input";
+import { useContext } from "react";
+import { SettingsContext } from "./Content";
 
 export default function EditName() {
+  const context = useContext(SettingsContext);
   const exerciseData = useAppSelector(
     (state) => state.exerciseState.cardioExercise
   );
 
   return (
     <>
-      <p className="ml-4 w-32">Name:</p>
+      <p className="w-32">Name:</p>
       <Input
-        onlyNumbers
-        useComma
-        maxDecimals={3}
+        spellCheck={false}
+        focusNextElementOnEnter
+        maxCharacters={45}
+        onChange={(e) => context.handleNameInput(e.target.value)}
         className="w-full border-inactive bg-first text-first placeholder-[var(--text-second)]"
         placeholder={exerciseData.name}
       />

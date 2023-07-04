@@ -1,3 +1,5 @@
 import EditName from "./EditName";
+import Content from "./Content";
+import EditGroup from "./EditGroup";
 
-export { EditName };
+export { EditName, Content, EditGroup };

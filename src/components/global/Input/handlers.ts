@@ -7,8 +7,12 @@ function handleChange(
   }
 }
 
-function handleFocus(e: React.FocusEvent<HTMLInputElement>) {
+function handleFocus(
+  e: React.FocusEvent<HTMLInputElement>,
+  disableSelection: boolean | undefined
+) {
   e.target.placeholder = "";
+  if (typeof disableSelection !== "undefined" && disableSelection) return;
   e.target.select();
 }
 

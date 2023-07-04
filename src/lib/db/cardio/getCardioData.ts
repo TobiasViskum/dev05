@@ -1,9 +1,9 @@
 import { execute } from "../db";
 import { cardioDataParser } from "./cardioDataParser";
+import { cardioQuery } from "./cardioQuery";
 
 export async function getCardioData(uid: Uid) {
-  const query =
-    "SELECT * FROM cardio_stat_table AS a LEFT JOIN cardio_grouping AS b ON a.group_id=b.group_id LEFT JOIN cardio_disciplines AS c ON a.discipline_id=c.discipline_id LEFT JOIN cardio_units AS d ON a.unit_id=d.unit_id WHERE a.uid=?";
+  const query = `${cardioQuery} WHERE a.uid=?`;
   const values = [uid];
 
   const result = await execute<CardioData[]>(query, values);

@@ -14,6 +14,7 @@
   "dependencies": {
     "@mantine/hooks": "^6.0.14",
     "@reduxjs/toolkit": "^1.9.5",
+    "@tailwindcss/container-queries": "^0.1.1",
     "@types/node": "20.3.1",
     "@types/react": "18.2.13",
     "@types/react-dom": "18.2.6",
@@ -22,7 +23,7 @@
     "eslint": "8.43.0",
     "eslint-config-next": "13.4.6",
     "framer-motion": "^10.12.17",
-    "next": "13.4.7",
+    "next": "13.4.8",
     "postcss": "8.4.24",
     "react": "18.2.0",
     "react-dom": "18.2.0",

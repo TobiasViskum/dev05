@@ -12,9 +12,10 @@ export default async function CardioSettingsRoot({
   const strExerciseData = JSON.stringify(exerciseData);
 
   return (
-    <>
-      <SetReduxState strExerciseData={strExerciseData} />
-      {children}
-    </>
+    <div className="flex flex-col items-center">
+      <SetReduxState strExerciseData={strExerciseData}>
+        {children}
+      </SetReduxState>
+    </div>
   );
 }
