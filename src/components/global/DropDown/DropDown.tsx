@@ -153,7 +153,7 @@ const DropDown = forwardRef<HTMLInputElement, InputProps>(function DropDown(
       />
       <div
         className={twJoin(
-          "absolute mt-2 grid max-h-64 w-full origin-top justify-items-center gap-x-3 gap-y-3 overflow-y-auto bg-first px-2 pb-3 pt-1.5 transition-transform duration-500",
+          "absolute mt-2 grid max-h-64 w-full origin-top justify-items-center gap-x-2 gap-y-2 overflow-y-auto bg-first px-2 pb-3 pt-1.5 transition-transform duration-500",
           items.length === 1 ? "grid-cols-1" : "@md:grid-cols-2",
           isDropDownVisible ? "scale-y-100" : "scale-y-0",
           styling?.dropdownContainer

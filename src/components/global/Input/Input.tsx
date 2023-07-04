@@ -142,7 +142,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
         }}
         placeholder={placeholder && placeholder}
         className={twMerge(
-          "rounded-md border border-solid bg-white px-2 py-1.5 text-center text-sm text-black placeholder-gray-500 focus:outline focus:outline-[var(--text-active)]",
+          "rounded-md border border-solid bg-white px-2 py-1.5 text-center text-sm text-black placeholder-gray-500 focus:outline focus:outline-1 focus:outline-[var(--text-active)]",
           className
         )}
       />
