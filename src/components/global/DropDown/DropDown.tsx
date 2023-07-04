@@ -92,12 +92,6 @@ const DropDown = forwardRef<HTMLInputElement, InputProps>(function DropDown(
     }
   }, [isDropDownVisible]);
 
-  function handleItemClick(e: DropdownItem) {
-    setIsDropDownVisible(false);
-    setSearchInput(e.title);
-    if (onItemClick) onItemClick(e);
-  }
-
   useEffect(() => {
     if (containerRef.current) {
       containerRef.current.addEventListener("click", (e) => {
@@ -108,13 +102,13 @@ const DropDown = forwardRef<HTMLInputElement, InputProps>(function DropDown(
           const dropDownItem = dropDownItems?.find((obj) => obj.id === id);
 
           if (dropDownItem) setSearchInput(dropDownItem.title);
+        } else if (target.ariaLabel === "createDropDownItem") {
         }
       });
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
   return (
     <div
       className={twMerge(
@@ -159,10 +153,8 @@ const DropDown = forwardRef<HTMLInputElement, InputProps>(function DropDown(
       />
       <div
         className={twJoin(
-          "absolute mt-2 grid max-h-64 w-full origin-top justify-items-center gap-x-3 gap-y-3 overflow-y-auto bg-first px-2 pb-3 pt-1.5 transition-transform",
-          dropDownItems?.length === 1
-            ? "grid-cols-1 bg-red-800"
-            : "@md:grid-cols-2",
+          "absolute mt-2 grid max-h-64 w-full origin-top justify-items-center gap-x-3 gap-y-3 overflow-y-auto bg-first px-2 pb-3 pt-1.5 transition-transform duration-500",
+          items.length === 1 ? "grid-cols-1" : "@md:grid-cols-2",
           isDropDownVisible ? "scale-y-100" : "scale-y-0",
           styling?.dropdownContainer
         )}
@@ -170,12 +162,15 @@ const DropDown = forwardRef<HTMLInputElement, InputProps>(function DropDown(
         {items.map((item, index) => {
           return (
             <button
-              aria-label="dropDownItem"
+              aria-label={
+                items.length === 1 ? "createDropDownItem" : "dropDownItem"
+              }
               id={item.id.toString()}
               tabIndex={-1}
               key={index}
               className={twMerge(
-                "z-10 w-full overflow-hidden rounded-md border border-inactive bg-first p-1 text-center",
+                "z-10 overflow-hidden rounded-md border border-inactive bg-first p-1 text-center",
+                items.length === 1 ? "w-full @md:w-1/2" : "w-full",
                 styling?.dropdownItem,
                 item.id === focusedItem?.id
                   ? twMerge("ring-2", styling?.dropDownItemFocus)
@@ -184,7 +179,9 @@ const DropDown = forwardRef<HTMLInputElement, InputProps>(function DropDown(
             >
               <p
                 id={item.id.toString()}
-                aria-label="dropDownItem"
+                aria-label={
+                  items.length === 1 ? "createDropDownItem" : "dropDownItem"
+                }
                 className={twMerge(
                   "z-10 overflow-hidden break-words text-sm",
                   styling?.dropDownItemTitle
@@ -194,7 +191,9 @@ const DropDown = forwardRef<HTMLInputElement, InputProps>(function DropDown(
               </p>
               <p
                 id={item.id.toString()}
-                aria-label="dropDownItem"
+                aria-label={
+                  items.length === 1 ? "createDropDownItem" : "dropDownItem"
+                }
                 className={twMerge(
                   "z-10 text-2xs text-second",
                   styling?.dropDownItemDescription
