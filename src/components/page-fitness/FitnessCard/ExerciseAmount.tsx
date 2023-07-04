@@ -3,7 +3,7 @@
 import { usePathname } from "next/navigation";
 import { useEffect, useState, useRef } from "react";
 import { useAppDispatch } from "@/store/useClient";
-import { setFitnessExercise } from "@/store/exerciseStateSlice";
+import { setFitnessExercise } from "@/store/appStateSlice";
 import { twJoin } from "tailwind-merge";
 import { roundToOneDecimal } from "@/lib/util";
 

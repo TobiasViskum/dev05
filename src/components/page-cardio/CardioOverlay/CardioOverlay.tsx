@@ -5,8 +5,6 @@ import { twJoin } from "tailwind-merge";
 import { EditAmount, CreateExercise } from "./Content";
 import { LoadingSpinner, Checkmark } from "@/components/global";
 import { Dialog } from "@/components/global/Dialog";
-import { useAppDispatch } from "@/store/useClient";
-import { setCardioExerciseData } from "@/store/cardioStateSlice";
 import { v4 as uuidv4 } from "uuid";
 
 const initialValue: {
@@ -24,7 +22,6 @@ const initialValue: {
 export const CardioOverlayContext = createContext(initialValue);
 
 export default function CardioOverlay() {
-  const dispatch = useAppDispatch();
   const [isClosed, setIsClosed] = useState(false);
   const [activeOverlay, setActiveOverlay] = useState<Overlay>("");
   const [isClosable, setIsClosable] = useState(true);

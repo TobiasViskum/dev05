@@ -2,7 +2,7 @@
 
 import { useEffect, useState, useContext } from "react";
 import { useAppDispatch } from "@/store/useClient";
-import { setCardioExercise } from "@/store/exerciseStateSlice";
+import { setCardioExercise } from "@/store/appStateSlice";
 import { CardContext } from "./CardProvider";
 import { twJoin } from "tailwind-merge";
 import { roundToOneDecimal, roundToTwoDecimals } from "@/lib/util";

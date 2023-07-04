@@ -61,3 +61,11 @@ interface CardioData {
   unit_name: string;
   unit_full_name: string;
 }
+
+interface CardioGroupings {
+  group_id: number;
+  group_name: string;
+  group_sort_order: number;
+  profile_group_id: string;
+  discipline: string;
+}

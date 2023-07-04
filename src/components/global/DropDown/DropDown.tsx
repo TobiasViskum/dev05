@@ -6,10 +6,8 @@ import { twJoin, twMerge } from "tailwind-merge";
 
 interface DropdownItem {
   title: string;
-  id: number;
+  id?: number;
   description?: string;
-  prefix?: string;
-  suffix?: string;
 }
 
 interface InputProps
@@ -31,13 +29,7 @@ interface InputProps
   disableSelection?: boolean;
   focusNextElementOnEnter?: boolean;
   dropDownItems?: DropdownItem[];
-  onItemClick?: ({
-    title,
-    id,
-    description,
-    prefix,
-    suffix,
-  }: DropdownItem) => void;
+  onUpdate?: ({ title, description, id }: DropdownItem) => void;
   styling?: {
     main?: string;
     feedback?: string;
@@ -58,7 +50,7 @@ const DropDown = forwardRef<HTMLInputElement, InputProps>(function DropDown(
     onChange,
     onFocus,
     onBlur,
-    onItemClick,
+    onUpdate,
     styling,
     dropDownItems,
     ...props
@@ -71,21 +63,36 @@ const DropDown = forwardRef<HTMLInputElement, InputProps>(function DropDown(
   const [focusedItem, setFocusedItem] = useState<DropdownItem | null>(null);
 
   const containerRef = useRef<HTMLDivElement | null>(null);
+  const hasSentUpdate = useRef(false);
+  const hasMounted = useRef(false);
 
   useEffect(() => {
+    if (hasMounted.current) {
+      const dropDownItem = dropDownItems?.find(
+        (obj) => obj.title === searchInput
+      );
+      if (onUpdate && hasSentUpdate.current === false) {
+        if (dropDownItem) {
+          onUpdate(dropDownItem);
+        } else {
+          onUpdate({ title: searchInput });
+        }
+      }
+    }
+
+    hasSentUpdate.current = false;
     if (dropDownItems) {
       let newItems = dropDownItems.filter(
         (item) =>
-          item.title.includes(searchInput) || item.id.toString() === searchInput
+          item.title.includes(searchInput) ||
+          item.id?.toString() === searchInput
       );
       if (newItems.length === 0) {
-        newItems = [
-          { prefix: 'Create: "', title: `${searchInput}`, suffix: '"', id: 1 },
-        ];
+        newItems = [{ title: `Create: "${searchInput}"`, id: 1 }];
       }
       setItems(newItems);
     }
-  }, [searchInput, dropDownItems]);
+  }, [searchInput, dropDownItems, onUpdate]);
   useEffect(() => {
     if (isDropDownVisible) {
       setFocusedItem(null);
@@ -93,6 +100,7 @@ const DropDown = forwardRef<HTMLInputElement, InputProps>(function DropDown(
   }, [isDropDownVisible]);
 
   useEffect(() => {
+    hasMounted.current = true;
     if (containerRef.current) {
       containerRef.current.addEventListener("click", (e) => {
         const target = e.target as HTMLElement;
@@ -101,12 +109,14 @@ const DropDown = forwardRef<HTMLInputElement, InputProps>(function DropDown(
           const id = Number(target.id);
           const dropDownItem = dropDownItems?.find((obj) => obj.id === id);
 
-          if (dropDownItem) setSearchInput(dropDownItem.title);
-        } else if (target.ariaLabel === "createDropDownItem") {
+          if (dropDownItem) {
+            hasSentUpdate.current = true;
+            onUpdate && onUpdate(dropDownItem);
+            setSearchInput(dropDownItem.title);
+          }
         }
       });
     }
-
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   return (
@@ -139,6 +149,7 @@ const DropDown = forwardRef<HTMLInputElement, InputProps>(function DropDown(
         ref={forwardRef}
         onChange={(e) => {
           handleChange(e);
+
           onChange && onChange(e);
         }}
         onFocus={(e) => {
@@ -162,10 +173,8 @@ const DropDown = forwardRef<HTMLInputElement, InputProps>(function DropDown(
         {items.map((item, index) => {
           return (
             <button
-              aria-label={
-                items.length === 1 ? "createDropDownItem" : "dropDownItem"
-              }
-              id={item.id.toString()}
+              aria-label={items.length === 1 ? "" : "dropDownItem"}
+              id={item.id?.toString()}
               tabIndex={-1}
               key={index}
               className={twMerge(
@@ -178,22 +187,18 @@ const DropDown = forwardRef<HTMLInputElement, InputProps>(function DropDown(
               )}
             >
               <p
-                id={item.id.toString()}
-                aria-label={
-                  items.length === 1 ? "createDropDownItem" : "dropDownItem"
-                }
+                id={item.id?.toString()}
+                aria-label={items.length === 1 ? "" : "dropDownItem"}
                 className={twMerge(
                   "z-10 overflow-hidden break-words text-sm",
                   styling?.dropDownItemTitle
                 )}
               >
-                {[item.prefix, item.title, item.suffix].join("")}
+                {item.title}
               </p>
               <p
-                id={item.id.toString()}
-                aria-label={
-                  items.length === 1 ? "createDropDownItem" : "dropDownItem"
-                }
+                id={item.id?.toString()}
+                aria-label={items.length === 1 ? "" : "dropDownItem"}
                 className={twMerge(
                   "z-10 text-2xs text-second",
                   styling?.dropDownItemDescription

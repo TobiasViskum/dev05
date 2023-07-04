@@ -1,6 +1,6 @@
 "use client";
 
-import { EditName, EditGroup } from ".";
+import { EditName, EditGroup, EditIsSprint } from ".";
 import { useState } from "react";
 import { createContext } from "react";
 
@@ -40,7 +40,7 @@ export default function Content() {
         <EditGroup />
       </div>
       <div className="flex w-full max-w-2xl items-center justify-center">
-        <EditName />
+        <EditIsSprint />
       </div>
     </SettingsContext.Provider>
   );

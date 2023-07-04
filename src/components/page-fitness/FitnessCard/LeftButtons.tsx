@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { edit, locked } from "@/assets/images";
 import { useAppDispatch } from "@/store/useClient";
-import { setFitnessExercise } from "@/store/exerciseStateSlice";
+import { setFitnessExercise } from "@/store/appStateSlice";
 
 export default function LeftButtons({
   exerciseData,

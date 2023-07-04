@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { useState, useContext } from "react";
 import { edit, locked } from "@/assets/images";
 import { useAppDispatch } from "@/store/useClient";
-import { setCardioExercise } from "@/store/exerciseStateSlice";
+import { setCardioExercise } from "@/store/appStateSlice";
 import { CardContext } from "./CardProvider";
 
 export default function LeftButtons() {

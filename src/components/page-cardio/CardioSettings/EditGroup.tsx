@@ -7,17 +7,31 @@ import { DropDown } from "@/components/global/DropDown";
 
 export default function EditGroup() {
   const context = useContext(SettingsContext);
-  const exerciseData = useAppSelector(
-    (state) => state.exerciseState.cardioExercise
+  const exerciseData = useAppSelector((state) => state.appState.cardioExercise);
+  const cardioGroupings = useAppSelector(
+    (state) => state.appState.cardioGroupings
   );
 
-  const content = [
-    { title: "Title", description: "", id: 1 },
-    { title: "Title", description: "", id: 2 },
-    { title: "Title", description: "", id: 3 },
-    { title: "Title", description: "", id: 4 },
-    { title: "Title", description: "", id: 5 },
-  ];
+  let content = [];
+
+  for (let i = 0; i < cardioGroupings.length; i++) {
+    const item = cardioGroupings[i];
+    if (
+      item.group_id !== exerciseData.group_id &&
+      item.group_name !== exerciseData.group_name && //if there for some case is a duplicate
+      (item.discipline === "all" || item.discipline !== exerciseData.discipline)
+    ) {
+      content.push({ title: item.group_name, id: item.group_id });
+    }
+  }
+
+  function onGroupChange(e: {
+    title: string;
+    description?: string;
+    id?: number;
+  }) {
+    context.handleGroupInput(e.title);
+  }
 
   return (
     <>
@@ -25,7 +39,7 @@ export default function EditGroup() {
       <DropDown
         spellCheck={false}
         focusNextElementOnEnter
-        onItemClick={(e) => console.log(e)}
+        onUpdate={(e) => onGroupChange(e)}
         className="w-full border-inactive bg-first text-first placeholder-[var(--text-second)]"
         placeholder={exerciseData.group_name}
         dropDownItems={content}

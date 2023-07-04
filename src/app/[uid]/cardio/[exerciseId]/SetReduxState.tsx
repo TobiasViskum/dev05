@@ -1,18 +1,22 @@
 "use client";
 
 import { useAppDispatch } from "@/store/useClient";
-import { setCardioExercise } from "@/store/exerciseStateSlice";
+import { setCardioExercise } from "@/store/appStateSlice";
+import { setCardioGroupings } from "@/store/appStateSlice";
 
 export default function SetReduxState({
-  strExerciseData,
+  exerciseData,
+  cardioGroupings,
   children,
 }: {
-  strExerciseData: string;
+  exerciseData: CardioData;
+  cardioGroupings: CardioGroupings[];
   children: React.ReactNode;
 }) {
   const dispatch = useAppDispatch();
-  const exerciseData: CardioData = JSON.parse(strExerciseData);
+
   dispatch(setCardioExercise(exerciseData));
+  dispatch(setCardioGroupings(cardioGroupings));
 
   return <>{children}</>;
 }

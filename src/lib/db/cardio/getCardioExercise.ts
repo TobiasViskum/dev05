@@ -6,9 +6,7 @@ export default async function getCardioExercise(id: string) {
   const values = [id];
   const [exerciseData] = await execute<CardioDataUnparsed[]>(query, values);
   exerciseData.time_amount = JSON.parse(exerciseData.time_amount);
-  const serializedData: CardioDataUnparsed = JSON.parse(
-    JSON.stringify(exerciseData)
-  );
+  const serializedData: CardioData = JSON.parse(JSON.stringify(exerciseData));
 
   return serializedData;
 }

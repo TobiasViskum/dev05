@@ -9,9 +9,7 @@ import { flushSync } from "react-dom";
 export default function EditAmount() {
   const context = useContext(CardioOverlayContext);
 
-  const exerciseData = useAppSelector(
-    (state) => state.exerciseState.cardioExercise
-  );
+  const exerciseData = useAppSelector((state) => state.appState.cardioExercise);
   const UNIT_CONVERTER = 0.62137119;
   const MAX_INPUT = 1000;
   const router = useRouter();

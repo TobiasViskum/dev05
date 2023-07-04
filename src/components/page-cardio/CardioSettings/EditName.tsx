@@ -6,9 +6,7 @@ import { SettingsContext } from "./Content";
 
 export default function EditName() {
   const context = useContext(SettingsContext);
-  const exerciseData = useAppSelector(
-    (state) => state.exerciseState.cardioExercise
-  );
+  const exerciseData = useAppSelector((state) => state.appState.cardioExercise);
 
   return (
     <>
