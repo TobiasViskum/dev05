@@ -6,7 +6,7 @@ export default async function getCardioGroupings(profileUid: Uid) {
   const values = [profileUid];
 
   const result = await execute<CardioGroupings[]>(query, values);
-  const groupings = JSON.parse(JSON.stringify(result));
+  const groupings: CardioGroupings[] = JSON.parse(JSON.stringify(result));
 
   return groupings;
 }

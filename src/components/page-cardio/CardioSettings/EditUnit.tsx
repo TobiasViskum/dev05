@@ -5,23 +5,21 @@ import { SettingsContext } from "./Content";
 import { useAppSelector } from "@/store/useClient";
 import { DropDown } from "@/components/global/DropDown";
 
-export default function EditGroup() {
+export default function EditUnit() {
   const context = useContext(SettingsContext);
   const exerciseData = useAppSelector((state) => state.appState.cardioExercise);
-  const cardioGroupings = useAppSelector(
-    (state) => state.appState.cardioGroupings
-  );
+  const cardioGroupings = useAppSelector((state) => state.appState.cardioUnits);
 
   let content = [];
 
   for (let i = 0; i < cardioGroupings.length; i++) {
     const item = cardioGroupings[i];
+
     if (
-      item.group_id !== exerciseData.group_id &&
-      item.group_name !== exerciseData.group_name && //if there for some case is a duplicate
-      (item.discipline === "all" || item.discipline !== exerciseData.discipline)
+      item.unit_id !== exerciseData.unit_id &&
+      item.unit_name !== exerciseData.unit_name
     ) {
-      content.push({ title: item.group_name, id: item.group_id });
+      content.push({ title: item.unit_name, id: item.unit_id });
     }
   }
 
@@ -35,15 +33,16 @@ export default function EditGroup() {
 
   return (
     <>
-      <p className="w-32">Group:</p>
+      <p className="w-32">Unit:</p>
       <DropDown
+        disableCreate
         spellCheck={false}
         focusNextElementOnEnter
         onUpdate={(e) => onGroupChange(e)}
         styling={{
-          main: "z-20 w-full border-inactive bg-first text-first placeholder-[var(--text-second)]",
+          main: "z-10 w-full border-inactive bg-first text-first placeholder-[var(--text-second)]",
         }}
-        placeholder={exerciseData.group_name}
+        placeholder={exerciseData.unit_name}
         dropDownItems={content}
       />
     </>

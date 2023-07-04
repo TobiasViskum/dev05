@@ -6,7 +6,7 @@ import { twJoin, twMerge } from "tailwind-merge";
 
 interface DropdownItem {
   title: string;
-  id?: number;
+  id: number;
   description?: string;
 }
 
@@ -29,6 +29,7 @@ interface InputProps
   disableSelection?: boolean;
   focusNextElementOnEnter?: boolean;
   dropDownItems?: DropdownItem[];
+  disableCreate?: boolean;
   onUpdate?: ({ title, description, id }: DropdownItem) => void;
   styling?: {
     main?: string;
@@ -52,6 +53,8 @@ const DropDown = forwardRef<HTMLInputElement, InputProps>(function DropDown(
     onBlur,
     onUpdate,
     styling,
+    className,
+    disableCreate,
     dropDownItems,
     ...props
   },
@@ -66,6 +69,17 @@ const DropDown = forwardRef<HTMLInputElement, InputProps>(function DropDown(
   const hasSentUpdate = useRef(false);
   const hasMounted = useRef(false);
 
+  function getAmountOfFoundItems() {
+    return (
+      dropDownItems &&
+      dropDownItems.filter(
+        (item) =>
+          item.title.toLowerCase().includes(searchInput.toLowerCase()) ||
+          item.id?.toString() === searchInput
+      ).length
+    );
+  }
+
   useEffect(() => {
     if (hasMounted.current) {
       const dropDownItem = dropDownItems?.find(
@@ -75,7 +89,7 @@ const DropDown = forwardRef<HTMLInputElement, InputProps>(function DropDown(
         if (dropDownItem) {
           onUpdate(dropDownItem);
         } else {
-          onUpdate({ title: searchInput });
+          onUpdate({ title: searchInput, id: -1 });
         }
       }
     }
@@ -84,15 +98,15 @@ const DropDown = forwardRef<HTMLInputElement, InputProps>(function DropDown(
     if (dropDownItems) {
       let newItems = dropDownItems.filter(
         (item) =>
-          item.title.includes(searchInput) ||
+          item.title.toLowerCase().includes(searchInput.toLowerCase()) ||
           item.id?.toString() === searchInput
       );
-      if (newItems.length === 0) {
+      if (newItems.length === 0 && disableCreate !== true) {
         newItems = [{ title: `Create: "${searchInput}"`, id: 1 }];
       }
       setItems(newItems);
     }
-  }, [searchInput, dropDownItems, onUpdate]);
+  }, [searchInput, dropDownItems, onUpdate, disableCreate]);
   useEffect(() => {
     if (isDropDownVisible) {
       setFocusedItem(null);
@@ -111,6 +125,7 @@ const DropDown = forwardRef<HTMLInputElement, InputProps>(function DropDown(
 
           if (dropDownItem) {
             hasSentUpdate.current = true;
+
             onUpdate && onUpdate(dropDownItem);
             setSearchInput(dropDownItem.title);
           }
@@ -121,10 +136,7 @@ const DropDown = forwardRef<HTMLInputElement, InputProps>(function DropDown(
   }, []);
   return (
     <div
-      className={twMerge(
-        "relative z-10 h-full w-full @container",
-        styling?.main
-      )}
+      className={twMerge("relative h-full w-full @container", styling?.main)}
       ref={containerRef}
     >
       <Input
@@ -160,55 +172,83 @@ const DropDown = forwardRef<HTMLInputElement, InputProps>(function DropDown(
           handleBlur(e);
           onBlur && onBlur(e);
         }}
+        className={twMerge("", styling?.main)}
         {...props}
       />
       <div
-        className={twJoin(
-          "absolute mt-2 grid max-h-64 w-full origin-top justify-items-center gap-x-2 gap-y-2 overflow-y-auto bg-first px-2 pb-3 pt-1.5 transition-transform duration-500",
-          items.length === 1 ? "grid-cols-1" : "@md:grid-cols-2",
-          isDropDownVisible ? "scale-y-100" : "scale-y-0",
-          styling?.dropdownContainer
-        )}
+        className="absolute mt-2 grid w-full justify-items-center transition-grid"
+        style={{
+          gridTemplateRows: isDropDownVisible ? "1fr" : "0fr",
+          transitionDuration: `${Math.min(500, 250 + items.length * 25)}ms`,
+        }}
       >
-        {items.map((item, index) => {
-          return (
-            <button
-              aria-label={items.length === 1 ? "" : "dropDownItem"}
-              id={item.id?.toString()}
-              tabIndex={-1}
-              key={index}
-              className={twMerge(
-                "z-10 overflow-hidden rounded-md border border-inactive bg-first p-1 text-center",
-                items.length === 1 ? "w-full @md:w-1/2" : "w-full",
-                styling?.dropdownItem,
-                item.id === focusedItem?.id
-                  ? twMerge("ring-2", styling?.dropDownItemFocus)
-                  : ""
-              )}
-            >
-              <p
+        <div
+          className={twJoin(
+            " grid max-h-64 w-full origin-top justify-items-center gap-x-2 gap-y-2 overflow-hidden rounded-md bg-first",
+            "px-2 transition-all [&>*:nth-child(1)]:mt-2 @md:[&>*:nth-child(2)]:mt-2",
+            "[&>*:nth-last-child(1)]:mb-2 @md:[&>*:nth-last-child(2)]:mb-2",
+            items.length === 1 ? "grid-cols-1" : "@md:grid-cols-2",
+            styling?.dropdownContainer
+          )}
+        >
+          {items.map((item, index) => {
+            return (
+              <button
+                aria-label={
+                  items.length === 1 && getAmountOfFoundItems() === 0
+                    ? ""
+                    : "dropDownItem"
+                }
                 id={item.id?.toString()}
-                aria-label={items.length === 1 ? "" : "dropDownItem"}
+                tabIndex={-1}
+                key={index}
                 className={twMerge(
-                  "z-10 overflow-hidden break-words text-sm",
-                  styling?.dropDownItemTitle
+                  "overflow-hidden rounded-md border border-inactive bg-first p-1 text-center ",
+                  items.length === 1 ? "w-full @md:w-1/2" : "w-full",
+                  styling?.dropdownItem,
+                  item.id === focusedItem?.id
+                    ? twMerge("ring-1", styling?.dropDownItemFocus)
+                    : ""
                 )}
               >
-                {item.title}
-              </p>
-              <p
-                id={item.id?.toString()}
-                aria-label={items.length === 1 ? "" : "dropDownItem"}
-                className={twMerge(
-                  "z-10 text-2xs text-second",
-                  styling?.dropDownItemDescription
-                )}
-              >
-                {item.description}
-              </p>
-            </button>
-          );
-        })}
+                <p
+                  id={item.id?.toString()}
+                  aria-label={
+                    items.length === 1 && getAmountOfFoundItems() === 0
+                      ? ""
+                      : "dropDownItem"
+                  }
+                  className={twMerge(
+                    "overflow-hidden break-words text-sm",
+                    styling?.dropDownItemTitle,
+                    item.id === focusedItem?.id
+                      ? twMerge("", styling?.dropDownItemTitleFocus)
+                      : ""
+                  )}
+                >
+                  {item.title}
+                </p>
+                <p
+                  id={item.id?.toString()}
+                  aria-label={
+                    items.length === 1 && getAmountOfFoundItems() === 0
+                      ? ""
+                      : "dropDownItem"
+                  }
+                  className={twMerge(
+                    "text-2xs text-second",
+                    styling?.dropDownItemDescription,
+                    item.id === focusedItem?.id
+                      ? twMerge("", styling?.dropDownItemDescriptionFocus)
+                      : ""
+                  )}
+                >
+                  {item.description}
+                </p>
+              </button>
+            );
+          })}
+        </div>
       </div>
     </div>
   );
@@ -243,13 +283,13 @@ const DropDown = forwardRef<HTMLInputElement, InputProps>(function DropDown(
       } else {
         if ((i + 1) % 2 === 0) {
           if (dropDownItems[i - 2] == undefined) {
-            setFocusedItem(dropDownItems[dropDownItems.length - 1]);
+            setFocusedItem(dropDownItems[dropDownItems.length - 2]);
           } else {
             setFocusedItem(dropDownItems[i - 2]);
           }
         } else {
           if (dropDownItems[i - 2] == undefined) {
-            setFocusedItem(dropDownItems[dropDownItems.length - 2]);
+            setFocusedItem(dropDownItems[dropDownItems.length - 1]);
           } else {
             setFocusedItem(dropDownItems[i - 2]);
           }

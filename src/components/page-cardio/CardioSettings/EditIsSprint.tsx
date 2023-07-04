@@ -9,8 +9,8 @@ export default function EditIsSprint() {
 
   return (
     <>
-      <p className="w-64">Is Average speed first:</p>
-      {/* <Swit */}
+      <p className="w-96">Is Average speed first:</p>
+      <div className="w-full">HEj</div>
     </>
   );
 }

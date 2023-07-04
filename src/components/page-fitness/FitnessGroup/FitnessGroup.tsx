@@ -18,20 +18,7 @@ export default function FitnessGroup({
   const exercisesInGroup: FitnessData[] = JSON.parse(strExercisesInGroup);
   const totalExercises = exercisesInGroup.length;
 
-  const [gridRows, setGridRows] = useState(`repeat(${totalExercises}, 1fr)`);
   const [isClosed, setIsClosed] = useState(false);
-
-  function changeGridRows(action: "small device" | "big device") {
-    if (action === "small device") {
-      const size = isClosed ? "0fr" : "1fr";
-      setGridRows(`repeat(${totalExercises}, ${size})`);
-    } else if (action === "big device") {
-      const size = isClosed ? "0fr" : "1fr";
-      setGridRows(`repeat(${Math.ceil(totalExercises / 2)}, ${size})`);
-    }
-  }
-
-  hooks.useExerciseGroupGrid({ changeGridRows });
 
   function handleClick() {
     setIsClosed((prev) => !prev);
@@ -47,16 +34,20 @@ export default function FitnessGroup({
       </button>
 
       <div
-        className={twMerge(
-          `relative grid w-full grid-cols-1 gap-x-3 transition-all vsm:grid-cols-2`,
-          isClosed ? "mt-0 gap-y-0" : "mt-3 gap-y-3"
-        )}
+        className="grid w-full"
         style={{
-          gridTemplateRows: gridRows,
+          gridTemplateRows: isClosed ? "0fr" : "1fr",
           transitionDuration: `${200 + 25 * totalExercises}ms`,
         }}
       >
-        {children}
+        <div
+          className={twMerge(
+            `relative grid w-full grid-cols-1 gap-x-3 overflow-hidden transition-all vsm:grid-cols-2`,
+            isClosed ? "mt-0 gap-y-0" : "mt-3 gap-y-3"
+          )}
+        >
+          {children}
+        </div>
       </div>
     </div>
   );

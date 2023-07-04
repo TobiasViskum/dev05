@@ -4,12 +4,14 @@ interface InitialState {
   fitnessExercise: FitnessData;
   cardioExercise: CardioData;
   cardioGroupings: CardioGroupings[];
+  cardioUnits: CardioUnits[];
 }
 
 const initialState: InitialState = {
   fitnessExercise: {} as FitnessData,
   cardioExercise: {} as CardioData,
   cardioGroupings: [],
+  cardioUnits: [],
 };
 
 const appStateSlice = createSlice({
@@ -25,9 +27,16 @@ const appStateSlice = createSlice({
     setCardioGroupings: (state, action: PayloadAction<CardioGroupings[]>) => {
       state.cardioGroupings = action.payload;
     },
+    setCardioUnits: (state, action: PayloadAction<CardioUnits[]>) => {
+      state.cardioUnits = action.payload;
+    },
   },
 });
 
-export const { setFitnessExercise, setCardioExercise, setCardioGroupings } =
-  appStateSlice.actions;
+export const {
+  setFitnessExercise,
+  setCardioExercise,
+  setCardioGroupings,
+  setCardioUnits,
+} = appStateSlice.actions;
 export default appStateSlice.reducer;

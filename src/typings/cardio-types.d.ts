@@ -69,3 +69,9 @@ interface CardioGroupings {
   profile_group_id: string;
   discipline: string;
 }
+
+interface CardioUnits {
+  unit_id: number;
+  unit_name: string;
+  unit_full_name: string;
+}

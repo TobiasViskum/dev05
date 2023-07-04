@@ -13,7 +13,7 @@ export default async function page({ params }: ExtendedViskumAppParams) {
         {exerciseData.name}
       </h1>
       <div className="mb-6 h-2 w-48 border-b border-inactive" />
-      <div className="flex w-full flex-col items-center gap-y-4 pl-4">
+      <div className="flex w-full flex-col items-center gap-y-4 px-4">
         <Content />
       </div>
     </div>
