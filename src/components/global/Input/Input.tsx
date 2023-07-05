@@ -122,7 +122,11 @@ const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
   function addPrefixes(input: string) {
     if (input !== "") {
       if (onlyIntegers || onlyNumbers) {
-        setInputValue([dynamicPrefix, input, dynamicSuffix].join(""));
+        console.log(Number(input).toString());
+
+        setInputValue(
+          [dynamicPrefix, Number(input).toString(), dynamicSuffix].join("")
+        );
       } else {
         setInputValue([dynamicPrefix, input, dynamicSuffix].join(""));
       }
@@ -189,13 +193,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
           const value = e.target.value;
           const didChangeFocus = smartFocus(value);
           if (value === "" || validateInput(value)) {
-            if (didChangeFocus) {
-              flushSync(() => {
-                setInputValue(value);
-              });
-
-              addPrefixes(inputValue);
-            } else {
+            if (!didChangeFocus) {
               setInputValue(value);
             }
 
