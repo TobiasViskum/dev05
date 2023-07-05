@@ -3,6 +3,7 @@
 import { forwardRef, useEffect, useRef, useState } from "react";
 import { Input } from "../Input";
 import { twJoin, twMerge } from "tailwind-merge";
+import { Button } from "../Button";
 
 interface DropdownItem {
   title: string;
@@ -50,10 +51,10 @@ const DropDown = forwardRef<HTMLInputElement, InputProps>(function DropDown(
     ref,
     onChange,
     onFocus,
-    onBlur,
     onUpdate,
     styling,
     className,
+    focusNextElementOnEnter,
     disableCreate,
     dropDownItems,
     ...props
@@ -68,6 +69,8 @@ const DropDown = forwardRef<HTMLInputElement, InputProps>(function DropDown(
   const containerRef = useRef<HTMLDivElement | null>(null);
   const hasSentUpdate = useRef(false);
   const hasMounted = useRef(false);
+  const canClose = useRef(true);
+  const inputRef = useRef<HTMLInputElement | null>(null);
 
   function getAmountOfFoundItems() {
     return (
@@ -114,6 +117,19 @@ const DropDown = forwardRef<HTMLInputElement, InputProps>(function DropDown(
   }, [isDropDownVisible]);
 
   useEffect(() => {
+    if (focusedItem === null && document.activeElement !== inputRef.current) {
+      setIsDropDownVisible(false);
+    }
+  }, [focusedItem]);
+
+  useEffect(() => {
+    document.addEventListener("click", (e) => {
+      const target = e.target as HTMLElement;
+      if (target.ariaLabel !== "dropDownItem" && target !== inputRef.current) {
+        setIsDropDownVisible(false);
+      }
+    });
+
     hasMounted.current = true;
     if (containerRef.current) {
       containerRef.current.addEventListener("click", (e) => {
@@ -128,6 +144,10 @@ const DropDown = forwardRef<HTMLInputElement, InputProps>(function DropDown(
 
             onUpdate && onUpdate(dropDownItem);
             setSearchInput(dropDownItem.title);
+            if (canClose.current === false) {
+              setIsDropDownVisible(false);
+              canClose.current = true;
+            }
           }
         }
       });
@@ -140,6 +160,7 @@ const DropDown = forwardRef<HTMLInputElement, InputProps>(function DropDown(
       ref={containerRef}
     >
       <Input
+        focusNextElementOnEnter={focusNextElementOnEnter}
         maxCharacters={55}
         onKeyDown={(e) => {
           const target = e.target as HTMLInputElement;
@@ -149,16 +170,30 @@ const DropDown = forwardRef<HTMLInputElement, InputProps>(function DropDown(
           } else if (e.key === "ArrowDown") {
             e.preventDefault();
             handleDownKey(e);
-          } else if (e.key === "Enter" || e.key === " ") {
-            if (focusedItem !== null) {
-              setSearchInput(focusedItem.title);
-              target.blur();
+          } else if (e.key === "Enter") {
+            setIsDropDownVisible(false);
+            target.blur();
+          } else if (e.key === "Tab") {
+            if (e.shiftKey) {
+              setIsDropDownVisible(false);
             }
           }
         }}
+        // onBlur={() => {
+        //   if (focusedItem === null) {
+        //     setIsDropDownVisible(false);
+        //   }
+        // }}
         enterKeyHint="search"
         value={searchInput}
-        ref={forwardRef}
+        ref={(node) => {
+          inputRef.current = node;
+          if (typeof forwardRef === "function") {
+            forwardRef(node);
+          } else if (forwardRef) {
+            forwardRef.current = node;
+          }
+        }}
         onChange={(e) => {
           handleChange(e);
 
@@ -167,10 +202,6 @@ const DropDown = forwardRef<HTMLInputElement, InputProps>(function DropDown(
         onFocus={(e) => {
           handleFocus(e);
           onFocus && onFocus(e);
-        }}
-        onBlur={(e) => {
-          handleBlur(e);
-          onBlur && onBlur(e);
         }}
         className={twMerge("", styling?.main)}
         {...props}
@@ -193,31 +224,68 @@ const DropDown = forwardRef<HTMLInputElement, InputProps>(function DropDown(
         >
           {items.map((item, index) => {
             return (
-              <button
-                aria-label={
-                  items.length === 1 && getAmountOfFoundItems() === 0
-                    ? ""
-                    : "dropDownItem"
-                }
+              <Button
+                onFocus={() => {
+                  setFocusedItem(item);
+                }}
+                onClick={() => {
+                  setIsDropDownVisible(false);
+                  if (inputRef.current && focusNextElementOnEnter) {
+                    const next = findNextInput(inputRef.current);
+                    if (next) {
+                      next.focus();
+                    }
+                  }
+                }}
+                onKeyDown={(e) => {
+                  if (e.key === "Tab") {
+                    if (!e.shiftKey) {
+                      if (item.id === items.slice(-1)[0].id) {
+                        setFocusedItem(null);
+                      }
+                    } else if (e.shiftKey) {
+                      if (item.id === items[0].id) {
+                        setFocusedItem(null);
+                      }
+                    }
+                  } else if (e.key === "Enter" || e.key === " ") {
+                    setIsDropDownVisible(false);
+                    if (item.title.includes('Create: "')) {
+                      setSearchInput(item.title.slice(9, -1));
+                    } else {
+                      setSearchInput(item.title);
+                    }
+
+                    if (e.key === "Enter") {
+                      if (inputRef.current && focusNextElementOnEnter) {
+                        const next = findNextInput(inputRef.current);
+                        if (next) {
+                          next.focus();
+                        }
+                      }
+                    }
+                  }
+                }}
+                aria-label="dropDownItem"
                 id={item.id?.toString()}
-                tabIndex={-1}
+                tabIndex={isDropDownVisible ? 0 : -1}
                 key={index}
-                className={twMerge(
-                  "overflow-hidden rounded-md border border-inactive bg-first p-1 text-center ",
-                  items.length === 1 ? "w-full @md:w-1/2" : "w-full",
-                  styling?.dropdownItem,
-                  item.id === focusedItem?.id
-                    ? twMerge("ring-1", styling?.dropDownItemFocus)
-                    : ""
-                )}
+                styling={{
+                  main: twMerge(
+                    "overflow-hidden border-inactive bg-first",
+                    items.length === 1 ? "w-full @md:w-1/2" : "w-full",
+                    styling?.dropdownItem
+                  ),
+                  mainFocus: twMerge(
+                    item.id === focusedItem?.id
+                      ? "ring-blue-500"
+                      : styling?.dropDownItemFocus
+                  ),
+                }}
               >
                 <p
                   id={item.id?.toString()}
-                  aria-label={
-                    items.length === 1 && getAmountOfFoundItems() === 0
-                      ? ""
-                      : "dropDownItem"
-                  }
+                  aria-label="dropDownItem"
                   className={twMerge(
                     "overflow-hidden break-words text-sm",
                     styling?.dropDownItemTitle,
@@ -230,11 +298,7 @@ const DropDown = forwardRef<HTMLInputElement, InputProps>(function DropDown(
                 </p>
                 <p
                   id={item.id?.toString()}
-                  aria-label={
-                    items.length === 1 && getAmountOfFoundItems() === 0
-                      ? ""
-                      : "dropDownItem"
-                  }
+                  aria-label="dropDownItem"
                   className={twMerge(
                     "text-2xs text-second",
                     styling?.dropDownItemDescription,
@@ -245,13 +309,18 @@ const DropDown = forwardRef<HTMLInputElement, InputProps>(function DropDown(
                 >
                   {item.description}
                 </p>
-              </button>
+              </Button>
             );
           })}
         </div>
       </div>
     </div>
   );
+  function findNextInput(element: HTMLInputElement) {
+    const inputs = Array.from(document.querySelectorAll("input"));
+    const index = inputs.indexOf(element);
+    return inputs[index + 1] || null;
+  }
   function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
     setSearchInput(e.target.value);
   }
@@ -259,9 +328,11 @@ const DropDown = forwardRef<HTMLInputElement, InputProps>(function DropDown(
     setIsDropDownVisible(true);
   }
   function handleBlur(e: React.FocusEvent<HTMLInputElement>) {
-    setTimeout(() => {
-      setIsDropDownVisible(false);
-    }, 25);
+    // setTimeout(() => {
+    //   if (canClose.current) {
+    //     setIsDropDownVisible(false);
+    //   }
+    // }, 25);
   }
   function handleUpKey(e: React.KeyboardEvent<HTMLInputElement>) {
     if (dropDownItems) {

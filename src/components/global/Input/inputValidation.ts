@@ -5,7 +5,7 @@ function maxCharacters(
 ) {
   if (typeof maxCharacters === "undefined") return true;
   if (newInput.length <= maxCharacters) return true;
-  displayMessage(`Maximum length!`);
+  displayMessage(`Max length`);
 
   return false;
 }
@@ -16,8 +16,8 @@ function onlyLetters(
   displayMessage: (message: string) => void
 ) {
   if (typeof onlyLetters === "undefined") return true;
-  if (/^[a-zA-Z]+$/.test(newInput)) return true;
-  displayMessage("Only letters is allowed!");
+  if (/^[a-zA-Z ]+$/.test(newInput)) return true;
+  displayMessage("Letters only");
 
   return false;
 }
@@ -29,16 +29,16 @@ function onlyIntegers(
 ) {
   if (typeof onlyIntegers === "undefined") return true;
   if (newInput.includes(".") || newInput.includes(",")) {
-    displayMessage("Only whole numbers is allowed!");
+    displayMessage("Integers only");
     return false;
   }
   if (newInput === "-") return true;
   if (isNaN(Number(newInput))) {
-    displayMessage("Only whole numbers is allowed!");
+    displayMessage("Integers only");
     return false;
   }
   if (Number.isInteger(Number(newInput))) return true;
-  displayMessage("Only whole numbers is allowed!");
+  displayMessage("Integers only");
   return false;
 }
 
@@ -51,7 +51,7 @@ function onlyNumbers(
   if (typeof onlyNumbers === "undefined") return true;
   if (newInput === "-") return true;
   if (useComma && newInput.includes(".")) {
-    displayMessage("Only numbers is allowed!");
+    displayMessage("Numbers ony");
     return false;
   }
   if (useComma) newInput = newInput.replace(",", ".");
@@ -79,9 +79,7 @@ function minMaxValue(
   if (typeof maxValue !== "undefined" && number > maxValue)
     hasPassedMax = false;
   if (hasPassedMin && hasPassedMax) return true;
-  displayMessage(
-    `Only numbers between ${minValue} and ${maxValue} is allowed!`
-  );
+  displayMessage(`Numbers ${minValue}-${maxValue} only`);
   return false;
 }
 
@@ -98,7 +96,7 @@ function maxDecimals(
 
   if (splitNumber.length <= 1) return true;
   if (splitNumber[1].length <= maxDecimals) return true;
-  displayMessage(`Only ${maxDecimals} is allowed!`);
+  displayMessage(`Max ${maxDecimals} decimals`);
   return false;
 }
 

@@ -38,6 +38,7 @@ export default function EditGroup() {
       <p className="w-32">Group:</p>
       <DropDown
         spellCheck={false}
+        maxCharacters={20}
         focusNextElementOnEnter
         onUpdate={(e) => onGroupChange(e)}
         styling={{

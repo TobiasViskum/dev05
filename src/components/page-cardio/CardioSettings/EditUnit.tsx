@@ -28,13 +28,15 @@ export default function EditUnit() {
     description?: string;
     id?: number;
   }) {
-    context.handleGroupInput(e.title);
+    context.handleUnitInput(e.title);
   }
 
   return (
     <>
       <p className="w-32">Unit:</p>
       <DropDown
+        onlyLetters
+        maxCharacters={5}
         disableCreate
         spellCheck={false}
         focusNextElementOnEnter

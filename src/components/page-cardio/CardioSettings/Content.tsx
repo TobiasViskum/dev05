@@ -1,5 +1,6 @@
 "use client";
 
+import { useAppSelector } from "@/store/useClient";
 import { EditName, EditGroup, EditIsSprint, EditUnit } from ".";
 import { useState } from "react";
 import { createContext } from "react";
@@ -8,17 +9,22 @@ import { twJoin } from "tailwind-merge";
 interface InitialValue {
   handleNameInput: (newInput: string) => void;
   handleGroupInput: (newInput: string) => void;
+  handleUnitInput: (newInput: string) => void;
 }
 
 const initialValue: InitialValue = {
   handleNameInput: () => {},
   handleGroupInput: () => {},
+  handleUnitInput: () => {},
 };
 export const SettingsContext = createContext(initialValue);
 
 export default function Content() {
-  const [nameInput, setNameInput] = useState("");
-  const [groupInput, setGroupInput] = useState("");
+  const exerciseData = useAppSelector((state) => state.appState.cardioExercise);
+
+  const [nameInput, setNameInput] = useState(exerciseData.name);
+  const [groupInput, setGroupInput] = useState(exerciseData.group_name);
+  const [unitInput, setUnitInput] = useState(exerciseData.unit_name);
 
   function handleNameInput(newInput: string) {
     setNameInput(newInput);
@@ -26,12 +32,16 @@ export default function Content() {
   function handleGroupInput(newInput: string) {
     setGroupInput(newInput);
   }
+  function handleUnitInput(newInput: string) {
+    setUnitInput(newInput);
+  }
 
   return (
     <SettingsContext.Provider
       value={{
         handleNameInput: handleNameInput,
         handleGroupInput: handleGroupInput,
+        handleUnitInput: handleUnitInput,
       }}
     >
       <div className="flex w-full max-w-2xl items-center justify-center">
