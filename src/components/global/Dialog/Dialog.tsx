@@ -88,6 +88,13 @@ const Dialog = forwardRef<HTMLDialogElement, DialogProps>(function Dialog(
   return (
     <>
       <dialog
+        role="article"
+        onKeyDown={(e) => {
+          if (e.key === "Escape") {
+            e.preventDefault();
+            setCloseAnimation(true);
+          }
+        }}
         onClick={onClick}
         ref={(node) => {
           dialogRef.current = node;

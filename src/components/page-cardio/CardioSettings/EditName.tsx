@@ -16,7 +16,9 @@ export default function EditName() {
         focusNextElementOnEnter
         maxCharacters={45}
         onChange={(e) => context.handleNameInput(e.target.value)}
-        className="w-full border-inactive bg-first text-first placeholder-[var(--text-second)]"
+        styling={{
+          main: "w-full border-inactive bg-first text-first placeholder-[var(--text-second)]",
+        }}
         placeholder={exerciseData.name}
       />
     </>

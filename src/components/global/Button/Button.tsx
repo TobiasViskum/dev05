@@ -10,14 +10,14 @@ interface ButtonProps
   > {
   children?: React.ReactNode;
   styling?: {
-    main?: string;
-    mainFocus?: string;
+    mainClass?: string;
+    mainFocusClass?: string;
   };
   important?: boolean;
+  insideModal?: boolean;
 }
-
 const Button = forwardRef<HTMLButtonElement, ButtonProps>(function Button(
-  { children, className, important, styling, ...props },
+  { children, className, insideModal, important, onClick, styling, ...props },
   ref
 ) {
   const buttonRef = useRef<HTMLButtonElement | null>(null);
@@ -33,11 +33,25 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(function Button(
             ref.current = node;
           }
         }}
+        onKeyDown={(e) => {
+          if (insideModal && buttonRef.current) {
+            if (e.key === "Enter" || e.key === " ") {
+              const event: React.MouseEvent<HTMLButtonElement, MouseEvent> = {
+                target: buttonRef.current,
+                currentTarget: buttonRef.current,
+                // Add any other properties you need
+              } as any;
+              onClick && onClick(event);
+              e.preventDefault();
+            }
+          }
+        }}
+        onClick={onClick}
         className={twMerge(
           "w-full rounded-md bg-black p-1 text-center ring-1 ring-neutral-800 focus:outline focus:outline-1 focus:outline-blue-500",
-          styling?.main,
+          styling?.mainClass,
           "",
-          styling?.mainFocus
+          styling?.mainFocusClass
         )}
         {...props}
       >

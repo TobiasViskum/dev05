@@ -1,16 +1,11 @@
 "use client";
 import { twMerge } from "tailwind-merge";
-import { forwardRef, useEffect, useRef, useState } from "react";
+import { forwardRef, useEffect, useRef, useState, useCallback } from "react";
 import { handlers } from "./handlers";
-import { inputValidation } from "./inputValidation";
-import { useDebouncedState } from "@mantine/hooks";
+import { getDecimalAmount, inputValidation } from "./inputValidation";
+import { flushSync } from "react-dom";
 
-interface InputProps
-  extends React.DetailedHTMLProps<
-    React.InputHTMLAttributes<HTMLInputElement>,
-    HTMLInputElement
-  > {
-  children?: React.ReactNode;
+export interface CustomInputProps {
   onlyIntegers?: boolean;
   onlyNumbers?: boolean;
   onlyLetters?: boolean;
@@ -19,11 +14,26 @@ interface InputProps
   maxValue?: number;
   useComma?: boolean;
   maxDecimals?: number;
-  feedbackClassName?: string;
   showFullKeyboard?: boolean;
   disableFeedback?: boolean;
   disableSelection?: boolean;
-  focusNextElementOnEnter?: boolean;
+  focusNextInputOnEnter?: boolean;
+  smartFocusNextInput?: boolean;
+  dynamicPrefix?: string;
+  dynamicSuffix?: string;
+}
+
+interface InputProps
+  extends React.DetailedHTMLProps<
+      React.InputHTMLAttributes<HTMLInputElement>,
+      HTMLInputElement
+    >,
+    CustomInputProps {
+  children?: React.ReactNode;
+  styling?: {
+    main?: string;
+    feedbackText?: string;
+  };
 }
 
 const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
@@ -36,21 +46,24 @@ const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
     maxValue,
     useComma,
     maxDecimals,
+    dynamicPrefix,
+    dynamicSuffix,
     showFullKeyboard,
     disableFeedback,
     className,
     inputMode,
-    feedbackClassName,
     disableSelection,
     pattern,
     onChange,
     onFocus,
     onBlur,
     onKeyDown,
-    focusNextElementOnEnter,
+    focusNextInputOnEnter,
+    smartFocusNextInput,
     placeholder,
     enterKeyHint,
     value,
+    styling,
     children,
     ...props
   },
@@ -79,20 +92,32 @@ const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
     setIsMessageVisible(false);
   }, 3000);
 
-  function displayMessage(newMessage: string) {
+  function displayMessage(newMessage: string, forceHideMessage: boolean) {
     if (typeof disableFeedback !== "undefined" && disableFeedback) return;
+    if (forceHideMessage) return;
     setMessage(newMessage);
     setIsMessageVisible(true);
     debouncedFunction();
   }
+  function getPlaceholder() {
+    if (placeholder) {
+      if (useComma) placeholder.replace(".", ",");
+      if (placeholder === "" || validateInput(placeholder, true)) {
+        return [dynamicPrefix, placeholder, dynamicSuffix].join("");
+      }
+      return "Invalid";
+    } else {
+      return "";
+    }
+  }
 
   return (
-    <div className="relative h-full w-full">
+    <div className="relative">
       <p
         className={twMerge(
-          "absolute -bottom-3 right-2 z-10 rounded-md bg-first px-1 py-0.5 text-center text-3xs text-active transition-opacity duration-500",
+          "absolute -bottom-3 right-1 z-10 line-clamp-1 rounded-md bg-first px-1 py-0.5 text-center text-3xs text-active transition-opacity duration-500",
           isMessageVisible ? "opacity-100" : "opacity-0",
-          feedbackClassName
+          styling?.feedbackText
         )}
       >
         {message}
@@ -114,10 +139,9 @@ const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
         onKeyDown={(e) => {
           if (e.key === "Enter") {
             inputRef.current?.blur();
-            if (focusNextElementOnEnter) {
+            if (focusNextInputOnEnter) {
               if (inputRef.current) {
-                const nextElement = findNextInput(inputRef.current);
-                if (nextElement) nextElement.focus();
+                findNextInputAndFocus(inputRef.current);
               }
             }
           }
@@ -125,34 +149,97 @@ const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
         }}
         onChange={(e) => {
           const value = e.target.value;
+          smartFocus(value);
           if (value === "" || validateInput(value)) {
             setInputValue(value);
-            handlers.handleChange(e, placeholder);
+            handlers.handleChange(e, getPlaceholder());
             onChange && onChange(e);
           }
         }}
         onFocus={(e) => {
+          const length1 = dynamicPrefix ? dynamicPrefix.length : 0;
+          const length2 = dynamicSuffix ? -dynamicSuffix.length : 0;
+
+          flushSync(() => {
+            setInputValue((prev) => prev.slice(length1, length2));
+          });
+
           handlers.handleFocus(e, disableSelection);
           onFocus && onFocus(e);
         }}
         onBlur={(e) => {
-          handlers.handleBlur(e, placeholder);
+          if (inputValue !== "") {
+            setInputValue((prev) =>
+              [dynamicPrefix, prev, dynamicSuffix].join("")
+            );
+          }
 
+          handlers.handleBlur(e, getPlaceholder());
+          if (onlyIntegers || onlyNumbers) {
+            const endsWithSeparator = useComma
+              ? inputValue.endsWith(",")
+              : inputValue.endsWith(".");
+
+            if (endsWithSeparator) setInputValue((prev) => prev.slice(0, -1));
+          }
           onBlur && onBlur(e);
         }}
-        placeholder={placeholder && placeholder}
+        placeholder={getPlaceholder()}
         className={twMerge(
           "rounded-md border border-solid bg-white px-2 py-1.5 text-center text-sm text-black placeholder-gray-500",
           "focus:outline focus:outline-1 focus:outline-[var(--text-active)]",
-          className
+          styling?.main
         )}
       />
     </div>
   );
-  function findNextInput(element: HTMLInputElement) {
+
+  function smartFocus(newInput: string) {
+    if (smartFocusNextInput && inputRef.current) {
+      const input = inputRef.current;
+      const number = useComma
+        ? Number(newInput.replace(",", "."))
+        : Number(newInput);
+
+      if ((onlyIntegers || onlyNumbers) && isNaN(number)) {
+        return;
+      } else if (onlyLetters && !isNaN(number)) {
+        return;
+      }
+
+      if (maxCharacters && newInput.length >= maxCharacters) {
+        findNextInputAndFocus(input);
+        return;
+      }
+
+      if ((onlyIntegers || onlyNumbers) && !isNaN(number)) {
+        if (maxValue && number >= maxValue / 10) {
+          if (maxDecimals) {
+            const decimalAmount = getDecimalAmount(newInput, useComma);
+            if (decimalAmount >= maxDecimals) {
+              findNextInputAndFocus(input);
+              return;
+            }
+          } else {
+            findNextInputAndFocus(input);
+            return;
+          }
+        }
+      }
+      if (maxDecimals && getDecimalAmount(newInput, useComma) >= maxDecimals) {
+        findNextInputAndFocus(input);
+        return;
+      }
+    }
+  }
+
+  function findNextInputAndFocus(element: HTMLInputElement) {
     const inputs = Array.from(document.querySelectorAll("input"));
     const index = inputs.indexOf(element);
-    return inputs[index + 1] || null;
+    const next = inputs[index + 1] || null;
+    if (next) {
+      next.focus();
+    }
   }
 
   function getInputMode() {
@@ -171,19 +258,47 @@ const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
     } else return pattern;
   }
 
-  function validateInput(value: string) {
+  function validateInput(value: string, forceHideMessage: boolean = false) {
     const validateResult =
-      inputValidation.maxCharacters(value, maxCharacters, displayMessage) &&
-      inputValidation.onlyLetters(value, onlyLetters, displayMessage) &&
-      inputValidation.onlyIntegers(value, onlyIntegers, displayMessage) &&
+      inputValidation.maxCharacters(
+        value,
+        maxCharacters,
+        displayMessage,
+        forceHideMessage
+      ) &&
+      inputValidation.onlyLetters(
+        value,
+        onlyLetters,
+        displayMessage,
+        forceHideMessage
+      ) &&
+      inputValidation.onlyIntegers(
+        value,
+        onlyIntegers,
+        displayMessage,
+        forceHideMessage
+      ) &&
       inputValidation.onlyNumbers(
         value,
         onlyNumbers,
         useComma,
-        displayMessage
+        displayMessage,
+        forceHideMessage
       ) &&
-      inputValidation.minMaxValue(value, minValue, maxValue, displayMessage) &&
-      inputValidation.maxDecimals(value, maxDecimals, useComma, displayMessage);
+      inputValidation.minMaxValue(
+        value,
+        minValue,
+        maxValue,
+        displayMessage,
+        forceHideMessage
+      ) &&
+      inputValidation.maxDecimals(
+        value,
+        maxDecimals,
+        useComma,
+        displayMessage,
+        forceHideMessage
+      );
     return validateResult;
   }
 

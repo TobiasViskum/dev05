@@ -4,6 +4,7 @@ import { forwardRef, useEffect, useRef, useState } from "react";
 import { Input } from "../Input";
 import { twJoin, twMerge } from "tailwind-merge";
 import { Button } from "../Button";
+import { CustomInputProps } from "../Input/Input";
 
 interface DropdownItem {
   title: string;
@@ -13,35 +14,24 @@ interface DropdownItem {
 
 interface InputProps
   extends React.DetailedHTMLProps<
-    React.InputHTMLAttributes<HTMLInputElement>,
-    HTMLInputElement
-  > {
+      React.InputHTMLAttributes<HTMLInputElement>,
+      HTMLInputElement
+    >,
+    CustomInputProps {
   children?: React.ReactNode;
-  onlyIntegers?: boolean;
-  onlyNumbers?: boolean;
-  onlyLetters?: boolean;
-  maxCharacters?: number;
-  minValue?: number;
-  maxValue?: number;
-  useComma?: boolean;
-  maxDecimals?: number;
-  showFullKeyboard?: boolean;
-  disableFeedback?: boolean;
-  disableSelection?: boolean;
-  focusNextElementOnEnter?: boolean;
   dropDownItems?: DropdownItem[];
   disableCreate?: boolean;
   onUpdate?: ({ title, description, id }: DropdownItem) => void;
   styling?: {
     main?: string;
-    feedback?: string;
+    feedbackText?: string;
     dropdownContainer?: string;
-    dropdownItem?: string;
-    dropDownItemTitle?: string;
-    dropDownItemDescription?: string;
-    dropDownItemFocus?: string;
-    dropDownItemTitleFocus?: string;
-    dropDownItemDescriptionFocus?: string;
+    item?: string;
+    itemTitle?: string;
+    itemDescription?: string;
+    itemFocus?: string;
+    itemTitleFocus?: string;
+    itemDescriptionFocus?: string;
   };
 }
 
@@ -54,7 +44,7 @@ const DropDown = forwardRef<HTMLInputElement, InputProps>(function DropDown(
     onUpdate,
     styling,
     className,
-    focusNextElementOnEnter,
+    focusNextInputOnEnter,
     disableCreate,
     dropDownItems,
     ...props
@@ -160,7 +150,7 @@ const DropDown = forwardRef<HTMLInputElement, InputProps>(function DropDown(
       ref={containerRef}
     >
       <Input
-        focusNextElementOnEnter={focusNextElementOnEnter}
+        focusNextInputOnEnter={focusNextInputOnEnter}
         maxCharacters={55}
         onKeyDown={(e) => {
           const target = e.target as HTMLInputElement;
@@ -203,7 +193,7 @@ const DropDown = forwardRef<HTMLInputElement, InputProps>(function DropDown(
           handleFocus(e);
           onFocus && onFocus(e);
         }}
-        className={twMerge("", styling?.main)}
+        styling={{ main: styling?.main }}
         {...props}
       />
       <div
@@ -230,7 +220,7 @@ const DropDown = forwardRef<HTMLInputElement, InputProps>(function DropDown(
                 }}
                 onClick={() => {
                   setIsDropDownVisible(false);
-                  if (inputRef.current && focusNextElementOnEnter) {
+                  if (inputRef.current && focusNextInputOnEnter) {
                     const next = findNextInput(inputRef.current);
                     if (next) {
                       next.focus();
@@ -257,7 +247,7 @@ const DropDown = forwardRef<HTMLInputElement, InputProps>(function DropDown(
                     }
 
                     if (e.key === "Enter") {
-                      if (inputRef.current && focusNextElementOnEnter) {
+                      if (inputRef.current && focusNextInputOnEnter) {
                         const next = findNextInput(inputRef.current);
                         if (next) {
                           next.focus();
@@ -271,15 +261,15 @@ const DropDown = forwardRef<HTMLInputElement, InputProps>(function DropDown(
                 tabIndex={isDropDownVisible ? 0 : -1}
                 key={index}
                 styling={{
-                  main: twMerge(
+                  mainClass: twMerge(
                     "overflow-hidden border-inactive bg-first",
                     items.length === 1 ? "w-full @md:w-1/2" : "w-full",
-                    styling?.dropdownItem
+                    styling?.item
                   ),
-                  mainFocus: twMerge(
+                  mainFocusClass: twMerge(
                     item.id === focusedItem?.id
                       ? "ring-blue-500"
-                      : styling?.dropDownItemFocus
+                      : styling?.itemFocus
                   ),
                 }}
               >
@@ -288,9 +278,9 @@ const DropDown = forwardRef<HTMLInputElement, InputProps>(function DropDown(
                   aria-label="dropDownItem"
                   className={twMerge(
                     "overflow-hidden break-words text-sm",
-                    styling?.dropDownItemTitle,
+                    styling?.itemTitle,
                     item.id === focusedItem?.id
-                      ? twMerge("", styling?.dropDownItemTitleFocus)
+                      ? twMerge("", styling?.itemTitleFocus)
                       : ""
                   )}
                 >
@@ -301,9 +291,9 @@ const DropDown = forwardRef<HTMLInputElement, InputProps>(function DropDown(
                   aria-label="dropDownItem"
                   className={twMerge(
                     "text-2xs text-second",
-                    styling?.dropDownItemDescription,
+                    styling?.itemDescription,
                     item.id === focusedItem?.id
-                      ? twMerge("", styling?.dropDownItemDescriptionFocus)
+                      ? twMerge("", styling?.itemDescriptionFocus)
                       : ""
                   )}
                 >

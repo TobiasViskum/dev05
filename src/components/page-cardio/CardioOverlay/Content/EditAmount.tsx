@@ -4,7 +4,8 @@ import { useRouter } from "next/navigation";
 import { useAppSelector } from "@/store/useClient";
 import { CardioOverlayContext } from "../CardioOverlay";
 import { roundToTwoDecimals } from "@/lib/util";
-import { flushSync } from "react-dom";
+import { Input } from "@/components/global/Input";
+import { Button } from "@/components/global/Button";
 
 export default function EditAmount() {
   const context = useContext(CardioOverlayContext);
@@ -55,36 +56,6 @@ export default function EditAmount() {
     };
   }
 
-  function changeInputFocusHandler(
-    timeToChange: "hours" | "minutes" | "seconds",
-    value: number
-  ) {
-    let max = 60;
-    if (timeToChange === "hours") max = 100;
-
-    function action() {
-      if (hoursRef.current && minutesRef.current && secondsRef.current) {
-        if (timeToChange === "hours") {
-          hoursRef.current.blur();
-          minutesRef.current.focus();
-          minutesRef.current.select();
-        } else if (timeToChange === "minutes") {
-          minutesRef.current.blur();
-          secondsRef.current.focus();
-          secondsRef.current.select();
-        } else if (timeToChange === "seconds") {
-          secondsRef.current.blur();
-        }
-      }
-    }
-
-    if (value === 0) {
-      action();
-    } else if (value > max / 10) {
-      action();
-    }
-  }
-
   function handleTimeChange(
     e: React.ChangeEvent<HTMLInputElement>,
     timeToChange: "hours" | "minutes" | "seconds"
@@ -118,8 +89,6 @@ export default function EditAmount() {
       ...prev,
       [timeToChange]: value.toString(),
     }));
-
-    changeInputFocusHandler(timeToChange, value);
   }
 
   function changeUnitTo(prevValue: string, unit: "km" | "mi") {
@@ -303,47 +272,53 @@ export default function EditAmount() {
 
   return (
     <>
-      <div className="flex flex-col items-center gap-y-2">
+      <div className="flex flex-col items-center gap-y-2 px-6">
         <div className="mt-2">
           <h3 className="text-center font-medium">EDIT EXERCISE</h3>
           <p className="text-center text-second">
             {exerciseData && exerciseData.name}
           </p>
         </div>
-        <div className="mb-2 flex items-center justify-center gap-x-2">
-          <input
+        <div className="mb-2 flex w-48 items-center justify-center gap-x-4">
+          <Input
+            smartFocusNextInput
+            useComma
             value={inputValue}
-            onChange={(e) => handleInput(e)}
+            dynamicSuffix=" mi"
+            // onChange={(e) => console.log(e.target.value)}
             ref={inputRef}
-            className="w-3/5 rounded-md border border-solid border-inactive bg-first py-1 text-center text-first placeholder-[var(--text-second)] outline-none"
-            placeholder={placeholderValue.replace(".", ",")}
-            inputMode="decimal"
-            pattern="[0-9],*"
-            onFocus={(e) => (e.target.placeholder = "")}
-            onBlur={(e) =>
-              (e.target.placeholder = placeholderValue.replace(".", ","))
-            }
+            styling={{
+              main: "w-36 border-inactive bg-first text-center text-first placeholder-[var(--text-second)]",
+            }}
+            placeholder={placeholderValue}
+            onlyNumbers
+            maxDecimals={2}
+            minValue={0}
+            maxValue={999}
           />
-          <button
+          <Button
+            insideModal
             className="w-8 rounded-md border border-solid border-inactive bg-first py-1 text-base"
             onClick={handleUnitChange}
           >
             {currUnit}
-          </button>
+          </Button>
         </div>
-        <div className="mb-2 flex items-center justify-center gap-x-1">
-          <input
+        <div className="mb-2 flex w-48 items-center justify-center gap-x-1">
+          <Input
             value={timeValue.hours}
-            onChange={(e) => handleTimeChange(e, "hours")}
+            onlyIntegers
+            minValue={0}
+            disableFeedback
+            maxValue={99}
+            maxCharacters={2}
             ref={hoursRef}
-            className="w-14 rounded-md border border-solid border-inactive bg-first py-1 text-center text-first placeholder-[var(--text-second)] outline-none"
+            styling={{
+              main: "w-14 border-inactive bg-first text-first placeholder-[var(--text-second)]",
+            }}
             placeholder={[getTimeAmount().hours, "h"].join("")}
             inputMode="decimal"
             pattern="[0-9],*"
-            onFocus={(e) => {
-              onTimeInputFocus(e, "hours");
-            }}
-            onBlur={(e) => onTimeInputBlur(e, "hours")}
           />
           {":"}
           <input
