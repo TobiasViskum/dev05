@@ -119,9 +119,13 @@ const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
       setInputValue((prev) => prev.slice(length1, length2));
     });
   }
-  function addPrefixes() {
-    if (inputValue !== "") {
-      setInputValue((prev) => [dynamicPrefix, prev, dynamicSuffix].join(""));
+  function addPrefixes(input: string) {
+    if (input !== "") {
+      if (onlyIntegers || onlyNumbers) {
+        setInputValue([dynamicPrefix, input, dynamicSuffix].join(""));
+      } else {
+        setInputValue([dynamicPrefix, input, dynamicSuffix].join(""));
+      }
     }
   }
 
@@ -189,7 +193,8 @@ const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
               flushSync(() => {
                 setInputValue(value);
               });
-              addPrefixes();
+
+              addPrefixes(inputValue);
             } else {
               setInputValue(value);
             }
@@ -205,7 +210,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
           onFocus && onFocus(e);
         }}
         onBlur={(e) => {
-          addPrefixes();
+          addPrefixes(e.target.value);
 
           handlers.handleBlur(e, getPlaceholder());
           if (onlyIntegers || onlyNumbers) {
