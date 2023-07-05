@@ -13,7 +13,7 @@ export default function EditName() {
       <p className="w-32">Name:</p>
       <Input
         spellCheck={false}
-        focusNextElementOnEnter
+        focusNextInputOnEnter
         maxCharacters={45}
         onChange={(e) => context.handleNameInput(e.target.value)}
         styling={{

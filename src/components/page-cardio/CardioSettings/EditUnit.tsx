@@ -39,7 +39,7 @@ export default function EditUnit() {
         maxCharacters={5}
         disableCreate
         spellCheck={false}
-        focusNextElementOnEnter
+        focusNextInputOnEnter
         onUpdate={(e) => onGroupChange(e)}
         styling={{
           main: "z-10 w-full border-inactive bg-first text-first placeholder-[var(--text-second)]",

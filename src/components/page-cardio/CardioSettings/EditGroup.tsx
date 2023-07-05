@@ -39,7 +39,7 @@ export default function EditGroup() {
       <DropDown
         spellCheck={false}
         maxCharacters={20}
-        focusNextElementOnEnter
+        focusNextInputOnEnter
         onUpdate={(e) => onGroupChange(e)}
         styling={{
           main: "z-20 w-full border-inactive bg-first text-first placeholder-[var(--text-second)]",
