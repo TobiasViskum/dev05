@@ -52,15 +52,13 @@ export default function Content() {
       </div>
       <div
         className={twJoin(
-          "grid gap-y-4 tn:grid-cols-[calc(60%_-_4px)_calc(40%_-_4px)] tn:gap-x-2",
-          "vsm:grid-cols-[calc(60%_-_8px)_calc(40%_-_8px)] vsm:gap-x-4",
-          "h-full w-full max-w-2xl items-center justify-center"
+          "flex h-full w-full max-w-2xl flex-col items-center justify-center gap-x-4 gap-y-6 tn:flex-row tn:gap-y-0"
         )}
       >
-        <div className="flex w-full flex-col items-center gap-y-2 text-center">
+        <div className="flex w-3/5 flex-col items-center gap-y-2 text-center">
           <EditGroup />
         </div>
-        <div className="flex w-full flex-col items-center gap-y-2 text-center">
+        <div className="flex w-2/5 flex-col items-center gap-y-2 text-center">
           <EditUnit />
         </div>
       </div>

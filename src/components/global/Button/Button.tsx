@@ -10,8 +10,7 @@ interface ButtonProps
   > {
   children?: React.ReactNode;
   styling?: {
-    mainClass?: string;
-    mainFocusClass?: string;
+    main?: string;
   };
   important?: boolean;
   insideModal?: boolean;
@@ -48,10 +47,8 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(function Button(
         }}
         onClick={onClick}
         className={twMerge(
-          "w-full rounded-md bg-black p-1 text-center ring-1 ring-neutral-800 focus:outline focus:outline-1 focus:outline-blue-500",
-          styling?.mainClass,
-          "",
-          styling?.mainFocusClass
+          "rounded-md border border-solid border-inactive bg-black text-center focus:outline focus:outline-1 focus:outline-[var(--text-active)]",
+          styling?.main
         )}
         {...props}
       >

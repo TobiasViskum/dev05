@@ -1,5 +1,5 @@
 "use client";
-import { twMerge } from "tailwind-merge";
+import { twJoin, twMerge } from "tailwind-merge";
 import { forwardRef, useEffect, useRef, useState, useCallback } from "react";
 import { handlers } from "./handlers";
 import { getDecimalAmount, inputValidation } from "./inputValidation";
@@ -21,6 +21,8 @@ export interface CustomInputProps {
   smartFocusNextInput?: boolean;
   dynamicPrefix?: string;
   dynamicSuffix?: string;
+  removeDefaultStyling?: boolean;
+  allowDanishCharacters?: boolean;
 }
 
 interface InputProps
@@ -35,6 +37,15 @@ interface InputProps
     feedbackText?: string;
   };
 }
+
+let main1Tw =
+  "rounded-md border border-solid bg-white px-2 py-1.5 text-center text-sm text-black";
+let main2Tw =
+  "placeholder-gray-500 focus:outline focus:outline-1 focus:outline-[var(--text-active)]";
+const mainTw = twJoin(main1Tw, main2Tw);
+
+const feedbackTw =
+  "rounded-md bg-first px-1 py-0.5 text-active -bottom-2.5 right-1 text-center text-3xs";
 
 const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
   {
@@ -51,7 +62,9 @@ const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
     showFullKeyboard,
     disableFeedback,
     className,
+    allowDanishCharacters,
     inputMode,
+    removeDefaultStyling,
     disableSelection,
     pattern,
     onChange,
@@ -82,7 +95,13 @@ const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
   useEffect(() => {
     if (typeof value === "string") {
       if (value === "" || validate(value)) {
-        setInputValue(value);
+        if (value === "") {
+          setInputValue(value);
+        } else {
+          if (document.activeElement !== inputRef.current) {
+            setInputValue([dynamicPrefix, value, dynamicSuffix].join(""));
+          }
+        }
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -91,6 +110,20 @@ const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
   const debouncedFunction = debounce(() => {
     setIsMessageVisible(false);
   }, 3000);
+
+  function removePrefixes() {
+    const length1 = dynamicPrefix ? dynamicPrefix.length : 0;
+    const length2 = dynamicSuffix ? -dynamicSuffix.length : inputValue.length;
+
+    flushSync(() => {
+      setInputValue((prev) => prev.slice(length1, length2));
+    });
+  }
+  function addPrefixes() {
+    if (inputValue !== "") {
+      setInputValue((prev) => [dynamicPrefix, prev, dynamicSuffix].join(""));
+    }
+  }
 
   function displayMessage(newMessage: string, forceHideMessage: boolean) {
     if (typeof disableFeedback !== "undefined" && disableFeedback) return;
@@ -101,7 +134,9 @@ const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
   }
   function getPlaceholder() {
     if (placeholder) {
-      if (useComma) placeholder.replace(".", ",");
+      if (useComma && (onlyIntegers || onlyNumbers))
+        placeholder.replace(".", ",");
+
       if (placeholder === "" || validateInput(placeholder, true)) {
         return [dynamicPrefix, placeholder, dynamicSuffix].join("");
       }
@@ -115,7 +150,8 @@ const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
     <div className="relative">
       <p
         className={twMerge(
-          "absolute -bottom-3 right-1 z-10 line-clamp-1 rounded-md bg-first px-1 py-0.5 text-center text-3xs text-active transition-opacity duration-500",
+          !removeDefaultStyling && feedbackTw,
+          "absolute z-10 line-clamp-1 transition-opacity duration-500",
           isMessageVisible ? "opacity-100" : "opacity-0",
           styling?.feedbackText
         )}
@@ -137,42 +173,39 @@ const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
         pattern={getPattern()}
         enterKeyHint={enterKeyHint}
         onKeyDown={(e) => {
-          if (e.key === "Enter") {
-            inputRef.current?.blur();
+          if (e.key === "Enter" && inputRef.current) {
+            inputRef.current.blur();
             if (focusNextInputOnEnter) {
-              if (inputRef.current) {
-                findNextInputAndFocus(inputRef.current);
-              }
+              findNextInputAndFocus(inputRef.current);
             }
           }
           onKeyDown && onKeyDown(e);
         }}
         onChange={(e) => {
           const value = e.target.value;
-          smartFocus(value);
+          const didChangeFocus = smartFocus(value);
           if (value === "" || validateInput(value)) {
-            setInputValue(value);
+            if (didChangeFocus) {
+              flushSync(() => {
+                setInputValue(value);
+              });
+              addPrefixes();
+            } else {
+              setInputValue(value);
+            }
+
             handlers.handleChange(e, getPlaceholder());
             onChange && onChange(e);
           }
         }}
         onFocus={(e) => {
-          const length1 = dynamicPrefix ? dynamicPrefix.length : 0;
-          const length2 = dynamicSuffix ? -dynamicSuffix.length : 0;
-
-          flushSync(() => {
-            setInputValue((prev) => prev.slice(length1, length2));
-          });
+          removePrefixes();
 
           handlers.handleFocus(e, disableSelection);
           onFocus && onFocus(e);
         }}
         onBlur={(e) => {
-          if (inputValue !== "") {
-            setInputValue((prev) =>
-              [dynamicPrefix, prev, dynamicSuffix].join("")
-            );
-          }
+          addPrefixes();
 
           handlers.handleBlur(e, getPlaceholder());
           if (onlyIntegers || onlyNumbers) {
@@ -185,11 +218,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
           onBlur && onBlur(e);
         }}
         placeholder={getPlaceholder()}
-        className={twMerge(
-          "rounded-md border border-solid bg-white px-2 py-1.5 text-center text-sm text-black placeholder-gray-500",
-          "focus:outline focus:outline-1 focus:outline-[var(--text-active)]",
-          styling?.main
-        )}
+        className={twMerge(!removeDefaultStyling && mainTw, styling?.main)}
       />
     </div>
   );
@@ -202,14 +231,14 @@ const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
         : Number(newInput);
 
       if ((onlyIntegers || onlyNumbers) && isNaN(number)) {
-        return;
+        return false;
       } else if (onlyLetters && !isNaN(number)) {
-        return;
+        return false;
       }
 
       if (maxCharacters && newInput.length >= maxCharacters) {
         findNextInputAndFocus(input);
-        return;
+        return true;
       }
 
       if ((onlyIntegers || onlyNumbers) && !isNaN(number)) {
@@ -218,17 +247,17 @@ const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
             const decimalAmount = getDecimalAmount(newInput, useComma);
             if (decimalAmount >= maxDecimals) {
               findNextInputAndFocus(input);
-              return;
+              return true;
             }
           } else {
             findNextInputAndFocus(input);
-            return;
+            return true;
           }
         }
       }
       if (maxDecimals && getDecimalAmount(newInput, useComma) >= maxDecimals) {
         findNextInputAndFocus(input);
-        return;
+        return true;
       }
     }
   }
@@ -239,6 +268,10 @@ const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
     const next = inputs[index + 1] || null;
     if (next) {
       next.focus();
+    } else {
+      if (inputRef.current) {
+        inputRef.current.blur();
+      }
     }
   }
 
@@ -269,6 +302,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
       inputValidation.onlyLetters(
         value,
         onlyLetters,
+        allowDanishCharacters,
         displayMessage,
         forceHideMessage
       ) &&
@@ -337,6 +371,15 @@ const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
       timer = setTimeout(fn, delay);
     };
   }
-});
+}) as React.ForwardRefExoticComponent<
+  React.PropsWithoutRef<InputProps> & React.RefAttributes<HTMLInputElement>
+> & {
+  tw: { main: string; feedbackText: string };
+};
+
+Input.tw = {
+  main: mainTw,
+  feedbackText: feedbackTw,
+};
 
 export default Input;

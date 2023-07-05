@@ -14,10 +14,12 @@ function maxCharacters(
 function onlyLetters(
   newInput: string,
   onlyLetters: boolean | undefined,
+  allowDanishCharacters: boolean | undefined,
   displayMessage: (message: string, forceHideMessage: boolean) => void,
   forceHideMessage: boolean
 ) {
   if (typeof onlyLetters === "undefined") return true;
+  if (allowDanishCharacters && /^[a-zA-ZæøåÆØÅ ]+$/.test(newInput)) return true;
   if (/^[a-zA-Z ]+$/.test(newInput)) return true;
   displayMessage("Letters only", forceHideMessage);
 
@@ -30,9 +32,9 @@ function onlyIntegers(
   displayMessage: (message: string, forceHideMessage: boolean) => void,
   forceHideMessage: boolean
 ) {
+  if (typeof onlyIntegers === "undefined") return true;
   if (newInput.includes(" ")) return false;
   if (validateZeros(newInput) > 1) return false;
-  if (typeof onlyIntegers === "undefined") return true;
   if (newInput.includes(".") || newInput.includes(",")) {
     displayMessage("Integers only", forceHideMessage);
     return false;
@@ -55,9 +57,10 @@ function onlyNumbers(
   displayMessage: (message: string, forceHideMessage: boolean) => void,
   forceHideMessage: boolean
 ) {
+  if (typeof onlyNumbers === "undefined") return true;
   if (newInput.includes(" ")) return false;
   if (validateZeros(newInput) > 1) return false;
-  if (typeof onlyNumbers === "undefined") return true;
+
   if (newInput === "-") return true;
   if (useComma && newInput.includes(".")) {
     displayMessage("Numbers only", forceHideMessage);

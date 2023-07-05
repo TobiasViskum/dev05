@@ -1,10 +1,11 @@
 "use client";
 
-import { forwardRef, useEffect, useRef, useState } from "react";
+import { forwardRef, useEffect, useRef, useState, useMemo } from "react";
 import { Input } from "../Input";
 import { twJoin, twMerge } from "tailwind-merge";
 import { Button } from "../Button";
 import { CustomInputProps } from "../Input/Input";
+import { flushSync } from "react-dom";
 
 interface DropdownItem {
   title: string;
@@ -21,7 +22,7 @@ interface InputProps
   children?: React.ReactNode;
   dropDownItems?: DropdownItem[];
   disableCreate?: boolean;
-  onUpdate?: ({ title, description, id }: DropdownItem) => void;
+  onUpdate?: (title: string) => void;
   styling?: {
     main?: string;
     feedbackText?: string;
@@ -42,8 +43,10 @@ const DropDown = forwardRef<HTMLInputElement, InputProps>(function DropDown(
     onChange,
     onFocus,
     onUpdate,
+    onBlur,
     styling,
     className,
+    placeholder,
     focusNextInputOnEnter,
     disableCreate,
     dropDownItems,
@@ -59,37 +62,16 @@ const DropDown = forwardRef<HTMLInputElement, InputProps>(function DropDown(
   const containerRef = useRef<HTMLDivElement | null>(null);
   const hasSentUpdate = useRef(false);
   const hasMounted = useRef(false);
-  const canClose = useRef(true);
   const inputRef = useRef<HTMLInputElement | null>(null);
+  const animatingContainer = useRef<HTMLDivElement | null>(null);
 
-  function getAmountOfFoundItems() {
-    return (
-      dropDownItems &&
-      dropDownItems.filter(
-        (item) =>
-          item.title.toLowerCase().includes(searchInput.toLowerCase()) ||
-          item.id?.toString() === searchInput
-      ).length
-    );
-  }
+  const actualItems = JSON.stringify(dropDownItems);
 
   useEffect(() => {
-    if (hasMounted.current) {
-      const dropDownItem = dropDownItems?.find(
-        (obj) => obj.title === searchInput
-      );
-      if (onUpdate && hasSentUpdate.current === false) {
-        if (dropDownItem) {
-          onUpdate(dropDownItem);
-        } else {
-          onUpdate({ title: searchInput, id: -1 });
-        }
-      }
-    }
-
+    const nDropDownItems: DropdownItem[] = JSON.parse(actualItems);
     hasSentUpdate.current = false;
-    if (dropDownItems) {
-      let newItems = dropDownItems.filter(
+    if (nDropDownItems) {
+      let newItems = nDropDownItems.filter(
         (item) =>
           item.title.toLowerCase().includes(searchInput.toLowerCase()) ||
           item.id?.toString() === searchInput
@@ -99,11 +81,29 @@ const DropDown = forwardRef<HTMLInputElement, InputProps>(function DropDown(
       }
       setItems(newItems);
     }
-  }, [searchInput, dropDownItems, onUpdate, disableCreate]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searchInput, disableCreate, actualItems]);
+
   useEffect(() => {
     if (isDropDownVisible) {
       setFocusedItem(null);
+    } else {
+      if (disableCreate) {
+        const obj = dropDownItems?.find((item) => searchInput === item.title);
+        if (!obj && animatingContainer.current) {
+          if (inputRef.current) {
+            inputRef.current.placeholder = placeholder || "";
+          }
+          setSearchInput("");
+          animatingContainer.current.addEventListener(
+            "transitionend",
+            (e) => {},
+            { once: true }
+          );
+        }
+      }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isDropDownVisible]);
 
   useEffect(() => {
@@ -131,19 +131,16 @@ const DropDown = forwardRef<HTMLInputElement, InputProps>(function DropDown(
 
           if (dropDownItem) {
             hasSentUpdate.current = true;
+            setIsDropDownVisible(false);
 
-            onUpdate && onUpdate(dropDownItem);
             setSearchInput(dropDownItem.title);
-            if (canClose.current === false) {
-              setIsDropDownVisible(false);
-              canClose.current = true;
-            }
           }
         }
       });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
   return (
     <div
       className={twMerge("relative h-full w-full @container", styling?.main)}
@@ -169,11 +166,7 @@ const DropDown = forwardRef<HTMLInputElement, InputProps>(function DropDown(
             }
           }
         }}
-        // onBlur={() => {
-        //   if (focusedItem === null) {
-        //     setIsDropDownVisible(false);
-        //   }
-        // }}
+        placeholder={placeholder}
         enterKeyHint="search"
         value={searchInput}
         ref={(node) => {
@@ -186,12 +179,17 @@ const DropDown = forwardRef<HTMLInputElement, InputProps>(function DropDown(
         }}
         onChange={(e) => {
           handleChange(e);
-
+          if (!disableCreate) {
+            onUpdate && onUpdate(e.target.value);
+          }
           onChange && onChange(e);
         }}
         onFocus={(e) => {
           handleFocus(e);
           onFocus && onFocus(e);
+        }}
+        onBlur={(e) => {
+          onBlur && onBlur(e);
         }}
         styling={{ main: styling?.main }}
         {...props}
@@ -200,8 +198,12 @@ const DropDown = forwardRef<HTMLInputElement, InputProps>(function DropDown(
         className="absolute mt-2 grid w-full justify-items-center transition-grid"
         style={{
           gridTemplateRows: isDropDownVisible ? "1fr" : "0fr",
-          transitionDuration: `${Math.min(500, 250 + items.length * 25)}ms`,
+          transitionDuration:
+            items.length === 0
+              ? "0ms"
+              : `${Math.min(500, 250 + items.length * 25)}ms`,
         }}
+        ref={animatingContainer}
       >
         <div
           className={twJoin(
@@ -219,6 +221,8 @@ const DropDown = forwardRef<HTMLInputElement, InputProps>(function DropDown(
                   setFocusedItem(item);
                 }}
                 onClick={() => {
+                  onUpdate && onUpdate(item.title);
+
                   setIsDropDownVisible(false);
                   if (inputRef.current && focusNextInputOnEnter) {
                     const next = findNextInput(inputRef.current);
@@ -261,12 +265,10 @@ const DropDown = forwardRef<HTMLInputElement, InputProps>(function DropDown(
                 tabIndex={isDropDownVisible ? 0 : -1}
                 key={index}
                 styling={{
-                  mainClass: twMerge(
-                    "overflow-hidden border-inactive bg-first",
+                  main: twMerge(
+                    "overflow-hidden border-inactive bg-first p-1",
                     items.length === 1 ? "w-full @md:w-1/2" : "w-full",
-                    styling?.item
-                  ),
-                  mainFocusClass: twMerge(
+                    styling?.item,
                     item.id === focusedItem?.id
                       ? "ring-blue-500"
                       : styling?.itemFocus

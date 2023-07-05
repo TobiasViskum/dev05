@@ -12,7 +12,6 @@ export default function EditAmount() {
 
   const exerciseData = useAppSelector((state) => state.appState.cardioExercise);
   const UNIT_CONVERTER = 0.62137119;
-  const MAX_INPUT = 1000;
   const router = useRouter();
   const inputRef = useRef<HTMLInputElement | null>(null);
   const [inputValue, setInputValue] = useState("");
@@ -56,41 +55,6 @@ export default function EditAmount() {
     };
   }
 
-  function handleTimeChange(
-    e: React.ChangeEvent<HTMLInputElement>,
-    timeToChange: "hours" | "minutes" | "seconds"
-  ) {
-    if (e.target.value.toString() === "") {
-      if (timeToChange === "hours") {
-        e.target.placeholder = [getTimeAmount().hours, "h"].join("");
-      } else if (timeToChange === "minutes") {
-        e.target.placeholder = [getTimeAmount().minutes, "m"].join("");
-      } else if (timeToChange === "seconds") {
-        e.target.placeholder = [getTimeAmount().seconds, "s"].join("");
-      }
-      setTimeValue((prev) => ({
-        ...prev,
-        [timeToChange]: "",
-      }));
-      return;
-    }
-
-    const value = Number(e.target.value.replace(",", "."));
-    let min = 0;
-    let max = 60;
-    if (timeToChange === "hours") max = 100;
-
-    const isNumber = !isNaN(value);
-    if (isNumber === false) return;
-
-    if (value < min || value > max) return;
-
-    setTimeValue((prev) => ({
-      ...prev,
-      [timeToChange]: value.toString(),
-    }));
-  }
-
   function changeUnitTo(prevValue: string, unit: "km" | "mi") {
     let tempValue = Number(prevValue.replace(",", "."));
     if (unit === "km") {
@@ -102,28 +66,6 @@ export default function EditAmount() {
     return newValue;
   }
 
-  function handleInput(e: React.ChangeEvent<HTMLInputElement>) {
-    if (e.target.value === "") setInputValue("");
-    const value = e.target.value.replace(",", ".");
-
-    const isNumber = !isNaN(Number(value));
-
-    if (
-      isNumber &&
-      ((currUnit.toLowerCase() === "km" && Number(value) <= MAX_INPUT) ||
-        (currUnit.toLowerCase() === "mi" &&
-          Number(value) <= MAX_INPUT * UNIT_CONVERTER))
-    ) {
-      const splitValue = value.split(".");
-      if (splitValue.length === 1) {
-        setInputValue(e.target.value.replace(".", ","));
-      } else if (splitValue.length === 2) {
-        if (splitValue[1].length <= 2) {
-          setInputValue(e.target.value.replace(".", ","));
-        }
-      }
-    }
-  }
   function handleUnitChange() {
     if (currUnit === "km") {
       setCurrUnit("mi");
@@ -175,17 +117,15 @@ export default function EditAmount() {
             seconds: timeAmount.seconds || 0,
           };
       tempTimeValue.hours =
-        timeValue.hours === ""
-          ? tempTimeValue.hours
-          : Number(timeValue.hours.replace(/[a-zA-Z]/g, ""));
+        timeValue.hours === "" ? tempTimeValue.hours : Number(timeValue.hours);
       tempTimeValue.minutes =
         timeValue.minutes === ""
           ? tempTimeValue.minutes
-          : Number(timeValue.minutes.replace(/[a-zA-Z]/g, ""));
+          : Number(timeValue.minutes);
       tempTimeValue.seconds =
         timeValue.seconds === ""
           ? tempTimeValue.seconds
-          : Number(timeValue.seconds.replace(/[a-zA-Z]/g, ""));
+          : Number(timeValue.seconds);
       return tempTimeValue;
     }
 
@@ -229,7 +169,9 @@ export default function EditAmount() {
         newTimeValue: newTimeValue,
       },
     });
+
     document.dispatchEvent(event);
+
     await updateAmountAndUnit(
       newDistance,
       currUnit,
@@ -243,33 +185,6 @@ export default function EditAmount() {
     }, 200);
   }
 
-  function onTimeInputFocus(
-    e: React.FocusEvent<HTMLInputElement>,
-    timeToChange: "hours" | "minutes" | "seconds"
-  ) {
-    setTimeValue((prev) => ({
-      ...prev,
-      [timeToChange]: prev[timeToChange].replace(/[a-zA-Z]/g, ""),
-    }));
-    e.target.value = timeValue[timeToChange].replace(/[a-zA-Z]/g, "");
-    e.target.placeholder = "";
-    e.target.select();
-  }
-  function onTimeInputBlur(
-    e: React.FocusEvent<HTMLInputElement>,
-    timeToChange: "hours" | "minutes" | "seconds"
-  ) {
-    e.target.placeholder = [getTimeAmount().hours, timeToChange.charAt(0)].join(
-      ""
-    );
-    if (e.target.value !== "") {
-      setTimeValue((prev) => ({
-        ...prev,
-        [timeToChange]: [prev[timeToChange], timeToChange.charAt(0)].join(""),
-      }));
-    }
-  }
-
   return (
     <>
       <div className="flex flex-col items-center gap-y-2 px-6">
@@ -279,18 +194,17 @@ export default function EditAmount() {
             {exerciseData && exerciseData.name}
           </p>
         </div>
-        <div className="mb-2 flex w-48 items-center justify-center gap-x-4">
+        <div className="mb-2 flex w-48 items-center justify-center gap-x-2">
           <Input
-            smartFocusNextInput
-            useComma
             value={inputValue}
-            dynamicSuffix=" mi"
-            // onChange={(e) => console.log(e.target.value)}
+            onChange={(e) => setInputValue(e.target.value)}
             ref={inputRef}
             styling={{
               main: "w-36 border-inactive bg-first text-center text-first placeholder-[var(--text-second)]",
             }}
             placeholder={placeholderValue}
+            smartFocusNextInput
+            useComma
             onlyNumbers
             maxDecimals={2}
             minValue={0}
@@ -298,7 +212,7 @@ export default function EditAmount() {
           />
           <Button
             insideModal
-            className="w-8 rounded-md border border-solid border-inactive bg-first py-1 text-base"
+            styling={{ main: "h-8 w-8 bg-first py-1 text-base" }}
             onClick={handleUnitChange}
           >
             {currUnit}
@@ -310,47 +224,69 @@ export default function EditAmount() {
             onlyIntegers
             minValue={0}
             disableFeedback
+            smartFocusNextInput
+            dynamicSuffix="h"
             maxValue={99}
             maxCharacters={2}
+            onChange={(e) =>
+              setTimeValue((prev) => ({ ...prev, hours: e.target.value }))
+            }
             ref={hoursRef}
             styling={{
-              main: "w-14 border-inactive bg-first text-first placeholder-[var(--text-second)]",
+              main: "w-16 border-inactive bg-first text-first placeholder-[var(--text-second)]",
             }}
-            placeholder={[getTimeAmount().hours, "h"].join("")}
-            inputMode="decimal"
-            pattern="[0-9],*"
+            placeholder={getTimeAmount().hours}
           />
           {":"}
-          <input
+          <Input
             value={timeValue.minutes}
-            onChange={(e) => handleTimeChange(e, "minutes")}
+            onlyIntegers
+            minValue={0}
+            disableFeedback
+            smartFocusNextInput
+            dynamicSuffix="m"
+            maxValue={60}
+            maxCharacters={2}
+            onChange={(e) =>
+              setTimeValue((prev) => ({ ...prev, minutes: e.target.value }))
+            }
             ref={minutesRef}
-            className="w-14 rounded-md border border-solid border-inactive bg-first py-1 text-center text-first placeholder-[var(--text-second)] outline-none"
-            placeholder={[getTimeAmount().minutes, "m"].join("")}
-            inputMode="decimal"
-            pattern="[0-9],*"
-            onFocus={(e) => onTimeInputFocus(e, "minutes")}
-            onBlur={(e) => onTimeInputBlur(e, "minutes")}
+            styling={{
+              main: "w-16 border-inactive bg-first text-first placeholder-[var(--text-second)]",
+            }}
+            placeholder={getTimeAmount().minutes}
           />
           {":"}
-          <input
+          <Input
             value={timeValue.seconds}
-            onChange={(e) => handleTimeChange(e, "seconds")}
+            onlyNumbers
+            minValue={0}
+            disableFeedback
+            smartFocusNextInput
+            dynamicSuffix="s"
+            maxValue={60}
+            useComma
+            maxDecimals={2}
+            maxCharacters={5}
+            onChange={(e) =>
+              setTimeValue((prev) => ({ ...prev, seconds: e.target.value }))
+            }
             ref={secondsRef}
-            className="w-14 rounded-md border border-solid border-inactive bg-first py-1 text-center text-first placeholder-[var(--text-second)] outline-none"
-            placeholder={[getTimeAmount().seconds, "s"].join("")}
-            inputMode="decimal"
-            pattern="[0-9],*"
-            onFocus={(e) => onTimeInputFocus(e, "seconds")}
-            onBlur={(e) => onTimeInputBlur(e, "seconds")}
+            styling={{
+              main: "w-16 border-inactive bg-first text-first placeholder-[var(--text-second)]",
+            }}
+            placeholder={getTimeAmount().seconds}
           />
         </div>
-        <button
-          className="mb-4 w-2/5 rounded-lg bg-news shadow-circle-lg shadow-white"
+        <Button
+          insideModal
+          styling={{
+            main: "mb-4 w-2/5 rounded-lg bg-news shadow-circle-lg border-none",
+          }}
           onClick={handleSaveClick}
         >
           Save
-        </button>
+        </Button>
       </div>
     </>
   );
