@@ -25,12 +25,8 @@ export default function EditGroup() {
     }
   }
 
-  function onGroupChange(e: {
-    title: string;
-    description?: string;
-    id?: number;
-  }) {
-    context.handleGroupInput(e.title);
+  function onGroupChange(title: string) {
+    context.handleGroupInput(title);
   }
 
   return (
