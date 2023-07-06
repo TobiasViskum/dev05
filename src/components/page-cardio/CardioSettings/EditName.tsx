@@ -11,7 +11,7 @@ export default function EditName() {
 
   return (
     <>
-      <p className="w-32">Name:</p>
+      <p className="w-20">Name:</p>
       <Input
         spellCheck={false}
         focusNextInputOnEnter

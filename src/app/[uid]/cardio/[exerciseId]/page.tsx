@@ -28,7 +28,7 @@ export default async function page({ params }: ExtendedViskumAppParams) {
             <EditName />
           </div>
           <div className="flex w-full max-w-2xl items-center justify-center">
-            <EditIsSprint />
+            {/* <EditIsSprint /> */}
           </div>
           <div
             className={twJoin(
