@@ -25,9 +25,19 @@ export default function InfoBox() {
     } else if (timeAmount) {
       const hours = timeAmount.hours ? [timeAmount.hours, ":"].join("") : "0:";
       const minutes = timeAmount.minutes
-        ? [timeAmount.minutes, ":"].join("")
+        ? [
+            timeAmount.minutes.toString().length === 1
+              ? ["0", timeAmount.minutes].join("")
+              : timeAmount.minutes,
+            ":",
+          ].join("")
         : "00:";
-      const seconds = timeAmount.seconds ? Math.round(timeAmount.seconds) : "";
+
+      const seconds = timeAmount.seconds
+        ? timeAmount.seconds.toString().length === 1
+          ? ["0", Math.round(timeAmount.seconds)].join("")
+          : Math.round(timeAmount.seconds)
+        : "00";
       formattedTime = [hours, minutes, seconds].join("");
     } else {
       formattedTime = "0:00:00";
