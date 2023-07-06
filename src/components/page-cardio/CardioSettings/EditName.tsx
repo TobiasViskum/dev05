@@ -1,25 +1,23 @@
 "use client";
 import { useAppSelector } from "@/store/useClient";
 import { Input } from "@/components/global/Input";
-import { useContext, useState } from "react";
+import { useContext, useRef } from "react";
 import { SettingsContext } from "./Content";
 
 export default function EditName() {
   const context = useContext(SettingsContext);
   const exerciseData = useAppSelector((state) => state.appState.cardioExercise);
-  const [testName, setTestName] = useState("Name:");
+  const inputRef = useRef<HTMLInputElement | null>(null);
 
   return (
     <>
-      <p className="w-32">{testName}</p>
+      <p className="w-32">Name:</p>
       <Input
         spellCheck={false}
         focusNextInputOnEnter
         smartFocusNextInput
         maxCharacters={45}
-        onKeyDown={(e) => {
-          setTestName(e.key);
-        }}
+        ref={inputRef}
         onChange={(e) => context.handleNameInput(e.target.value)}
         styling={{
           main: "w-full border-inactive bg-first text-first placeholder-[var(--text-second)]",

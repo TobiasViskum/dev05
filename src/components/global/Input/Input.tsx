@@ -96,7 +96,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
     if (typeof value === "string") {
       if (value === "" || validate(value)) {
         if (value === "") {
-          setInputValue(value);
+          // setInputValue(value);
         } else {
           if (document.activeElement !== inputRef.current) {
             setInputValue([dynamicPrefix, value, dynamicSuffix].join(""));

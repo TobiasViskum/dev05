@@ -234,19 +234,40 @@ export default function EditAmount() {
         </div>
         <div className="mb-2 flex w-48 items-center justify-center gap-x-2">
           <Input
-            value={inputValue}
+            value={
+              currUnit !== "m"
+                ? inputValue
+                : inputValue === ""
+                ? inputValue
+                : Math.round(Number(inputValue.replace(",", "."))).toString()
+            }
             onChange={(e) => handleChange(e.target.value)}
             ref={inputRef}
             styling={{
               main: "w-36 border-inactive bg-first text-center text-first placeholder-[var(--text-second)]",
             }}
-            placeholder={placeholderValue}
+            placeholder={
+              currUnit !== "m"
+                ? placeholderValue
+                : placeholderValue === ""
+                ? placeholderValue
+                : Math.round(
+                    Number(placeholderValue.replace(",", "."))
+                  ).toString()
+            }
             smartFocusNextInput
             useComma
-            onlyNumbers
-            maxDecimals={2}
+            onlyNumbers={currUnit === "m" ? false : true}
+            onlyIntegers={currUnit === "m" ? true : false}
+            maxDecimals={currUnit === "m" ? 0 : 2}
             minValue={0}
-            maxValue={9999}
+            maxValue={
+              currUnit === "m"
+                ? 1000 * TO_METERS
+                : currUnit === "mi"
+                ? 1000 * TO_MILES
+                : 1000
+            }
           />
           <Button
             insideModal

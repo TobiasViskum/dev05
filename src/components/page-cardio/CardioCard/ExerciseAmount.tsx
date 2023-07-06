@@ -10,10 +10,13 @@ import { roundToOneDecimal, roundToTwoDecimals } from "@/lib/util";
 export default function ExerciseAmount() {
   const context = useContext(CardContext);
   const exerciseData = context.exerciseData;
-  const UNIT_CONVERTER = 0.62137119;
+  const TO_MILES = 0.62137119;
+  const TO_METERS = 1000;
   const distance =
-    exerciseData.unit_name.toLowerCase() === "mi"
-      ? exerciseData.distance * UNIT_CONVERTER
+    exerciseData.unit_name === "mi"
+      ? exerciseData.distance * TO_MILES
+      : exerciseData.unit_name === "m"
+      ? exerciseData.distance * TO_METERS
       : exerciseData.distance;
 
   const dispatch = useAppDispatch();
@@ -51,6 +54,8 @@ export default function ExerciseAmount() {
 
     return distance / (hours + minutes / 60 + seconds / 3600);
   }
+
+  function getDistance() {}
 
   function getPrimaryTitle() {
     if (exerciseData.is_sprint === 1) {

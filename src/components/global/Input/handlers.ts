@@ -12,7 +12,7 @@ function handleFocus(
   disableSelection: boolean | undefined
 ) {
   e.target.placeholder = "";
-  if (typeof disableSelection !== "undefined" && disableSelection) return;
+  if (disableSelection) return;
   e.target.select();
 }
 
