@@ -1,6 +1,6 @@
 "use client";
 import { twJoin, twMerge } from "tailwind-merge";
-import { forwardRef, useEffect, useRef, useState, useCallback } from "react";
+import { forwardRef, useEffect, useRef, useState } from "react";
 import { handlers } from "./handlers";
 import { getDecimalAmount, inputValidation } from "./inputValidation";
 import { flushSync } from "react-dom";
@@ -24,6 +24,7 @@ export interface CustomInputProps {
   dynamicSuffix?: string;
   removeDefaultStyling?: boolean;
   allowDanishCharacters?: boolean;
+  applyAutocompleteStyling?: boolean;
 }
 
 interface InputProps
@@ -73,6 +74,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
     onBlur,
     onKeyDown,
     focusNextInputOnEnter,
+    applyAutocompleteStyling,
     smartFocusNextInput,
     smartBlur,
     placeholder,
@@ -91,6 +93,8 @@ const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
   propValidation();
 
   const inputRef = useRef<HTMLInputElement | null>(null);
+  const autocompleteTw =
+    "outline-none text-first pb-3 autofill:bg-first autofill:hover:bg-first autofill:focus:bg-first autofill:active:bg-first [transition:_background-color_9999s_ease-in-out_0s] autofill:text-first autofill:hover:text-first autofill:focus:text-first autofill:active:text-first autofill:[-webkit-text-fill-color:_var(--text-first)]";
 
   const validate = validateInput;
 
@@ -113,6 +117,16 @@ const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
     setIsMessageVisible(false);
   }, 3000);
 
+  function prettifyInputNumber(newInput: string) {
+    if (onlyIntegers || onlyNumbers) {
+      let tempInput = Number(newInput.replace(",", ".")).toString();
+      tempInput = Number(tempInput).toString();
+      if (useComma) tempInput = tempInput.replace(".", ",");
+      return tempInput;
+    } else {
+      return newInput;
+    }
+  }
   function removePrefixes() {
     const length1 = dynamicPrefix ? dynamicPrefix.length : 0;
     const length2 = dynamicSuffix ? -dynamicSuffix.length : inputValue.length;
@@ -124,9 +138,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
   function addPrefixes() {
     if (inputValue !== "") {
       if (onlyIntegers || onlyNumbers) {
-        let tempInput = Number(inputValue.replace(",", ".")).toString();
-        tempInput = Number(tempInput).toString();
-        if (useComma) tempInput = tempInput.replace(".", ",");
+        let tempInput = prettifyInputNumber(inputValue);
 
         setInputValue(
           [
@@ -209,7 +221,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
           if (value === "" || validateInput(value)) {
             if (didChangeFocus) {
               flushSync(() => {
-                setInputValue(value);
+                setInputValue(prettifyInputNumber(value));
               });
             } else {
               setInputValue(value);
@@ -239,7 +251,11 @@ const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
           onBlur && onBlur(e);
         }}
         placeholder={getPlaceholder()}
-        className={twMerge(!removeDefaultStyling && mainTw, styling?.main)}
+        className={twMerge(
+          !removeDefaultStyling && mainTw,
+          applyAutocompleteStyling && autocompleteTw,
+          styling?.main
+        )}
       />
     </div>
   );

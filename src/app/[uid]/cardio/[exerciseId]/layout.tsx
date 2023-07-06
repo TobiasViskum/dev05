@@ -19,7 +19,10 @@ export default async function CardioSettingsRoot({
     getCardioUnits(),
   ]);
 
-  const cardioGroupings = await getCardioGroupings(profileData.group_uid);
+  const cardioGroupings = await getCardioGroupings(
+    profileData.group_uid,
+    exerciseData.discipline_id
+  );
 
   return (
     <div className="flex flex-col items-center">

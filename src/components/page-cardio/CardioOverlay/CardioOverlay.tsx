@@ -2,7 +2,7 @@
 
 import { useRef, useEffect, useState, createContext } from "react";
 import { twJoin } from "tailwind-merge";
-import { EditAmount, CreateExercise } from "./Content";
+import { EditAmount, CreateExercise, DeleteExercise } from "./Content";
 import { LoadingSpinner, Checkmark } from "@/components/global";
 import { Dialog } from "@/components/global/Dialog";
 import { v4 as uuidv4 } from "uuid";
@@ -39,17 +39,12 @@ export default function CardioOverlay() {
       if (dialogRef.current?.open === false) {
         dialogRef.current?.showModal();
       }
-      setActiveOverlay(e.detail.overlay);
+      if (e.detail.overlay === "") {
+        closeOverlay();
+      } else {
+        setActiveOverlay(e.detail.overlay);
+      }
     }) as EventListener);
-
-    // document.addEventListener("close", (e) => {
-    //   console.log(e.target);
-    //   if (e.target === dialogRef.current) {
-    //     console.log("sdf");
-
-    //     setUniqueOpenUid(uuidv4());
-    //   }
-    // });
   }, []);
 
   function closeOverlay() {
@@ -106,6 +101,8 @@ export default function CardioOverlay() {
           <EditAmount />
         ) : activeOverlay === "createExercise" ? (
           <CreateExercise />
+        ) : activeOverlay === "deleteExercise" ? (
+          <DeleteExercise />
         ) : (
           <></>
         )}

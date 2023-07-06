@@ -32,7 +32,8 @@
 
   --text-first: rgb(251, 251, 252);
   --text-second: rgb(132, 132, 132);
-  --text-active: rgb(4, 136, 255);
+  --text-active-preset: 4, 136, 255;
+  --text-active: rgb(var(--text-active-preset));
   --text-btn-active: rgb(133, 190, 254);
   --text-btn-inactive: rgb(191, 193, 201);
   --text-news: rgb(46, 209, 88);

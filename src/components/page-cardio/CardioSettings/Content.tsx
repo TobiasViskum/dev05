@@ -1,25 +1,29 @@
 "use client";
 
 import { useAppSelector } from "@/store/useClient";
-import { EditName, EditGroup, EditIsSprint, EditUnit } from ".";
 import { useState } from "react";
 import { createContext } from "react";
-import { twJoin } from "tailwind-merge";
 
 interface InitialValue {
   handleNameInput: (newInput: string) => void;
   handleGroupInput: (newInput: string) => void;
   handleUnitInput: (newInput: string) => void;
+  values: {
+    newName: string;
+    newGroup: string;
+    newUnit: string;
+  };
 }
 
 const initialValue: InitialValue = {
   handleNameInput: () => {},
   handleGroupInput: () => {},
   handleUnitInput: () => {},
+  values: { newName: "", newGroup: "", newUnit: "" },
 };
 export const SettingsContext = createContext(initialValue);
 
-export default function Content() {
+export default function Content({ children }: { children: React.ReactNode }) {
   const exerciseData = useAppSelector((state) => state.appState.cardioExercise);
 
   const [nameInput, setNameInput] = useState(exerciseData.name);
@@ -42,26 +46,14 @@ export default function Content() {
         handleNameInput: handleNameInput,
         handleGroupInput: handleGroupInput,
         handleUnitInput: handleUnitInput,
+        values: {
+          newName: nameInput,
+          newGroup: groupInput,
+          newUnit: unitInput,
+        },
       }}
     >
-      <div className="flex w-full max-w-2xl items-center justify-center">
-        <EditName />
-      </div>
-      <div className="flex w-full max-w-2xl items-center justify-center">
-        <EditIsSprint />
-      </div>
-      <div
-        className={twJoin(
-          "flex h-full w-full max-w-2xl flex-col items-center justify-center gap-x-4 gap-y-6 tn:flex-row tn:gap-y-0"
-        )}
-      >
-        <div className="flex w-3/5 flex-col items-center gap-y-2 text-center">
-          <EditGroup />
-        </div>
-        <div className="flex w-2/5 flex-col items-center gap-y-2 text-center">
-          <EditUnit />
-        </div>
-      </div>
+      {children}
     </SettingsContext.Provider>
   );
 }

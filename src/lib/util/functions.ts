@@ -24,3 +24,11 @@ export function roundToDecimals(number: number, decimals: number) {
     .replace(/\.0+$/, "")
     .replace(".", ",");
 }
+
+export function debounce(fn: () => void, delay: number) {
+  let timer: NodeJS.Timeout | null;
+  return () => {
+    if (timer) clearTimeout(timer);
+    timer = setTimeout(fn, delay);
+  };
+}

@@ -4,6 +4,7 @@ import createExercise from "./createExercise";
 import getCardioExercise from "./getCardioExercise";
 import getCardioGroupings from "./getCardioGroupings";
 import getCardioUnits from "./getCardioUnits";
+import deleteExercise from "./deleteExercise";
 
 export {
   updateLock,
@@ -12,4 +13,5 @@ export {
   getCardioExercise,
   getCardioGroupings,
   getCardioUnits,
+  deleteExercise,
 };

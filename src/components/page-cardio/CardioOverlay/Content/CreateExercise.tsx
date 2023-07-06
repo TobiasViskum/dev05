@@ -6,6 +6,8 @@ import { twJoin } from "tailwind-merge";
 import { CardioOverlayContext } from "../CardioOverlay";
 import { useAppDispatch } from "@/store/useClient";
 import { setCardioData } from "@/store/userDataSlice";
+import { Button } from "@/components/global/Button";
+import { Input } from "@/components/global/Input";
 
 export default function CreateExercise() {
   const dispatch = useAppDispatch();
@@ -64,29 +66,25 @@ export default function CreateExercise() {
         <div className="grid gap-y-2">
           <div className="flex flex-col items-center gap-y-2">
             <p className="text-sm text-second">Name:</p>
-            <input
+            <Input
               spellCheck={false}
-              onChange={(e) => handleInputChange(e)}
-              value={inputValue}
               placeholder={getPlaceholderText()}
-              className={twJoin(
-                "w-full rounded-md border border-solid border-inactive bg-first py-0.5 text-center text-sm text-first placeholder-[var(--text-second)] outline-none"
-              )}
-              onFocus={(e) => (e.target.placeholder = "")}
-              onBlur={(e) =>
-                inputValue === ""
-                  ? (e.target.placeholder = getPlaceholderText())
-                  : ""
-              }
+              styling={{
+                main: "w-full border-inactive bg-first py-1 text-sm text-first placeholder-[var(--text-second)]",
+              }}
+              maxCharacters={45}
+              onChange={(e) => handleInputChange(e)}
             />
           </div>
         </div>
-        <button
-          className="mb-4 mt-2 w-2/5 rounded-lg bg-news shadow-circle-lg shadow-white"
+        <Button
+          styling={{
+            main: "mb-4 mt-2 w-2/5 rounded-lg bg-news shadow-circle-lg border-none",
+          }}
           onClick={handleSaveClick}
         >
           Save
-        </button>
+        </Button>
       </div>
     </>
   );

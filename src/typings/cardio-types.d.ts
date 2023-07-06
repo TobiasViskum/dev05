@@ -66,8 +66,8 @@ interface CardioGroupings {
   group_id: number;
   group_name: string;
   group_sort_order: number;
-  profile_group_id: string;
-  discipline: string;
+  profile_group_uid: string;
+  discipline_id: number;
 }
 
 interface CardioUnits {

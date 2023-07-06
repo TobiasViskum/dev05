@@ -11,7 +11,6 @@ export default function EditUnit() {
   const cardioGroupings = useAppSelector((state) => state.appState.cardioUnits);
 
   const [items, setItems] = useState(generateItems(exerciseData.unit_name));
-  const [placeholder, setPlaceholder] = useState(exerciseData.unit_name);
 
   function generateItems(unitName: string) {
     let content = [];
@@ -27,9 +26,10 @@ export default function EditUnit() {
   }
 
   function onUnitChange(title: string) {
+    if (title !== "") {
+      setItems(generateItems(title));
+    }
     context.handleUnitInput(title);
-    setItems(generateItems(title));
-    setPlaceholder(title);
   }
 
   return (
@@ -46,7 +46,7 @@ export default function EditUnit() {
         styling={{
           main: "z-10 w-full border-inactive bg-first text-first placeholder-[var(--text-second)]",
         }}
-        placeholder={placeholder}
+        placeholder={exerciseData.unit_name}
         dropDownItems={items}
       />
     </>

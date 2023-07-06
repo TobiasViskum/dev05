@@ -11,12 +11,22 @@ interface ButtonProps
   children?: React.ReactNode;
   styling?: {
     main?: string;
+    disabled?: string;
   };
   important?: boolean;
   insideModal?: boolean;
 }
 const Button = forwardRef<HTMLButtonElement, ButtonProps>(function Button(
-  { children, className, insideModal, important, onClick, styling, ...props },
+  {
+    children,
+    className,
+    insideModal,
+    disabled,
+    important,
+    onClick,
+    styling,
+    ...props
+  },
   ref
 ) {
   const buttonRef = useRef<HTMLButtonElement | null>(null);
@@ -48,7 +58,8 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(function Button(
         onClick={onClick}
         className={twMerge(
           "rounded-md border border-solid border-inactive bg-black text-center focus:outline focus:outline-1 focus:outline-[var(--text-active)]",
-          styling?.main
+          styling?.main,
+          disabled && styling?.disabled
         )}
         {...props}
       >

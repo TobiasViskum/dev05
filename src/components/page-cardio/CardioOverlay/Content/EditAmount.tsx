@@ -337,10 +337,11 @@ export default function EditAmount() {
             onlyIntegers={currUnit === "m" ? false : true}
             minValue={0}
             disableFeedback
-            smartFocusNextInput
+            smartBlur
             dynamicSuffix="s"
             maxValue={60}
             useComma
+            maxCharacters={currUnit === "m" ? 5 : 2}
             maxDecimals={currUnit === "m" ? 2 : 0}
             onChange={(e) =>
               setTimeValue((prev) => ({

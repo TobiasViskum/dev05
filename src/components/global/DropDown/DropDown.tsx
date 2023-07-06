@@ -1,11 +1,10 @@
 "use client";
 
-import { forwardRef, useEffect, useRef, useState, useMemo } from "react";
+import { forwardRef, useEffect, useRef, useState } from "react";
 import { Input } from "../Input";
 import { twJoin, twMerge } from "tailwind-merge";
 import { Button } from "../Button";
 import { CustomInputProps } from "../Input/Input";
-import { flushSync } from "react-dom";
 
 interface DropdownItem {
   title: string;
@@ -58,10 +57,11 @@ const DropDown = forwardRef<HTMLInputElement, InputProps>(function DropDown(
   const [searchInput, setSearchInput] = useState("");
   const [items, setItems] = useState(dropDownItems ? dropDownItems : []);
   const [focusedItem, setFocusedItem] = useState<DropdownItem | null>(null);
+  const currFocusedItem = useRef(focusedItem);
 
   const containerRef = useRef<HTMLDivElement | null>(null);
   const hasSentUpdate = useRef(false);
-  const hasMounted = useRef(false);
+  const clickedDropdownItem = useRef<DropdownItem | null>(null);
   const inputRef = useRef<HTMLInputElement | null>(null);
   const animatingContainer = useRef<HTMLDivElement | null>(null);
 
@@ -71,10 +71,8 @@ const DropDown = forwardRef<HTMLInputElement, InputProps>(function DropDown(
     const nDropDownItems: DropdownItem[] = JSON.parse(actualItems);
     hasSentUpdate.current = false;
     if (nDropDownItems) {
-      let newItems = nDropDownItems.filter(
-        (item) =>
-          item.title.toLowerCase().includes(searchInput.toLowerCase()) ||
-          item.id?.toString() === searchInput
+      let newItems = nDropDownItems.filter((item) =>
+        item.title.toLowerCase().includes(searchInput.toLowerCase())
       );
       if (newItems.length === 0 && disableCreate !== true) {
         newItems = [{ title: `Create: "${searchInput}"`, id: 1 }];
@@ -82,11 +80,12 @@ const DropDown = forwardRef<HTMLInputElement, InputProps>(function DropDown(
       setItems(newItems);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [searchInput, disableCreate, actualItems]);
+  }, [searchInput, disableCreate, actualItems, isDropDownVisible]);
 
   useEffect(() => {
     if (isDropDownVisible) {
       setFocusedItem(null);
+      currFocusedItem.current = null;
     } else {
       if (disableCreate) {
         const obj = dropDownItems?.find((item) => searchInput === item.title);
@@ -94,12 +93,17 @@ const DropDown = forwardRef<HTMLInputElement, InputProps>(function DropDown(
           if (inputRef.current) {
             inputRef.current.placeholder = placeholder || "";
           }
-          setSearchInput("");
-          animatingContainer.current.addEventListener(
-            "transitionend",
-            (e) => {},
-            { once: true }
-          );
+
+          // console.log(clickedDropdownItem.current);
+          // animatingContainer.current.addEventListener(
+          //   "transitionend",
+          //   (e) => {
+          //     if (clickedDropdownItem.current) {
+          //       setSearchInput(clickedDropdownItem.current.title);
+          //     }
+          //   },
+          //   { once: true }
+          // );
         }
       }
     }
@@ -120,24 +124,24 @@ const DropDown = forwardRef<HTMLInputElement, InputProps>(function DropDown(
       }
     });
 
-    hasMounted.current = true;
-    if (containerRef.current) {
-      containerRef.current.addEventListener("click", (e) => {
-        const target = e.target as HTMLElement;
+    // hasMounted.current = true;
+    // if (containerRef.current) {
+    //   containerRef.current.addEventListener("click", (e) => {
+    //     const target = e.target as HTMLElement;
 
-        if (target.ariaLabel === "dropDownItem") {
-          const id = Number(target.id);
-          const dropDownItem = dropDownItems?.find((obj) => obj.id === id);
+    //     if (target.ariaLabel === "dropDownItem") {
+    //       const id = Number(target.id);
+    //       const dropDownItem = dropDownItems?.find((obj) => obj.id === id);
 
-          if (dropDownItem) {
-            hasSentUpdate.current = true;
-            setIsDropDownVisible(false);
+    //       if (dropDownItem) {
+    //         hasSentUpdate.current = true;
+    //         setIsDropDownVisible(false);
 
-            setSearchInput(dropDownItem.title);
-          }
-        }
-      });
-    }
+    //         setSearchInput(dropDownItem.title);
+    //       }
+    //     }
+    //   });
+    // }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -181,6 +185,8 @@ const DropDown = forwardRef<HTMLInputElement, InputProps>(function DropDown(
           handleChange(e);
           if (!disableCreate) {
             onUpdate && onUpdate(e.target.value);
+          } else if (e.target.value === "") {
+            onUpdate && onUpdate(e.target.value);
           }
           onChange && onChange(e);
         }}
@@ -189,6 +195,7 @@ const DropDown = forwardRef<HTMLInputElement, InputProps>(function DropDown(
           onFocus && onFocus(e);
         }}
         onBlur={(e) => {
+          handleBlur(e);
           onBlur && onBlur(e);
         }}
         styling={{ main: styling?.main }}
@@ -217,13 +224,25 @@ const DropDown = forwardRef<HTMLInputElement, InputProps>(function DropDown(
           {items.map((item, index) => {
             return (
               <Button
+                disabled={item.id === -1 ? true : false}
                 onFocus={() => {
                   setFocusedItem(item);
+                  currFocusedItem.current = item;
                 }}
                 onClick={() => {
-                  onUpdate && onUpdate(item.title);
+                  if (disableCreate) {
+                    onUpdate && onUpdate(item.title);
+                  } else if (item.title.includes('Create: "')) {
+                    onUpdate && onUpdate(item.title.slice(9, -1));
+                  } else {
+                    onUpdate && onUpdate(item.title);
+                  }
 
+                  setTimeout(() => {
+                    setSearchInput(item.title);
+                  }, 100 + items.length * 25);
                   setIsDropDownVisible(false);
+
                   if (inputRef.current && focusNextInputOnEnter) {
                     const next = findNextInput(inputRef.current);
                     if (next) {
@@ -320,11 +339,11 @@ const DropDown = forwardRef<HTMLInputElement, InputProps>(function DropDown(
     setIsDropDownVisible(true);
   }
   function handleBlur(e: React.FocusEvent<HTMLInputElement>) {
-    // setTimeout(() => {
-    //   if (canClose.current) {
-    //     setIsDropDownVisible(false);
-    //   }
-    // }, 25);
+    setTimeout(() => {
+      if (currFocusedItem.current === null && isDropDownVisible) {
+        setIsDropDownVisible(false);
+      }
+    }, 250);
   }
   function handleUpKey(e: React.KeyboardEvent<HTMLInputElement>) {
     if (dropDownItems) {
