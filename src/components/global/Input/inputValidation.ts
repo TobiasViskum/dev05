@@ -4,7 +4,7 @@ function maxCharacters(
   displayMessage: (message: string, forceHideMessage: boolean) => void,
   forceHideMessage: boolean
 ) {
-  if (typeof maxCharacters === "undefined") return true;
+  if (!maxCharacters) return true;
   if (newInput.length <= maxCharacters) return true;
   displayMessage(`Max length`, forceHideMessage);
 
@@ -18,7 +18,7 @@ function onlyLetters(
   displayMessage: (message: string, forceHideMessage: boolean) => void,
   forceHideMessage: boolean
 ) {
-  if (typeof onlyLetters === "undefined") return true;
+  if (!onlyLetters) return true;
   if (allowDanishCharacters && /^[a-zA-ZæøåÆØÅ ]+$/.test(newInput)) return true;
   if (/^[a-zA-Z ]+$/.test(newInput)) return true;
   displayMessage("Letters only", forceHideMessage);
@@ -32,7 +32,7 @@ function onlyIntegers(
   displayMessage: (message: string, forceHideMessage: boolean) => void,
   forceHideMessage: boolean
 ) {
-  if (typeof onlyIntegers === "undefined") return true;
+  if (!onlyIntegers) return true;
   if (newInput.includes(" ")) return false;
   if (validateZeros(newInput) > 1) return false;
   if (newInput.includes(".") || newInput.includes(",")) {
@@ -57,7 +57,7 @@ function onlyNumbers(
   displayMessage: (message: string, forceHideMessage: boolean) => void,
   forceHideMessage: boolean
 ) {
-  if (typeof onlyNumbers === "undefined") return true;
+  if (!onlyNumbers) return true;
   if (newInput.includes(" ")) return false;
   if (validateZeros(newInput) > 1) return false;
 
@@ -81,7 +81,7 @@ function minMaxValue(
   displayMessage: (message: string, forceHideMessage: boolean) => void,
   forceHideMessage: boolean
 ) {
-  if (newInput === "-" && typeof minValue !== "undefined" && minValue >= 0) {
+  if (newInput === "-" && minValue && minValue >= 0) {
     return false;
   }
 
@@ -89,10 +89,8 @@ function minMaxValue(
 
   let hasPassedMin = true;
   let hasPassedMax = true;
-  if (typeof minValue !== "undefined" && number < minValue)
-    hasPassedMin = false;
-  if (typeof maxValue !== "undefined" && number > maxValue)
-    hasPassedMax = false;
+  if (minValue && number < minValue) hasPassedMin = false;
+  if (maxValue && number > maxValue) hasPassedMax = false;
   if (hasPassedMin && hasPassedMax) return true;
   displayMessage(`${minValue}-${maxValue}`, forceHideMessage);
   return false;
@@ -106,7 +104,7 @@ function maxDecimals(
   forceHideMessage: boolean
 ) {
   if (newInput === "-") return true;
-  if (typeof maxDecimals === "undefined") return true;
+  if (!maxDecimals) return true;
 
   const decimalAmount = getDecimalAmount(newInput, useComma);
 

@@ -10,3 +10,9 @@ export function roundToOneDecimal(number: number) {
 export function roundToTwoDecimals(number: number) {
   return number.toFixed(2).toString().replace(/\.0+$/, "").replace(".", ",");
 }
+
+export function getDecimalAmount(str: string, useComma?: boolean | undefined) {
+  const splitStr = useComma ? str.split(",") : str.split(".");
+  if (splitStr.length <= 1) return 0;
+  return splitStr[1].length;
+}

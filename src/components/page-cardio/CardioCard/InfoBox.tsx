@@ -11,18 +11,29 @@ export default function InfoBox() {
   const tw = "text-2xs";
 
   function getTime() {
-    const time_amount = exerciseData.time_amount;
+    const timeAmount = exerciseData.time_amount;
 
-    if (time_amount === null) return <p className={tw}>0h 0m 0s</p>;
-    const hours = time_amount.hours ? [time_amount.hours, "h"].join("") : "";
-    const minutes = time_amount.minutes
-      ? [time_amount.minutes, "m"].join("")
-      : "";
-    const seconds = time_amount.seconds
-      ? [time_amount.seconds, "s"].join("")
-      : "";
+    let formattedTime = "";
+    if (exerciseData.unit_name === "m" && timeAmount) {
+      const minutes = timeAmount.minutes
+        ? [timeAmount.minutes, ":"].join("")
+        : "0:";
+      const seconds = timeAmount.seconds
+        ? timeAmount.seconds.toString().replace(".", ",")
+        : "";
+      formattedTime = [minutes, seconds].join("");
+    } else if (timeAmount) {
+      const hours = timeAmount.hours ? [timeAmount.hours, ":"].join("") : "0:";
+      const minutes = timeAmount.minutes
+        ? [timeAmount.minutes, ":"].join("")
+        : "00:";
+      const seconds = timeAmount.seconds ? Math.round(timeAmount.seconds) : "";
+      formattedTime = [hours, minutes, seconds].join("");
+    } else {
+      formattedTime = "0:00:00";
+    }
 
-    return <p className={tw}>{[hours, minutes, seconds].join(" ")}</p>;
+    return <p className={tw}>{formattedTime}</p>;
   }
 
   function getDate() {
@@ -30,7 +41,7 @@ export default function InfoBox() {
       const date = new Date(exerciseData.updated_date);
       const formattedDate = dayjs(date).format("MM-DD-YYYY");
       return <p className={tw}>{formattedDate}</p>;
-    } else return <p className={tw}>-</p>;
+    } else return <p className={tw}>{"-"}</p>;
   }
 
   return (

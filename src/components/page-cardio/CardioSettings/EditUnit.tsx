@@ -26,7 +26,7 @@ export default function EditUnit() {
     return content;
   }
 
-  function onGroupChange(title: string) {
+  function onUnitChange(title: string) {
     context.handleUnitInput(title);
     setItems(generateItems(title));
     setPlaceholder(title);
@@ -42,7 +42,7 @@ export default function EditUnit() {
         disableCreate
         spellCheck={false}
         focusNextInputOnEnter
-        onUpdate={(e) => onGroupChange(e)}
+        onUpdate={(e) => onUnitChange(e)}
         styling={{
           main: "z-10 w-full border-inactive bg-first text-first placeholder-[var(--text-second)]",
         }}
