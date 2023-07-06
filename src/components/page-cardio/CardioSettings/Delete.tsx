@@ -15,7 +15,7 @@ export default function Delete() {
       <Button
         onClick={handleClick}
         styling={{
-          main: "h-10 w-24 text-xs font-semibold rounded-lg border-none mt-auto shadow-md bg-[var(--text-active)] mb-20 focus:outline-white",
+          main: "h-10 w-24 text-xs font-semibold rounded-lg border-none shadow-md bg-[var(--text-active)] mt-[352px] focus:outline-white",
         }}
       >
         Delete

@@ -17,7 +17,7 @@ export default async function page({ params }: ExtendedViskumAppParams) {
   const exerciseData = await getCardioExercise(exerciseId);
 
   return (
-    <div className="flex h-[calc(100svh_-_64px)] w-full max-w-2xl flex-col items-center standalone:touch:h-[calc(100svh_-_96px)]">
+    <div className="flex w-full max-w-2xl flex-col items-center">
       <h1 className="mt-2 text-center text-lg [text-wrap:_balance] tn:text-2xl">
         {exerciseData.name}
       </h1>
