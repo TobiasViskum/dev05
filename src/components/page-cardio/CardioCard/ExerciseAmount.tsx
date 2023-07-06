@@ -5,7 +5,7 @@ import { useAppDispatch } from "@/store/useClient";
 import { setCardioExercise } from "@/store/appStateSlice";
 import { CardContext } from "./CardProvider";
 import { twJoin } from "tailwind-merge";
-import { roundToOneDecimal, roundToTwoDecimals } from "@/lib/util";
+import { roundToDecimals } from "@/lib/util/functions";
 
 export default function ExerciseAmount() {
   const context = useContext(CardContext);
@@ -45,35 +45,45 @@ export default function ExerciseAmount() {
 
   function getAverageSpeed() {
     const time_amount = exerciseData.time_amount;
+    let distanceNonMeter = distance;
     if (!time_amount) return 0;
-    if (distance === 0) return 0;
+    if (distanceNonMeter === 0) return 0;
 
     const hours = time_amount.hours ? time_amount.hours : 0;
     const minutes = time_amount.minutes ? time_amount.minutes : 0;
     const seconds = time_amount.seconds ? time_amount.seconds : 0;
 
-    return distance / (hours + minutes / 60 + seconds / 3600);
+    if (exerciseData.unit_name === "m")
+      distanceNonMeter = distanceNonMeter / TO_METERS;
+
+    return distanceNonMeter / (hours + minutes / 60 + seconds / 3600);
   }
 
-  function getDistance() {}
+  function getDistance() {
+    if (exerciseData.unit_name === "m") {
+      return [Math.round(distance), exerciseData.unit_name].join(" ");
+    } else {
+      return [roundToDecimals(distance, 2), exerciseData.unit_name].join(" ");
+    }
+  }
 
   function getPrimaryTitle() {
     if (exerciseData.is_sprint === 1) {
       return [
-        roundToOneDecimal(getAverageSpeed()),
-        `${exerciseData.unit_name}/h`,
+        roundToDecimals(getAverageSpeed(), 1),
+        `${exerciseData.unit_name === "m" ? "km" : exerciseData.unit_name}/h`,
       ].join(" ");
     } else {
-      return [roundToTwoDecimals(distance), exerciseData.unit_name].join(" ");
+      return getDistance();
     }
   }
   function getSecondaryTitle() {
     if (exerciseData.is_sprint === 1) {
-      return [roundToTwoDecimals(distance), exerciseData.unit_name].join(" ");
+      return getDistance();
     } else {
       return [
-        roundToOneDecimal(getAverageSpeed()),
-        `${exerciseData.unit_name}/h`,
+        roundToDecimals(getAverageSpeed(), 1),
+        `${exerciseData.unit_name === "m" ? "km" : exerciseData.unit_name}/h`,
       ].join(" ");
     }
   }

@@ -78,6 +78,7 @@ function minMaxValue(
   newInput: string,
   minValue: number | undefined,
   maxValue: number | undefined,
+  useComma: boolean | undefined,
   displayMessage: (message: string, forceHideMessage: boolean) => void,
   forceHideMessage: boolean
 ) {
@@ -92,7 +93,20 @@ function minMaxValue(
   if (minValue && number < minValue) hasPassedMin = false;
   if (maxValue && number > maxValue) hasPassedMax = false;
   if (hasPassedMin && hasPassedMax) return true;
-  displayMessage(`${minValue}-${maxValue}`, forceHideMessage);
+  const min =
+    minValue !== undefined
+      ? useComma
+        ? minValue.toString().replace(".", ",") + "-"
+        : minValue + "-"
+      : "> ";
+  const max =
+    maxValue !== undefined
+      ? useComma
+        ? maxValue.toString().replace(".", ",")
+        : maxValue
+      : " <";
+
+  displayMessage(`${min}${max}`, forceHideMessage);
   return false;
 }
 

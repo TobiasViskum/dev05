@@ -16,3 +16,11 @@ export function getDecimalAmount(str: string, useComma?: boolean | undefined) {
   if (splitStr.length <= 1) return 0;
   return splitStr[1].length;
 }
+
+export function roundToDecimals(number: number, decimals: number) {
+  return number
+    .toFixed(decimals)
+    .toString()
+    .replace(/\.0+$/, "")
+    .replace(".", ",");
+}

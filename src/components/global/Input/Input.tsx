@@ -19,6 +19,7 @@ export interface CustomInputProps {
   disableSelection?: boolean;
   focusNextInputOnEnter?: boolean;
   smartFocusNextInput?: boolean;
+  smartBlur?: boolean;
   dynamicPrefix?: string;
   dynamicSuffix?: string;
   removeDefaultStyling?: boolean;
@@ -73,6 +74,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
     onKeyDown,
     focusNextInputOnEnter,
     smartFocusNextInput,
+    smartBlur,
     placeholder,
     enterKeyHint,
     value,
@@ -119,10 +121,10 @@ const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
       setInputValue((prev) => prev.slice(length1, length2));
     });
   }
-  function addPrefixes(input: string) {
-    if (input !== "") {
+  function addPrefixes() {
+    if (inputValue !== "") {
       if (onlyIntegers || onlyNumbers) {
-        let tempInput = Number(input.replace(",", ".")).toString();
+        let tempInput = Number(inputValue.replace(",", ".")).toString();
         tempInput = Number(tempInput).toString();
         if (useComma) tempInput = tempInput.replace(".", ",");
 
@@ -137,7 +139,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
         setInputValue(
           [
             dynamicPrefix ? dynamicPrefix : "",
-            input,
+            inputValue,
             dynamicSuffix ? dynamicSuffix : "",
           ].join("")
         );
@@ -224,7 +226,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
           onFocus && onFocus(e);
         }}
         onBlur={(e) => {
-          addPrefixes(e.target.value);
+          addPrefixes();
 
           handlers.handleBlur(e, getPlaceholder());
           if (onlyIntegers || onlyNumbers) {
@@ -243,8 +245,15 @@ const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
   );
 
   function smartFocus(newInput: string) {
-    if (smartFocusNextInput && inputRef.current) {
-      const input = inputRef.current;
+    if ((smartFocusNextInput || smartBlur) && inputRef.current) {
+      const smartAction = () => {
+        if (smartBlur && inputRef.current) {
+          inputRef.current.blur();
+        } else if (inputRef.current) {
+          findNextInputAndFocus(inputRef.current);
+        }
+      };
+
       const number = useComma
         ? Number(newInput.replace(",", "."))
         : Number(newInput);
@@ -256,7 +265,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
       }
 
       if (maxCharacters && newInput.length >= maxCharacters) {
-        findNextInputAndFocus(input);
+        smartAction();
         return true;
       }
 
@@ -265,17 +274,17 @@ const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
           if (maxDecimals) {
             const decimalAmount = getDecimalAmount(newInput, useComma);
             if (decimalAmount >= maxDecimals) {
-              findNextInputAndFocus(input);
+              smartAction();
               return true;
             }
           } else {
-            findNextInputAndFocus(input);
+            smartAction();
             return true;
           }
         }
       }
       if (maxDecimals && getDecimalAmount(newInput, useComma) >= maxDecimals) {
-        findNextInputAndFocus(input);
+        smartAction();
         return true;
       }
     }
@@ -342,6 +351,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
         value,
         minValue,
         maxValue,
+        useComma,
         displayMessage,
         forceHideMessage
       ) &&
@@ -359,13 +369,9 @@ const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
     if (
       [onlyIntegers, onlyNumbers, onlyLetters].filter((item) => item).length > 1
     ) {
-      try {
-        throw new Error(
-          "Please only use one input validation method (onlyIntegers, onlyNumbers or onlyLetters)"
-        );
-      } catch (err) {
-        if (err instanceof Error) console.log(err.message);
-      }
+      throw new Error(
+        "Please only use one input validation method (onlyIntegers, onlyNumbers or onlyLetters)"
+      );
     }
     if (
       (typeof minValue !== "undefined" ||
@@ -374,13 +380,14 @@ const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
         typeof useComma !== "undefined") &&
       [onlyIntegers, onlyNumbers].filter((item) => item).length === 0
     ) {
-      try {
-        throw new Error(
-          "minValue, maxValue, maxDecimals and useComma only works with the following validation methods: onlyIntegers and onlyNumbers"
-        );
-      } catch (err) {
-        if (err instanceof Error) console.log(err.message);
-      }
+      throw new Error(
+        "minValue, maxValue, maxDecimals and useComma only works with the following validation methods: onlyIntegers and onlyNumbers"
+      );
+    }
+    if (smartFocusNextInput && smartBlur) {
+      throw new Error(
+        "Cannot have both smartFocusNextInput and smartBlur enabled at the same time"
+      );
     }
   }
   function debounce(fn: () => void, delay: number) {

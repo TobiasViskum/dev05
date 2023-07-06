@@ -7,6 +7,7 @@ import { CardioOverlayContext } from "../CardioOverlay";
 import { roundToTwoDecimals } from "@/lib/util";
 import { Input } from "@/components/global/Input";
 import { Button } from "@/components/global/Button";
+import { roundToDecimals } from "@/lib/util/functions";
 
 export default function EditAmount() {
   const context = useContext(CardioOverlayContext);
@@ -255,7 +256,7 @@ export default function EditAmount() {
                     Number(placeholderValue.replace(",", "."))
                   ).toString()
             }
-            smartFocusNextInput
+            smartBlur
             useComma
             onlyNumbers={currUnit === "m" ? false : true}
             onlyIntegers={currUnit === "m" ? true : false}
@@ -265,7 +266,7 @@ export default function EditAmount() {
               currUnit === "m"
                 ? 1000 * TO_METERS
                 : currUnit === "mi"
-                ? 1000 * TO_MILES
+                ? Number(roundToDecimals(1000 * TO_MILES, 2).replace(",", "."))
                 : 1000
             }
           />
