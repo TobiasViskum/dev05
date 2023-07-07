@@ -2,7 +2,7 @@
 import Link from "next/link";
 import { usePathname, useParams } from "next/navigation";
 import { twJoin } from "tailwind-merge";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export default function LeftNavigation() {
   const path = usePathname();
@@ -33,11 +33,21 @@ export default function LeftNavigation() {
     },
   ];
 
+  useEffect(() => {
+    if (path.split("/").length === 2) {
+      setActiveLinkHeading("Home");
+    } else if (path.includes("fitness")) {
+      setActiveLinkHeading("Fitness");
+    } else if (path.includes("cardio")) {
+      setActiveLinkHeading("Cardio");
+    }
+  }, [path]);
+
   if (path === "/") return <></>;
 
   return (
     <>
-      <div className="relative hidden w-full xl:flex">
+      <div className="relative ml-4 hidden w-full xl:flex">
         <div
           className={twJoin(
             "h-[calc(100svh_-_64px)] w-full max-w-[calc(min(calc(100svw_-_17px),_var(--document-max-width))_-_892px_-_24px_-_32px)]",
@@ -45,6 +55,24 @@ export default function LeftNavigation() {
           )}
         >
           <h1 className="mb-8 text-3xl font-medium">Quick Navigation</h1>
+          <button
+            className="group flex w-full items-center gap-x-2"
+            onClick={() =>
+              activeLinkHeading === "Home"
+                ? setActiveLinkHeading("")
+                : setActiveLinkHeading("Home")
+            }
+          >
+            <Link
+              href={`/${uid}`}
+              className={twJoin(
+                "text-lg font-medium transition-colors group-hover:text-active",
+                activeLinkHeading === "Home" ? "text-first" : "text-second"
+              )}
+            >
+              {"Home"}
+            </Link>
+          </button>
           {linkLayout.map((item, index) => {
             return (
               <>
@@ -60,28 +88,28 @@ export default function LeftNavigation() {
                     >
                       <h2
                         className={twJoin(
-                          "text-lg font-medium transition-colors group-hover:text-first",
+                          "text-lg font-medium transition-colors group-hover:text-active",
                           activeLinkHeading === item.heading
-                            ? "text-active"
-                            : "text-first"
+                            ? "text-first"
+                            : "text-second"
                         )}
                       >
                         {item.heading}
                       </h2>
                       <hr
                         className={twJoin(
-                          "w-full border-t border-solid transition-colors group-hover:border-[var(--text-first)]",
+                          "w-full border-t border-solid transition-colors group-hover:border-[var(--text-active)]",
                           activeLinkHeading === item.heading
-                            ? "border-[var(--text-active)]"
-                            : "border-[var(--text-first)]"
+                            ? "border-[var(--text-first)]"
+                            : "border-[var(--text-second)]"
                         )}
                       />
                       <svg
                         className={twJoin(
-                          "transition-colors group-hover:text-first",
+                          "transition-colors group-hover:text-active",
                           activeLinkHeading === item.heading
-                            ? "text-active"
-                            : "text-first"
+                            ? "text-first"
+                            : "text-second"
                         )}
                         height="24"
                         shape-rendering="geometricPrecision"

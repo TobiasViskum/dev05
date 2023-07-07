@@ -13,7 +13,7 @@ export default async function Page({ params }: ViskumAppParams) {
   const appData = await getAppData(profileData);
 
   return (
-    <main className="grid min-w-small justify-center">
+    <main className="grid min-w-small justify-center ">
       <div className="hidden flex-col items-center standalone:touch:flex">
         <ProfileHolder profileData={profileData} />
         <Statusbar />

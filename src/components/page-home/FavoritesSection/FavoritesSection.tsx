@@ -51,7 +51,9 @@ export default function FavoritesSection({
   return (
     <div className="overflow-hidden">
       <h2 className="text-2xl font-semibold">Favorites</h2>
-      <div className="mt-2 grid grid-cols-auto-min-max-1 gap-3">{result}</div>
+      <div className="mt-2 grid grid-cols-auto-min-max-1 gap-3 vsm:grid-cols-auto-min-max-2">
+        {result}
+      </div>
     </div>
   );
 }

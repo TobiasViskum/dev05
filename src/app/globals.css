@@ -75,6 +75,10 @@
     1,
     minmax(var(--min-width), var(--max-width))
   );
+  --grid-template-cols-auto-minmax-2: repeat(
+    2,
+    minmax(var(--min-width), var(--max-width))
+  );
 
   --transition-prop-grid: grid-template-columns, grid-template-rows,
     grid-template-areas, row-gap, column-gap;

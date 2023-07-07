@@ -106,7 +106,8 @@ module.exports = {
         "0": "var(--grid-auto-rows-0)",
       },
       gridTemplateColumns: {
-        "auto-min-max-1": `var(--grid-template-cols-auto-minmax-1)`,
+        "auto-min-max-1": "var(--grid-template-cols-auto-minmax-1)",
+        "auto-min-max-2": "var(--grid-template-cols-auto-minmax-2)",
       },
       transitionProperty: {
         "grid": "var(--transition-prop-grid)",

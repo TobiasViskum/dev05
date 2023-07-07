@@ -14,7 +14,7 @@ export default function BrowserView({
   return (
     <>
       <div className="flex flex-col gap-y-6">
-        <div className="flex max-w-small gap-x-4 overflow-hidden">
+        <div className="flex max-w-small gap-x-4 overflow-hidden vsm:max-w-none">
           <div className="hidden aspect-square h-32 w-32 rounded-full border-4 border-white tn:block">
             <Image
               priority

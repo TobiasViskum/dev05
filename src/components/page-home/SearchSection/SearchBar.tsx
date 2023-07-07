@@ -13,7 +13,7 @@ export default function SearchBar() {
     <>
       <div
         className={twJoin(
-          "flex w-full min-w-small max-w-small items-center rounded-md bg-first text-base",
+          "flex w-full min-w-small max-w-small items-center rounded-md bg-first text-base vsm:max-w-none",
           "border border-solid border-inactive"
         )}
         id="searchbar"
