@@ -1,3 +1,4 @@
 import LoadingSkeleton from "./ExerciseLoadingSkeleton/LoadingSkeleton";
+import GroupHolder from "./GroupHolder";
 
-export { LoadingSkeleton };
+export { LoadingSkeleton, GroupHolder };

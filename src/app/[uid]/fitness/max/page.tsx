@@ -1,7 +1,7 @@
 import { Suspense } from "react";
 import { Metadata } from "next";
 import { FitnessGroupAndCards } from "@/components/page-fitness";
-import { LoadingSkeleton } from "@/components/fitness-cardio";
+import { GroupHolder, LoadingSkeleton } from "@/components/fitness-cardio";
 
 export const metadata: Metadata = {
   title: {
@@ -19,11 +19,11 @@ export default async function MaxPage({ params }: ViskumAppParams) {
         <p className="text-second">{"|"}</p>
         <h1 className="text-3xl">Max</h1>
       </div>
-      <div className="grid min-w-small vsm:gap-y-3">
+      <GroupHolder>
         <Suspense fallback={<LoadingSkeleton />}>
           <FitnessGroupAndCards uid={uid} type="max" />
         </Suspense>
-      </div>
+      </GroupHolder>
       <div className="pt-8" />
     </>
   );

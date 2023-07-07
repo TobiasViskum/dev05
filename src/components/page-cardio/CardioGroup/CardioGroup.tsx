@@ -37,7 +37,7 @@ export default function CardioGroup({
         className="grid w-full"
         style={{
           gridTemplateRows: isClosed ? "0fr" : "1fr",
-          transitionDuration: `${200 + 25 * totalExercises}ms`,
+          transitionDuration: `${300 + 20 * totalExercises}ms`,
         }}
       >
         <div

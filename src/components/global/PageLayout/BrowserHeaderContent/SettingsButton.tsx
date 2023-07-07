@@ -16,7 +16,7 @@ export default function SettingsButton() {
     <>
       <Link
         href={`/${uid}/settings?prev=${path}`}
-        className="h-8 ml-auto font-semibold text-lg flex items-center"
+        className="ml-auto hidden h-8 items-center text-lg font-semibold xl:flex"
       >
         <p>Settings</p>
       </Link>

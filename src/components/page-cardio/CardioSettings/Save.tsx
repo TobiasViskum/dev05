@@ -86,7 +86,7 @@ export default function Save() {
         onClick={handleSave}
         styling={{
           main: twJoin(
-            "fixed right-4 grid h-12 w-12 rounded-lg place-items-center bg-news shadow-circle-xl transition-opacity standalone:touch:bottom-24 border-none",
+            "fixed right-4 bottom-20 grid h-12 w-12 rounded-lg place-items-center bg-news shadow-circle-xl transition-opacity standalone:touch:bottom-24 border-none",
             isSaveVisible ? "opacity-100" : "opacity-0"
           ),
         }}

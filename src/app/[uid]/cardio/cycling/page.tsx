@@ -1,7 +1,7 @@
 import { Suspense } from "react";
 import { Metadata } from "next";
 import { CardioGroupAndCards } from "@/components/page-cardio";
-import { LoadingSkeleton } from "@/components/fitness-cardio";
+import { GroupHolder, LoadingSkeleton } from "@/components/fitness-cardio";
 
 export const metadata: Metadata = {
   title: {
@@ -17,11 +17,11 @@ export default async function CyclingPage({ params }: ViskumAppParams) {
       <div className="mb-4 flex items-center gap-x-3">
         <h1 className="text-3xl">Cycling</h1>
       </div>
-      <div className="grid min-w-small vsm:gap-y-3">
+      <GroupHolder>
         <Suspense fallback={<LoadingSkeleton />}>
           <CardioGroupAndCards uid={uid} discipline="cycling" />
         </Suspense>
-      </div>
+      </GroupHolder>
       <div className="pt-8" />
     </>
   );

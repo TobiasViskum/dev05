@@ -1,12 +1,24 @@
 "use client";
 import Link from "next/link";
-import { usePathname, useParams } from "next/navigation";
+import { usePathname, useParams, useSearchParams } from "next/navigation";
 import { twJoin } from "tailwind-merge";
-import { useEffect, useState } from "react";
+import { useEffect, useState, createContext } from "react";
+import SingleLink from "./SingleLink";
+
+const initialValue: {
+  changeActiveLinkHeading: (title: string) => void;
+  activeLinkHeading: string;
+} = {
+  changeActiveLinkHeading: () => {},
+  activeLinkHeading: "",
+};
+
+export const LeftNavigationContext = createContext(initialValue);
 
 export default function LeftNavigation() {
   const path = usePathname();
   const params = useParams();
+  const searchParams = useSearchParams();
   const uid = params.uid;
   const [activeLinkHeading, setActiveLinkHeading] = useState("");
 
@@ -15,20 +27,36 @@ export default function LeftNavigation() {
       heading: "Fitness",
       partialHref: `/${uid}/fitness`,
       links: [
-        { title: "Reps", href: `/${uid}/fitness/reps` },
-        { title: "Max", href: `/${uid}/fitness/max` },
-        { title: "Profiles", href: `/${uid}/fitness/profiles` },
-        { title: "Search", href: `/${uid}/fitness/search` },
+        { title: "Reps", href: `/${uid}/fitness/reps`, matcher: "reps" },
+        { title: "Max", href: `/${uid}/fitness/max`, matcher: "max" },
+        {
+          title: "Profiles",
+          href: `/${uid}/fitness/profiles`,
+          matcher: "profiles",
+        },
+        { title: "Search", href: `/${uid}/fitness/search`, matcher: "search" },
       ],
     },
     {
       heading: "Cardio",
       partialHref: `/${uid}/cardio`,
       links: [
-        { title: "Running", href: `/${uid}/cardio/running` },
-        { title: "Cycling", href: `/${uid}/cardio/cycling` },
-        { title: "Swimming", href: `/${uid}/cardio/swimming` },
-        { title: "Search", href: `/${uid}/cardio/search` },
+        {
+          title: "Running",
+          href: `/${uid}/cardio/running`,
+          matcher: "running",
+        },
+        {
+          title: "Cycling",
+          href: `/${uid}/cardio/cycling`,
+          matcher: "cycling",
+        },
+        {
+          title: "Swimming",
+          href: `/${uid}/cardio/swimming`,
+          matcher: "swimming",
+        },
+        { title: "Search", href: `/${uid}/cardio/search`, matcher: "search" },
       ],
     },
   ];
@@ -43,10 +71,18 @@ export default function LeftNavigation() {
     }
   }, [path]);
 
-  if (path === "/") return <></>;
+  function changeActiveLinkHeading(title: string) {
+    setActiveLinkHeading(title);
+  }
 
+  if (path === "/") return <></>;
   return (
-    <>
+    <LeftNavigationContext.Provider
+      value={{
+        changeActiveLinkHeading: changeActiveLinkHeading,
+        activeLinkHeading: activeLinkHeading,
+      }}
+    >
       <div className="relative ml-4 hidden w-full xl:flex">
         <div
           className={twJoin(
@@ -55,24 +91,7 @@ export default function LeftNavigation() {
           )}
         >
           <h1 className="mb-8 text-3xl font-medium">Quick Navigation</h1>
-          <button
-            className="group flex w-full items-center gap-x-2"
-            onClick={() =>
-              activeLinkHeading === "Home"
-                ? setActiveLinkHeading("")
-                : setActiveLinkHeading("Home")
-            }
-          >
-            <Link
-              href={`/${uid}`}
-              className={twJoin(
-                "text-lg font-medium transition-colors group-hover:text-active",
-                activeLinkHeading === "Home" ? "text-first" : "text-second"
-              )}
-            >
-              {"Home"}
-            </Link>
-          </button>
+          <SingleLink title="Home" href={`/${uid}`} />
           {linkLayout.map((item, index) => {
             return (
               <>
@@ -151,7 +170,9 @@ export default function LeftNavigation() {
                                   href={link.href}
                                   className={twJoin(
                                     "transition-colors hover:text-first",
-                                    path === link.href
+                                    path === link.href ||
+                                      searchParams.get("matcher") ===
+                                        link.matcher
                                       ? "text-first"
                                       : "text-second"
                                   )}
@@ -169,8 +190,13 @@ export default function LeftNavigation() {
               </>
             );
           })}
+          <SingleLink
+            title="Settings"
+            href={`/${uid}/settings`}
+            pathChecker="settings"
+          />
         </div>
       </div>
-    </>
+    </LeftNavigationContext.Provider>
   );
 }

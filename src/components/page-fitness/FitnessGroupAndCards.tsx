@@ -1,5 +1,5 @@
 import { FitnessCard, FitnessGroup } from "@/components/page-fitness";
-import { getFitnessData, getProfileData } from "@/lib/db";
+import { getFitnessData } from "@/lib/db";
 import { getFitnessGroups } from "@/lib/util";
 
 interface Props {

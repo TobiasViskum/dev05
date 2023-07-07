@@ -79,7 +79,6 @@ const DropDown = forwardRef<HTMLInputElement, InputProps>(function DropDown(
       }
       setItems(newItems);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchInput, disableCreate, actualItems, isDropDownVisible]);
 
   useEffect(() => {
@@ -93,17 +92,6 @@ const DropDown = forwardRef<HTMLInputElement, InputProps>(function DropDown(
           if (inputRef.current) {
             inputRef.current.placeholder = placeholder || "";
           }
-
-          // console.log(clickedDropdownItem.current);
-          // animatingContainer.current.addEventListener(
-          //   "transitionend",
-          //   (e) => {
-          //     if (clickedDropdownItem.current) {
-          //       setSearchInput(clickedDropdownItem.current.title);
-          //     }
-          //   },
-          //   { once: true }
-          // );
         }
       }
     }
@@ -123,31 +111,14 @@ const DropDown = forwardRef<HTMLInputElement, InputProps>(function DropDown(
         setIsDropDownVisible(false);
       }
     });
-
-    // hasMounted.current = true;
-    // if (containerRef.current) {
-    //   containerRef.current.addEventListener("click", (e) => {
-    //     const target = e.target as HTMLElement;
-
-    //     if (target.ariaLabel === "dropDownItem") {
-    //       const id = Number(target.id);
-    //       const dropDownItem = dropDownItems?.find((obj) => obj.id === id);
-
-    //       if (dropDownItem) {
-    //         hasSentUpdate.current = true;
-    //         setIsDropDownVisible(false);
-
-    //         setSearchInput(dropDownItem.title);
-    //       }
-    //     }
-    //   });
-    // }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
     <div
-      className={twMerge("relative h-full w-full @container", styling?.main)}
+      className={twMerge(
+        "relative h-full w-full min-w-[64px] @container",
+        styling?.main
+      )}
       ref={containerRef}
     >
       <Input
@@ -202,7 +173,7 @@ const DropDown = forwardRef<HTMLInputElement, InputProps>(function DropDown(
         {...props}
       />
       <div
-        className="absolute mt-2 grid w-full justify-items-center transition-grid"
+        className="absolute mt-2 grid max-h-64 w-full justify-items-center transition-grid"
         style={{
           gridTemplateRows: isDropDownVisible ? "1fr" : "0fr",
           transitionDuration:
@@ -214,115 +185,121 @@ const DropDown = forwardRef<HTMLInputElement, InputProps>(function DropDown(
       >
         <div
           className={twJoin(
-            " grid max-h-64 w-full origin-top justify-items-center gap-x-2 gap-y-2 overflow-hidden rounded-md bg-first",
-            "px-2 transition-all [&>*:nth-child(1)]:mt-2 @md:[&>*:nth-child(2)]:mt-2",
-            "[&>*:nth-last-child(1)]:mb-2 @md:[&>*:nth-last-child(2)]:mb-2",
-            items.length === 1 ? "grid-cols-1" : "@md:grid-cols-2",
-            styling?.dropdownContainer
+            "w-full justify-items-center overflow-hidden rounded-md bg-first",
+            "px-2 transition-all"
           )}
         >
-          {items.map((item, index) => {
-            return (
-              <Button
-                disabled={item.id === -1 ? true : false}
-                onFocus={() => {
-                  setFocusedItem(item);
-                  currFocusedItem.current = item;
-                }}
-                onClick={() => {
-                  if (disableCreate) {
-                    onUpdate && onUpdate(item.title);
-                  } else if (item.title.includes('Create: "')) {
-                    onUpdate && onUpdate(item.title.slice(9, -1));
-                  } else {
-                    onUpdate && onUpdate(item.title);
-                  }
-
-                  setTimeout(() => {
-                    setSearchInput(item.title);
-                  }, 100 + items.length * 25);
-                  setIsDropDownVisible(false);
-
-                  if (inputRef.current && focusNextInputOnEnter) {
-                    const next = findNextInput(inputRef.current);
-                    if (next) {
-                      next.focus();
-                    }
-                  }
-                }}
-                onKeyDown={(e) => {
-                  if (e.key === "Tab") {
-                    if (!e.shiftKey) {
-                      if (item.id === items.slice(-1)[0].id) {
-                        setFocusedItem(null);
-                      }
-                    } else if (e.shiftKey) {
-                      if (item.id === items[0].id) {
-                        setFocusedItem(null);
-                      }
-                    }
-                  } else if (e.key === "Enter" || e.key === " ") {
-                    setIsDropDownVisible(false);
-                    if (item.title.includes('Create: "')) {
-                      setSearchInput(item.title.slice(9, -1));
+          <div
+            id="viskum-dropdown-scrollbar-style"
+            className={twJoin(
+              "grid max-h-48 w-full scroll-ml-0 gap-x-2 gap-y-2 overflow-y-auto",
+              items.length === 1 ? "grid-cols-1" : "@md:grid-cols-2",
+              styling?.dropdownContainer // [&>*:nth-child(1)]:mt-2 @md:[&>*:nth-child(2)]:mt-2 [&>*:nth-last-child(1)]:mb-2 @md:[&>*:nth-last-child(2)]:mb-2
+            )}
+          >
+            {items.map((item, index) => {
+              return (
+                <Button
+                  disabled={item.id === -1 ? true : false}
+                  onFocus={() => {
+                    setFocusedItem(item);
+                    currFocusedItem.current = item;
+                  }}
+                  onClick={() => {
+                    if (disableCreate) {
+                      onUpdate && onUpdate(item.title);
+                    } else if (item.title.includes('Create: "')) {
+                      onUpdate && onUpdate(item.title.slice(9, -1));
                     } else {
-                      setSearchInput(item.title);
+                      onUpdate && onUpdate(item.title);
                     }
 
-                    if (e.key === "Enter") {
-                      if (inputRef.current && focusNextInputOnEnter) {
-                        const next = findNextInput(inputRef.current);
-                        if (next) {
-                          next.focus();
+                    setTimeout(() => {
+                      setSearchInput(item.title);
+                    }, 100 + items.length * 25);
+                    setIsDropDownVisible(false);
+
+                    if (inputRef.current && focusNextInputOnEnter) {
+                      const next = findNextInput(inputRef.current);
+                      if (next) {
+                        next.focus();
+                      }
+                    }
+                  }}
+                  onKeyDown={(e) => {
+                    if (e.key === "Tab") {
+                      if (!e.shiftKey) {
+                        if (item.id === items.slice(-1)[0].id) {
+                          setFocusedItem(null);
+                        }
+                      } else if (e.shiftKey) {
+                        if (item.id === items[0].id) {
+                          setFocusedItem(null);
+                        }
+                      }
+                    } else if (e.key === "Enter" || e.key === " ") {
+                      setIsDropDownVisible(false);
+                      if (item.title.includes('Create: "')) {
+                        setSearchInput(item.title.slice(9, -1));
+                      } else {
+                        setSearchInput(item.title);
+                      }
+
+                      if (e.key === "Enter") {
+                        if (inputRef.current && focusNextInputOnEnter) {
+                          const next = findNextInput(inputRef.current);
+                          if (next) {
+                            next.focus();
+                          }
                         }
                       }
                     }
-                  }
-                }}
-                aria-label="dropDownItem"
-                id={item.id?.toString()}
-                tabIndex={isDropDownVisible ? 0 : -1}
-                key={index}
-                styling={{
-                  main: twMerge(
-                    "overflow-hidden border-inactive bg-first p-1",
-                    items.length === 1 ? "w-full @md:w-1/2" : "w-full",
-                    styling?.item,
-                    item.id === focusedItem?.id
-                      ? "ring-blue-500"
-                      : styling?.itemFocus
-                  ),
-                }}
-              >
-                <p
-                  id={item.id?.toString()}
+                  }}
                   aria-label="dropDownItem"
-                  className={twMerge(
-                    "overflow-hidden break-words text-sm",
-                    styling?.itemTitle,
-                    item.id === focusedItem?.id
-                      ? twMerge("", styling?.itemTitleFocus)
-                      : ""
-                  )}
-                >
-                  {item.title}
-                </p>
-                <p
                   id={item.id?.toString()}
-                  aria-label="dropDownItem"
-                  className={twMerge(
-                    "text-2xs text-second",
-                    styling?.itemDescription,
-                    item.id === focusedItem?.id
-                      ? twMerge("", styling?.itemDescriptionFocus)
-                      : ""
-                  )}
+                  tabIndex={isDropDownVisible ? 0 : -1}
+                  key={index}
+                  styling={{
+                    main: twMerge(
+                      "overflow-hidden border-inactive bg-first p-1",
+                      items.length === 1 ? "w-full @md:w-1/2" : "w-full",
+                      styling?.item,
+                      item.id === focusedItem?.id
+                        ? "ring-blue-500"
+                        : styling?.itemFocus
+                    ),
+                  }}
                 >
-                  {item.description}
-                </p>
-              </Button>
-            );
-          })}
+                  <p
+                    id={item.id?.toString()}
+                    aria-label="dropDownItem"
+                    className={twMerge(
+                      "overflow-hidden break-words text-sm",
+                      styling?.itemTitle,
+                      item.id === focusedItem?.id
+                        ? twMerge("", styling?.itemTitleFocus)
+                        : ""
+                    )}
+                  >
+                    {item.title}
+                  </p>
+                  <p
+                    id={item.id?.toString()}
+                    aria-label="dropDownItem"
+                    className={twMerge(
+                      "text-2xs text-second",
+                      styling?.itemDescription,
+                      item.id === focusedItem?.id
+                        ? twMerge("", styling?.itemDescriptionFocus)
+                        : ""
+                    )}
+                  >
+                    {item.description}
+                  </p>
+                </Button>
+              );
+            })}
+          </div>
         </div>
       </div>
     </div>
