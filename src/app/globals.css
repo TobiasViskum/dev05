@@ -114,6 +114,10 @@ a {
   -webkit-touch-callout: var(--user-select);
 }
 
+.image-white {
+  filter: none;
+}
+
 .image-gray {
   filter: invert(49%) sepia(0%) saturate(98%) hue-rotate(272deg)
     brightness(102%) contrast(94%);
