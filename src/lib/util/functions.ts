@@ -32,3 +32,7 @@ export function debounce(fn: () => void, delay: number) {
     timer = setTimeout(fn, delay);
   };
 }
+
+export function clamp(min: number, value: number, max: number) {
+  return Math.min(Math.max(value, min), max);
+}

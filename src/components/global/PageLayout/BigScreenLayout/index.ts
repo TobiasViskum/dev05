@@ -1,3 +1,4 @@
 import LeftNavigation from "./LeftNavigation";
+import MultipleLinks from "./MultipleLinks";
 
-export { LeftNavigation };
+export { LeftNavigation, MultipleLinks };

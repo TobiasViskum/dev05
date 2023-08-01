@@ -4,6 +4,8 @@ import { usePathname, useParams, useSearchParams } from "next/navigation";
 import { twJoin } from "tailwind-merge";
 import { useEffect, useState, createContext } from "react";
 import SingleLink from "./SingleLink";
+import { getLinkLayout } from "@/lib/util/linkLayout";
+import MultipleLinks from "./MultipleLinks";
 
 const initialValue: {
   changeActiveLinkHeading: (title: string) => void;
@@ -22,44 +24,7 @@ export default function LeftNavigation() {
   const uid = params.uid;
   const [activeLinkHeading, setActiveLinkHeading] = useState("");
 
-  const linkLayout = [
-    {
-      heading: "Fitness",
-      partialHref: `/${uid}/fitness`,
-      links: [
-        { title: "Reps", href: `/${uid}/fitness/reps`, matcher: "reps" },
-        { title: "Max", href: `/${uid}/fitness/max`, matcher: "max" },
-        {
-          title: "Profiles",
-          href: `/${uid}/fitness/profiles`,
-          matcher: "profiles",
-        },
-        { title: "Search", href: `/${uid}/fitness/search`, matcher: "search" },
-      ],
-    },
-    {
-      heading: "Cardio",
-      partialHref: `/${uid}/cardio`,
-      links: [
-        {
-          title: "Running",
-          href: `/${uid}/cardio/running`,
-          matcher: "running",
-        },
-        {
-          title: "Cycling",
-          href: `/${uid}/cardio/cycling`,
-          matcher: "cycling",
-        },
-        {
-          title: "Swimming",
-          href: `/${uid}/cardio/swimming`,
-          matcher: "swimming",
-        },
-        { title: "Search", href: `/${uid}/cardio/search`, matcher: "search" },
-      ],
-    },
-  ];
+  const linkLayout = getLinkLayout(uid);
 
   useEffect(() => {
     if (path.split("/").length === 2) {
@@ -91,110 +56,29 @@ export default function LeftNavigation() {
           )}
         >
           <h1 className="mb-8 text-3xl font-medium">Quick Navigation</h1>
-          <SingleLink title="Home" href={`/${uid}`} />
           {linkLayout.map((item, index) => {
-            return (
-              <>
-                <div className="flex flex-col items-end">
-                  <div className="flex w-full flex-col items-center gap-y-2">
-                    <button
-                      className="group flex w-full items-center gap-x-2"
-                      onClick={() =>
-                        activeLinkHeading === item.heading
-                          ? setActiveLinkHeading("")
-                          : setActiveLinkHeading(item.heading)
-                      }
-                    >
-                      <h2
-                        className={twJoin(
-                          "text-lg font-medium transition-colors group-hover:text-active",
-                          activeLinkHeading === item.heading
-                            ? "text-first"
-                            : "text-second"
-                        )}
-                      >
-                        {item.heading}
-                      </h2>
-                      <hr
-                        className={twJoin(
-                          "w-full border-t border-solid transition-colors group-hover:border-[var(--text-active)]",
-                          activeLinkHeading === item.heading
-                            ? "border-[var(--text-first)]"
-                            : "border-[var(--text-second)]"
-                        )}
-                      />
-                      <svg
-                        className={twJoin(
-                          "transition-colors group-hover:text-active",
-                          activeLinkHeading === item.heading
-                            ? "text-first"
-                            : "text-second"
-                        )}
-                        height="24"
-                        shape-rendering="geometricPrecision"
-                        stroke="currentColor"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        stroke-width="1.5"
-                        viewBox="0 0 24 24"
-                        width="24"
-                        style={{
-                          width: 24,
-                          height: 24,
-                        }}
-                      >
-                        <path
-                          d={
-                            activeLinkHeading === item.heading
-                              ? "M6 9l6 6 6-6"
-                              : "M9 18l6-6-6-6"
-                          }
-                        ></path>
-                      </svg>
-                    </button>
-                    <div
-                      className="grid w-full transition-grid"
-                      style={{
-                        gridTemplateRows:
-                          activeLinkHeading === item.heading ? "1fr" : "0fr",
-                      }}
-                    >
-                      {" "}
-                      <div className="flex items-center gap-x-8 overflow-hidden pl-4">
-                        <div className="h-full border-l border-solid border-inactive" />
-                        <div className="grid w-full gap-y-1">
-                          {item.links.map((link, index2) => {
-                            return (
-                              <>
-                                <Link
-                                  href={link.href}
-                                  className={twJoin(
-                                    "transition-colors hover:text-first",
-                                    path === link.href ||
-                                      searchParams.get("matcher") ===
-                                        link.matcher
-                                      ? "text-first"
-                                      : "text-second"
-                                  )}
-                                >
-                                  {link.title}
-                                </Link>
-                              </>
-                            );
-                          })}
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </>
-            );
+            if (item.links.length === 0) {
+              return (
+                <>
+                  <SingleLink
+                    key={index}
+                    title={item.heading}
+                    href={item.href}
+                  />
+                </>
+              );
+            } else {
+              return (
+                <>
+                  <MultipleLinks
+                    key={index}
+                    heading={item.heading}
+                    links={item.links}
+                  />
+                </>
+              );
+            }
           })}
-          <SingleLink
-            title="Settings"
-            href={`/${uid}/settings`}
-            pathChecker="settings"
-          />
         </div>
       </div>
     </LeftNavigationContext.Provider>

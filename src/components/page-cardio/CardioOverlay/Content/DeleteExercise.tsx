@@ -3,7 +3,7 @@
 import { Button } from "@/components/global/Button";
 import { Input } from "@/components/global/Input";
 import { useAppDispatch, useAppSelector } from "@/store/useClient";
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect, useRef } from "react";
 import { CardioOverlayContext } from "../CardioOverlay";
 import { setCardioData } from "@/store/userDataSlice";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -17,6 +17,14 @@ export default function DeleteExercise() {
   const context = useContext(CardioOverlayContext);
   const profileData = useAppSelector((state) => state.userData.profileData);
   const cardioData = useAppSelector((state) => state.appState.cardioExercise);
+  const inputRef = useRef<HTMLInputElement | null>(null);
+
+  useEffect(() => {
+    setInput("");
+    if (inputRef.current) {
+      inputRef.current.value = "";
+    }
+  }, [context.uniqueOpenUid]);
 
   async function handleClick() {
     if (input === profileData.password) {
@@ -58,9 +66,12 @@ export default function DeleteExercise() {
                 Password
               </legend>
               <Input
+                ref={inputRef}
+                value={input}
                 applyAutocompleteStyling
                 type="password"
                 name="password"
+                autoComplete="current-password"
                 spellCheck={false}
                 placeholder={""}
                 styling={{

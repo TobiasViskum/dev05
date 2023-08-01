@@ -9,11 +9,9 @@ import { usePathname } from "next/navigation";
 export default function SingleLink({
   title,
   href,
-  pathChecker,
 }: {
   title: string;
   href: string;
-  pathChecker?: string;
 }) {
   const path = usePathname();
   const context = useContext(LeftNavigationContext);
@@ -21,11 +19,11 @@ export default function SingleLink({
   const activeLinkHeading = context.activeLinkHeading;
 
   useEffect(() => {
-    if (pathChecker && path.includes(pathChecker)) {
+    if (path === href) {
       changeActiveLinkHeading(title);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [path, pathChecker]);
+  }, [path, href]);
 
   return (
     <button

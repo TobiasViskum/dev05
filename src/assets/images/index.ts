@@ -37,6 +37,7 @@ import running from "./running.png";
 import swimming from "./swimming.png";
 import save from "./save.png";
 import arrowDown from "./arrowDown.png";
+import arrowUp from "./arrowUp.png";
 
 export {
   profileTobias,
@@ -78,4 +79,5 @@ export {
   swimming,
   save,
   arrowDown,
+  arrowUp,
 };

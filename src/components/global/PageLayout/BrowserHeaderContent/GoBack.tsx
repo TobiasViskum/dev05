@@ -19,10 +19,10 @@ export default function GoBack() {
     <>
       <Link
         href={newHref}
-        className="w-32 h-8 flex items-center gap-x-1 cursor-pointer"
+        className="mr-auto flex h-8 w-32 cursor-pointer items-center gap-x-1"
       >
-        <Image src={arrowLeft} alt="left" className="h-4 w-4 aspect-square" />
-        <p className="font-semibold text-lg">Go back</p>
+        <Image src={arrowLeft} alt="left" className="aspect-square h-4 w-4" />
+        <p className="text-lg font-semibold">Go back</p>
       </Link>
     </>
   );

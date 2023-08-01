@@ -8,7 +8,23 @@ import {
   Save,
 } from "@/components/page-cardio/CardioSettings";
 import { getCardioExercise } from "@/lib/db/cardio";
+import { Metadata, ResolvingMetadata } from "next";
 import { twJoin } from "tailwind-merge";
+
+export async function generateMetadata(
+  { params, searchParams }: ExtendedViskumAppParams,
+  parent?: ResolvingMetadata
+): Promise<Metadata> {
+  const exerciseId = params.exerciseId;
+
+  const exerciseData = await getCardioExercise(exerciseId);
+
+  return {
+    title: {
+      absolute: exerciseData.name,
+    },
+  };
+}
 
 export default async function page({ params }: ExtendedViskumAppParams) {
   const uid = params.uid;
