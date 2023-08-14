@@ -9,10 +9,14 @@
     "lint": "next lint",
     "copy_deploy": "copy_next.bat && copy_important.bat",
     "copy_node": "copy_node.bat",
-    "deploy": "git add . && git commit -m \"commit\" && git push && npm run build && npm run copy_deploy"
+    "deploy": "git add . && git commit -m \"commit\" && git push && npm run build && npm run copy_deploy",
+    "migrations:generate": "drizzle-kit generate:mysql",
+    "migrations:push": "drizzle-kit push:mysql",
+    "drizzle:studio": "drizzle-kit studio"
   },
   "dependencies": {
     "@mantine/hooks": "^6.0.14",
+    "@planetscale/database": "^1.10.0",
     "@reduxjs/toolkit": "^1.9.5",
     "@tailwindcss/container-queries": "^0.1.1",
     "@types/node": "20.3.1",
@@ -20,6 +24,8 @@
     "@types/react-dom": "18.2.6",
     "autoprefixer": "10.4.14",
     "dayjs": "^1.11.8",
+    "dotenv": "^16.3.1",
+    "drizzle-orm": "^0.28.2",
     "eslint": "8.43.0",
     "eslint-config-next": "13.4.6",
     "framer-motion": "^10.12.17",
@@ -40,6 +46,7 @@
   },
   "devDependencies": {
     "@types/uuid": "^9.0.2",
+    "drizzle-kit": "^0.19.12",
     "prettier": "^2.8.8",
     "prettier-plugin-tailwindcss": "^0.3.0"
   }

@@ -32,11 +32,9 @@ interface ProfileDataBefore {
   hund_app: number;
   cardio_app: number;
   compete_app: number;
-  greetings_statement: string;
-  description_statement: string;
+
   chat_app: number;
-  greetings_statement_danish: string;
-  description_statement_danish: string;
+
   last_name: string;
   favorites: string | null;
   role: string;
@@ -69,11 +67,9 @@ interface ProfileData {
   hund_app: number;
   cardio_app: number;
   compete_app: number;
-  greetings_statement: string;
-  description_statement: string;
+
   chat_app: number;
-  greetings_statement_danish: string;
-  description_statement_danish: string;
+
   last_name: string;
   favorites: Favorites;
   role: string;

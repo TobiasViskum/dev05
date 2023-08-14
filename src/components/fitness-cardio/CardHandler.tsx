@@ -16,7 +16,7 @@ export default function CardHandler({
   const hasStartedSwipe = useRef(false);
   const offsetX = useRef(0);
   const transition = useRef("");
-  const [translateX, setTranslateX] = useState(-100);
+  const [translateX, setTranslateX] = useState(0);
   const swipeStart = 25;
   const maxSwipe = 100;
 
@@ -27,6 +27,7 @@ export default function CardHandler({
         startPos.current = e.changedTouches[0].pageX;
       });
       cardRef.current.addEventListener("touchmove", (e) => {
+        e.preventDefault();
         const newX = e.changedTouches[0].pageX - startPos.current;
         if (cardRef.current) {
           if (
@@ -58,7 +59,6 @@ export default function CardHandler({
   }, []);
 
   const hi = 1 / translateX;
-  console.log(hi, translateX);
 
   return (
     <>
@@ -74,11 +74,12 @@ export default function CardHandler({
         <div
           className={twJoin(
             transition.current,
-            `absolute -right-4 grid h-full place-items-center bg-red-500`
+            `absolute grid h-full place-items-center bg-red-500`
           )}
           style={{
-            transform: `scaleX(${Math.min(translateX, 0)})`,
-            width: "2px",
+            transform: `translateX(${translateX}px)`,
+            right: -104,
+            width: 100,
             opacity: Math.abs(translateX / maxSwipe),
           }}
         >

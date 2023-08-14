@@ -73,19 +73,19 @@ export default function CardioCard({ strExerciseData, stylingData }: Props) {
               />
             </Link>
           </div>
-        </CardHandler>
-        <div
-          className={twJoin(
-            "mt-2 w-full bg-[var(--border-inactive)]",
-            stylingData.isLast
-              ? "h-0"
-              : stylingData.isSecondLast
-              ? stylingData.isTotalExerciseAmountOdd
-                ? "h-[1px] vsm:h-0"
+          <div
+            className={twJoin(
+              "mt-2 w-full bg-[var(--border-inactive)]",
+              stylingData.isLast
+                ? "h-0"
+                : stylingData.isSecondLast
+                ? stylingData.isTotalExerciseAmountOdd
+                  ? "h-[1px] vsm:h-0"
+                  : "h-[1px]"
                 : "h-[1px]"
-              : "h-[1px]"
-          )}
-        />
+            )}
+          />
+        </CardHandler>
       </div>
     </CardProvider>
   );
