@@ -27,7 +27,6 @@ export default function CardHandler({
         startPos.current = e.changedTouches[0].pageX;
       });
       cardRef.current.addEventListener("touchmove", (e) => {
-        e.preventDefault();
         const newX = e.changedTouches[0].pageX - startPos.current;
         if (cardRef.current) {
           if (
@@ -41,6 +40,7 @@ export default function CardHandler({
               e.changedTouches[0].pageX - startPos.current - offset
             );
           } else if (hasStartedSwipe.current) {
+            e.preventDefault();
             const newX = clamp(
               -maxSwipe,
               e.changedTouches[0].pageX - startPos.current - offsetX.current,
