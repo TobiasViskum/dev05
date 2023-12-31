@@ -1,6 +1,6 @@
 "use client";
 
-import { useContext } from "react";
+import { Fragment, useContext } from "react";
 import { LeftNavigationContext } from "./LeftNavigation";
 import Link from "next/link";
 import { twJoin } from "tailwind-merge";
@@ -65,13 +65,7 @@ export default function MultipleLinks({
                 height: 24,
               }}
             >
-              <path
-                d={
-                  activeLinkHeading === heading
-                    ? "M6 9l6 6 6-6"
-                    : "M9 18l6-6-6-6"
-                }
-              ></path>
+              <path d={activeLinkHeading === heading ? "M6 9l6 6 6-6" : "M9 18l6-6-6-6"}></path>
             </svg>
           </button>
           <div
@@ -86,20 +80,19 @@ export default function MultipleLinks({
               <div className="grid w-full gap-y-1">
                 {links.map((link, index2) => {
                   return (
-                    <>
+                    <Fragment key={index2}>
                       <Link
                         href={link.href}
                         className={twJoin(
                           "transition-colors hover:text-first",
-                          path === link.href ||
-                            searchParams.get("matcher") === link.matcher
+                          path === link.href || searchParams.get("matcher") === link.matcher
                             ? "text-first"
                             : "text-second"
                         )}
                       >
                         {link.title}
                       </Link>
-                    </>
+                    </Fragment>
                   );
                 })}
               </div>

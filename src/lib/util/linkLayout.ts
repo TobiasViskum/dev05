@@ -46,6 +46,11 @@ export function getLinkLayout(uid: string) {
       ],
     },
     {
+      heading: "Dog",
+      href: `/${uid}/dog`,
+      links: [],
+    },
+    {
       heading: "Settings",
       href: `/${uid}/settings`,
       links: [],

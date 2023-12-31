@@ -2,7 +2,7 @@
 import Link from "next/link";
 import { usePathname, useParams, useSearchParams } from "next/navigation";
 import { twJoin } from "tailwind-merge";
-import { useEffect, useState, createContext } from "react";
+import { useEffect, useState, createContext, Fragment } from "react";
 import SingleLink from "./SingleLink";
 import { getLinkLayout } from "@/lib/util/linkLayout";
 import MultipleLinks from "./MultipleLinks";
@@ -21,7 +21,7 @@ export default function LeftNavigation() {
   const path = usePathname();
   const params = useParams();
   const searchParams = useSearchParams();
-  const uid = params.uid;
+  const uid = params.uid as string;
   const [activeLinkHeading, setActiveLinkHeading] = useState("");
 
   const linkLayout = getLinkLayout(uid);
@@ -40,7 +40,7 @@ export default function LeftNavigation() {
     setActiveLinkHeading(title);
   }
 
-  if (path === "/") return <></>;
+  if (path === "/") return null;
   return (
     <LeftNavigationContext.Provider
       value={{
@@ -59,23 +59,15 @@ export default function LeftNavigation() {
           {linkLayout.map((item, index) => {
             if (item.links.length === 0) {
               return (
-                <>
-                  <SingleLink
-                    key={index}
-                    title={item.heading}
-                    href={item.href}
-                  />
-                </>
+                <Fragment key={item.href}>
+                  <SingleLink title={item.heading} href={item.href} />
+                </Fragment>
               );
             } else {
               return (
-                <>
-                  <MultipleLinks
-                    key={index}
-                    heading={item.heading}
-                    links={item.links}
-                  />
-                </>
+                <Fragment key={item.href}>
+                  <MultipleLinks heading={item.heading} links={item.links} />
+                </Fragment>
               );
             }
           })}

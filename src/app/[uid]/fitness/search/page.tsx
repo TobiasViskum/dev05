@@ -1,4 +1,3 @@
-import Link from "next/link";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -11,9 +10,9 @@ export default async function MaxPage({ params }: ViskumAppParams) {
   const uid = params.uid;
 
   return (
-    <>
-      <h1>page</h1>
-      <Link href={`/${uid}`}>Go back</Link>
-    </>
+    <div className="flex flex-col gap-y-4">
+      <h1 className="text-4xl">Søg efter øvelse</h1>
+      <div></div>
+    </div>
   );
 }

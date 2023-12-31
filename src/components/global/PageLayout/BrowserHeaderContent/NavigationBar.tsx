@@ -4,7 +4,7 @@ import { getLinkLayout } from "@/lib/util/linkLayout";
 import { useParams } from "next/navigation";
 import { arrowDown } from "@/assets/images";
 import Image from "next/image";
-import { useState } from "react";
+import { Fragment, useState } from "react";
 import { twJoin } from "tailwind-merge";
 import Link from "next/link";
 
@@ -12,7 +12,7 @@ export default function NavigationBar() {
   const [activeLinkGroup, setActiveLinkGroup] = useState("");
 
   const params = useParams();
-  const uid = params.uid;
+  const uid = params.uid as string;
   const linkLayout = getLinkLayout(uid);
 
   function changeActiveLinkGroup(title: string) {
@@ -23,10 +23,10 @@ export default function NavigationBar() {
     <>
       {linkLayout.map((item, index) => {
         if (item.links.length === 0) {
-          return <></>;
+          return null;
         } else {
           return (
-            <>
+            <Fragment key={index}>
               <button
                 className={twJoin(
                   "group relative h-10 w-32 rounded-full transition-colors",
@@ -45,9 +45,7 @@ export default function NavigationBar() {
                   <div
                     className={twJoin(
                       "grid place-items-center rounded-full p-2 transition-transform dt:hover:bg-neutral-700",
-                      activeLinkGroup === item.heading
-                        ? "rotate-180"
-                        : "rotate-0"
+                      activeLinkGroup === item.heading ? "rotate-180" : "rotate-0"
                     )}
                   >
                     <Image src={arrowDown} alt="arrow" width={12} height={12} />
@@ -56,22 +54,17 @@ export default function NavigationBar() {
                 <div
                   className="absolute top-12 grid w-full rounded-lg transition-grid"
                   style={{
-                    gridTemplateRows:
-                      activeLinkGroup === item.heading ? "1fr" : "0fr",
+                    gridTemplateRows: activeLinkGroup === item.heading ? "1fr" : "0fr",
                   }}
                 >
                   <div className="z-10 grid h-full w-full gap-y-2 overflow-hidden rounded-xl bg-neutral-800 shadow-br-md shadow-black">
                     {item.links.map((link, index2) => {
                       return (
-                        <>
-                          <Link
-                            key={index2}
-                            className="first:mt-2 last:mb-2"
-                            href={link.href}
-                          >
+                        <Fragment key={index2}>
+                          <Link key={index2} className="first:mt-2 last:mb-2" href={link.href}>
                             {link.title}
                           </Link>
-                        </>
+                        </Fragment>
                       );
                     })}
                   </div>
@@ -87,7 +80,7 @@ export default function NavigationBar() {
                   </div>
                 </div> */}
               </button>
-            </>
+            </Fragment>
           );
         }
       })}
