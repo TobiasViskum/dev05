@@ -20,7 +20,6 @@ export const LeftNavigationContext = createContext(initialValue);
 export default function LeftNavigation() {
   const path = usePathname();
   const params = useParams();
-  const searchParams = useSearchParams();
   const uid = params.uid as string;
   const [activeLinkHeading, setActiveLinkHeading] = useState("");
 
