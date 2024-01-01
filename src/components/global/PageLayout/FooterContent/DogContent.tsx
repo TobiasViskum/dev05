@@ -9,8 +9,8 @@ export default function DogContent({ currTab }: { currTab: string[] }) {
   const uid = params.uid;
 
   return (
-    <>
-      <ContentItem destPath={`/${uid}/dog`} image={dog} text="Hund" imageSize="h-3/4 w-3/4" />
-    </>
+    <div className="w-full flex items-center justify-center">
+      <ContentItem destPath={`/${uid}/dog`} image={dog} text="Hund" imageSize="h-full w-full" />
+    </div>
   );
 }
