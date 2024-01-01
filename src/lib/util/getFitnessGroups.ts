@@ -1,9 +1,6 @@
 const nameIfNoGroup = "Ungrouped";
 
-export function getFitnessGroups(
-  fitnessData: FitnessData[],
-  type: "max" | "reps"
-) {
+export function getFitnessGroups(fitnessData: FitnessData[], type: "max" | "reps") {
   const UNIT_CONVERTER = 2.20462262;
   let fitnessGroupList: {
     groupData: { name: string; id: number };
@@ -21,9 +18,7 @@ export function getFitnessGroups(
     let exercisesInGroup: FitnessData[] = [];
     sortedData.map((item) => {
       const itemGroup =
-        item[`group_name_${type}`] === null
-          ? nameIfNoGroup
-          : item[`group_name_${type}`];
+        item[`group_name_${type}`] === null ? nameIfNoGroup : item[`group_name_${type}`];
       if (itemGroup === group && item[`has_${type}`] === 1) {
         exercisesInGroup.push(item);
       }
@@ -33,9 +28,7 @@ export function getFitnessGroups(
 
   sortedData.map((groupChecker, index) => {
     const groupId =
-      groupChecker[`group_id_${type}`] === null
-        ? null
-        : groupChecker[`group_id_${type}`];
+      groupChecker[`group_id_${type}`] === null ? null : groupChecker[`group_id_${type}`];
     const groupName =
       groupChecker[`group_name_${type}`] === null
         ? nameIfNoGroup

@@ -2,15 +2,11 @@
 
 import { usePathname } from "next/navigation";
 import { useState } from "react";
-import {
-  HomeContent,
-  StartContent,
-  FitnessContent,
-  CardioContent,
-} from "./FooterContent";
+import { HomeContent, FitnessContent, CardioContent } from "./FooterContent";
 import { twMerge, twJoin } from "tailwind-merge";
 import BrowserBottomShadow from "./FooterContent/BrowserBottomShadow";
 import useChangeCurrTab from "./useChangeCurrTab";
+import DogContent from "./FooterContent/DogContent";
 
 export default function Footer() {
   const path = usePathname();
@@ -44,9 +40,11 @@ export default function Footer() {
           <div className={twMerge(tw, "grid grid-cols-4 tn:grid-cols-5")}>
             <CardioContent currTab={currTab} />
           </div>
-        ) : (
-          ""
-        )}
+        ) : currTab[0] === "dog" ? (
+          <div className={twMerge(tw, "grid grid-cols-4 tn:grid-cols-5")}>
+            <DogContent currTab={currTab} />
+          </div>
+        ) : null}
       </footer>
 
       <div className="mt-32" />

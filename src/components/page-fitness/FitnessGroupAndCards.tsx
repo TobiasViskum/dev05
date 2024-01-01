@@ -28,11 +28,9 @@ export default async function FitnessGroupAndCards({ uid, type }: Props) {
                     key={index2}
                     strExerciseData={JSON.stringify(exercise)}
                     stylingData={{
-                      isTotalExerciseAmountOdd:
-                        group.exercisesInGroup.length % 2 === 0,
+                      isTotalExerciseAmountOdd: group.exercisesInGroup.length % 2 === 0,
                       isExerciseOdd: (index2 + 1) % 2 === 0,
-                      isSecondLast:
-                        group.exercisesInGroup.length - 2 === index2,
+                      isSecondLast: group.exercisesInGroup.length - 2 === index2,
                       isLast: group.exercisesInGroup.length - 1 === index2,
                     }}
                   />
