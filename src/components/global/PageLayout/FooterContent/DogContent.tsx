@@ -2,11 +2,15 @@
 
 import { dog } from "@/assets/images";
 import ContentItem from "./ContentItem";
+import { useParams } from "next/navigation";
 
 export default function DogContent({ currTab }: { currTab: string[] }) {
+  const params = useParams();
+  const uid = params.uid;
+
   return (
     <>
-      <ContentItem destPath={`/dog`} image={dog} text="Hund" imageSize="h-3/4 w-3/4" />
+      <ContentItem destPath={`/${uid}/dog`} image={dog} text="Hund" imageSize="h-3/4 w-3/4" />
     </>
   );
 }
