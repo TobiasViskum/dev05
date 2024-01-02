@@ -9,5 +9,7 @@ export async function POST(req: NextRequest) {
 
   await execute("DELETE FROM fitness_stat_table WHERE uid=? AND id=?", [profile, id]);
 
+  console.log(profile, id);
+
   return NextResponse.json({ success: true });
 }

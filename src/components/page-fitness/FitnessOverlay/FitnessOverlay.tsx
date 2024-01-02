@@ -5,6 +5,7 @@ import { twJoin } from "tailwind-merge";
 import { EditAmount, CreateExercise } from "./Content";
 import { LoadingSpinner, Checkmark } from "@/components/global";
 import { Dialog } from "@/components/global/Dialog";
+import DeleteExercise from "./Content/DeleteExercise";
 
 export default function FitnessOverlay() {
   const [isClosed, setIsClosed] = useState(false);
@@ -77,9 +78,9 @@ export default function FitnessOverlay() {
           <EditAmount closeOverlay={closeOverlay} changeActiveOverlay={changeActiveOverlay} />
         ) : activeOverlay === "createExercise" ? (
           <CreateExercise closeOverlay={closeOverlay} changeActiveOverlay={changeActiveOverlay} />
-        ) : (
-          <></>
-        )}
+        ) : activeOverlay === "deleteExercise" ? (
+          <DeleteExercise />
+        ) : null}
       </Dialog>
       {/* <div
         onClick={(e) => handleClose(e)}

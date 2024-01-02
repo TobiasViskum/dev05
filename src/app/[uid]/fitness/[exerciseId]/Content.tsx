@@ -7,6 +7,8 @@ import styles from "./CreateExercise.module.scss";
 import { Button } from "@/components/global/Button";
 import { useRouter, useSearchParams } from "next/navigation";
 import { set } from "zod";
+import { setFitnessExercise } from "@/store/appStateSlice";
+import { useAppDispatch } from "@/store/useClient";
 
 export function Content({ strFitnessData }: { strFitnessData: string }) {
   const router = useRouter();
@@ -17,49 +19,15 @@ export function Content({ strFitnessData }: { strFitnessData: string }) {
   const [isReps, setIsReps] = useState(!!exercise.has_reps);
   const [isMax, setIsMax] = useState(!!exercise.has_max);
   const [isLocked, setIsLocked] = useState(!!exercise.is_date_locked);
+  const dispatch = useAppDispatch();
+
+  dispatch(setFitnessExercise(exercise));
 
   async function handleClick() {
-    const matcher = serarchParams.get("matcher");
-    let newPage = "";
-    if (matcher === "reps") {
-      newPage = `${exercise.uid}/fitness/reps`;
-    } else if (matcher === "max") {
-      newPage = `${exercise.uid}/fitness/max`;
-    }
-
-    const time1 = new Date().getTime();
-
-    await fetch("/api/fitness/delete-exercise", {
-      method: "POST",
-      body: JSON.stringify({ profile: exercise.uid, id: exercise.id }),
-    });
-
     const event = new CustomEvent("showFitnessOverlay", {
       detail: { overlay: "deleteExercise" },
     });
     document.dispatchEvent(event);
-
-    const waitTime = 1500 - (new Date().getTime() - time1);
-    setTimeout(
-      () => {
-        const event2 = new CustomEvent("showFitnessOverlay", {
-          detail: { overlay: "animation" },
-        });
-        document.dispatchEvent(event2);
-
-        setTimeout(() => {
-          router.push(newPage);
-        }, 500);
-
-        setTimeout(() => {
-          const event3 = new CustomEvent("showFitnessOverlay", {
-            detail: { overlay: "" },
-          });
-          document.dispatchEvent(event3);
-        }, 1250);
-      },
-      waitTime < 0 ? 0 : waitTime
-    );
   }
 
   async function handleSave() {
