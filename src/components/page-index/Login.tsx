@@ -10,8 +10,7 @@ export default function Login({}: {}) {
   const emailRef = useRef<HTMLInputElement | null>(null);
   const passwordRef = useRef<HTMLInputElement | null>(null);
 
-  const divTw =
-    "border-solid border-2 border-inactive w-5/6 rounded-md bg-first";
+  const divTw = "border-solid border-2 border-inactive w-5/6 rounded-md bg-first";
   const inputTw =
     "bg-first placeholder-[var(--text-second)] text-center rounded-md w-full outline-none text-first pb-3 autofill:bg-first autofill:hover:bg-first autofill:focus:bg-first autofill:active:bg-first [transition:_background-color_9999s_ease-in-out_0s] autofill:text-first autofill:hover:text-first autofill:focus:text-first autofill:active:text-first autofill:[-webkit-text-fill-color:_var(--text-first)]";
   const pTw = "absolute -bottom-8";
@@ -38,27 +37,15 @@ export default function Login({}: {}) {
         } = await response.json();
 
         if (result.message === "error") {
-          setLoginResponse(
-            <p className={twJoin(pTw, "text-red-600")}>An error happened</p>
-          );
+          setLoginResponse(<p className={twJoin(pTw, "text-red-600")}>An error happened</p>);
         } else if (result.message === "failed") {
-          setLoginResponse(
-            <p className={twJoin(pTw, "text-yellow-500")}>
-              {result.description}
-            </p>
-          );
-        } else if (
-          result.message === "success" &&
-          result.name &&
-          result.encryptedUid
-        ) {
+          setLoginResponse(<p className={twJoin(pTw, "text-yellow-500")}>{result.description}</p>);
+        } else if (result.message === "success" && result.name && result.encryptedUid) {
           localStorage.setItem("mail", email);
           localStorage.setItem("sessionKey", result.encryptedUid);
 
           nameRef.current = result.name;
-          setLoginResponse(
-            <p className={twJoin(pTw, "text-green-500")}>Success!</p>
-          );
+          setLoginResponse(<p className={twJoin(pTw, "text-green-500")}>Success!</p>);
           setHasLoggedIn(true);
           setTimeout(() => {
             location.href = `/${result.uid}`;
@@ -87,9 +74,7 @@ export default function Login({}: {}) {
             <h2 className="text-3xl font-semibold">Login</h2>
             <form className="grid w-full place-items-center">
               <fieldset className={twJoin(divTw)}>
-                <legend className="ml-4 px-1 text-base font-bold text-second">
-                  E-mail
-                </legend>
+                <legend className="ml-4 px-1 text-base font-bold text-second">E-mail</legend>
                 <input
                   onFocus={onFocus}
                   name="email"
@@ -100,15 +85,18 @@ export default function Login({}: {}) {
                 />
               </fieldset>
               <fieldset className={twJoin(divTw)}>
-                <legend className="ml-4 px-1 text-base font-bold text-second">
-                  Password
-                </legend>
+                <legend className="ml-4 px-1 text-base font-bold text-second">Password</legend>
                 <input
                   onFocus={onFocus}
                   name="password"
                   ref={passwordRef}
                   autoComplete="on"
                   type="password"
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter") {
+                      handleFormSubmit();
+                    }
+                  }}
                   className={inputTw}
                   spellCheck={false}
                   placeholder="..."

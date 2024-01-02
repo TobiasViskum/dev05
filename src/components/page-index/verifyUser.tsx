@@ -23,6 +23,7 @@ export default async function verifyUser({
       mail: mail,
     }),
   });
+
   const result: {
     message: "success" | "failed" | "error";
     name?: string;
@@ -30,25 +31,19 @@ export default async function verifyUser({
   } = await response.json();
 
   if (result.message === "error") {
-    changeProcessingTitle(
-      <h2 className="font-medium text-red-600">An error happened...</h2>
-    );
+    changeProcessingTitle(<h2 className="font-medium text-red-600">An error happened...</h2>);
     setTimeout(() => {
       changeIsProcessingVisible(false);
       changeMainElement(<Login />);
     }, 1000);
   } else if (result.message === "failed") {
-    changeProcessingTitle(
-      <h2 className="font-medium text-yellow-500">Failed to login</h2>
-    );
+    changeProcessingTitle(<h2 className="font-medium text-yellow-500">Failed to login</h2>);
     setTimeout(() => {
       changeIsProcessingVisible(false);
       changeMainElement(<Login />);
     }, 1000);
   } else if (result.message === "success") {
-    changeProcessingTitle(
-      <h2 className="font-medium">Welcome back, {result.name}!</h2>
-    );
+    changeProcessingTitle(<h2 className="font-medium">Welcome back, {result.name}!</h2>);
     setTimeout(() => {
       location.href = `/${result.uid}`;
     }, 2000);

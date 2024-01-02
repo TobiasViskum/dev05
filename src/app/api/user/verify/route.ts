@@ -17,6 +17,7 @@ export async function POST(request: NextRequest) {
   if (!parsed.success) return NextResponse.json({ message: "error" });
 
   const profileDataFromMail = await getProfileData(parsed.data.mail, true);
+
   if (profileDataFromMail === null) {
     return NextResponse.json({ message: "failed" });
   }

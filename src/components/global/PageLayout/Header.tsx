@@ -14,7 +14,7 @@ export default function Header() {
   return (
     <>
       <header
-        className="sticky left-0 top-0 z-20 h-16 w-full min-w-small [transform:_translateZ] standalone:touch:h-12" //overflow-auto
+        className="fixed left-0 top-0 z-20 h-16 w-full min-w-small [transform:_translateZ] standalone:touch:h-12" //overflow-auto
         style={{
           backfaceVisibility: "hidden",
           WebkitBackfaceVisibility: "hidden",
@@ -27,7 +27,7 @@ export default function Header() {
           <BrowserHeader />
         </div>
       </header>
-      <div className="mb-4" />
+      <div className="mb-20" />
     </>
   );
 }

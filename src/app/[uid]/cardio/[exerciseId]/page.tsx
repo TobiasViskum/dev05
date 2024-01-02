@@ -11,21 +11,6 @@ import { getCardioExercise } from "@/lib/db/cardio";
 import { Metadata, ResolvingMetadata } from "next";
 import { twJoin } from "tailwind-merge";
 
-// export async function generateMetadata(
-//   { params, searchParams }: ExtendedViskumAppParams,
-//   parent?: ResolvingMetadata
-// ): Promise<Metadata> {
-//   const exerciseId = params.exerciseId;
-
-//   const exerciseData = await getCardioExercise(exerciseId);
-
-//   return {
-//     title: {
-//       absolute: exerciseData.name,
-//     },
-//   };
-// }
-
 export default async function page({ params }: ExtendedViskumAppParams) {
   const uid = params.uid;
   const exerciseId = params.exerciseId;
@@ -33,7 +18,7 @@ export default async function page({ params }: ExtendedViskumAppParams) {
   const exerciseData = await getCardioExercise(exerciseId);
 
   return (
-    <div className="flex w-full max-w-2xl flex-col items-center">
+    <div className="flex w-full xl:max-w-2xl flex-col items-center">
       <h1 className="mt-2 text-center text-lg [text-wrap:_balance] tn:text-2xl">
         {exerciseData.name}
       </h1>

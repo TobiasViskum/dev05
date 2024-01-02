@@ -18,12 +18,12 @@ export default async function SearchPage({ params }: ViskumAppParams) {
 
   return (
     <div className="flex flex-col gap-y-4">
-      <h1 className="text-4xl">Søg efter øvelse</h1>
-      <GroupHolder>
+      <h1 className="text-3xl">Søg efter øvelse</h1>
+      {/* <GroupHolder>
         <Suspense fallback={<LoadingSkeleton />}>
           <FitnessGroupAndCards uid={uid} type="max" />
         </Suspense>
-      </GroupHolder>
+      </GroupHolder> */}
     </div>
   );
 }

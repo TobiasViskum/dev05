@@ -2,11 +2,8 @@ import { twJoin, twMerge } from "tailwind-merge";
 import ExerciseAmount from "./ExerciseAmount";
 import LeftButtons from "./LeftButtons";
 import InfoBox from "./InfoBox";
-import Image from "next/image";
-import { settingsPng } from "@/assets/images";
 import RightButton from "./RightButtons";
-import { store } from "@/store";
-import Link from "next/link";
+import { SettingsHref } from "./SettingsHref";
 
 interface Props {
   strExerciseData: string;
@@ -57,12 +54,7 @@ export default function FitnessCard({ strExerciseData, stylingData }: Props) {
             </div>
           </div>
         </div>
-        <Link
-          href={`/${exerciseData.uid}/fitness/${exerciseData.id}`}
-          className="absolute -bottom-1 right-0 h-8 w-8 rounded-full p-1.5"
-        >
-          <Image priority src={settingsPng} alt="SET" className="image-blue" />
-        </Link>
+        <SettingsHref strExerciseData={JSON.stringify(exerciseData)} />
       </div>
       <div
         className={twJoin(

@@ -10,11 +10,7 @@ interface Props {
   groupData: { name: string | "Ungrouped"; id: number | null };
 }
 
-export default function CardioGroup({
-  children,
-  strExercisesInGroup,
-  groupData,
-}: Props) {
+export default function CardioGroup({ children, strExercisesInGroup, groupData }: Props) {
   const exercisesInGroup: CardioData[] = JSON.parse(strExercisesInGroup);
   const totalExercises = exercisesInGroup.length;
 

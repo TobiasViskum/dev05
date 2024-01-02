@@ -1,6 +1,7 @@
 import { FitnessCard, FitnessGroup } from "@/components/page-fitness";
 import { getFitnessData } from "@/lib/db";
 import { getFitnessGroups } from "@/lib/util";
+import { AddExerciseNoPwa } from "./AddExerciseNoPwa";
 
 interface Props {
   uid: Uid;
@@ -40,6 +41,7 @@ export default async function FitnessGroupAndCards({ uid, type }: Props) {
           </>
         );
       })}
+      <AddExerciseNoPwa />
     </>
   );
 }

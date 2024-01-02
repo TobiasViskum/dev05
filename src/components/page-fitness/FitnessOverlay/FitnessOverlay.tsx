@@ -23,6 +23,10 @@ export default function FitnessOverlay() {
         dialogRef.current?.showModal();
       }
       setActiveOverlay(e.detail.overlay);
+
+      if (e.detail.overlay === "") {
+        closeOverlay();
+      }
     }) as EventListener);
   }, []);
 
@@ -66,20 +70,13 @@ export default function FitnessOverlay() {
       >
         {activeOverlay === "loading" || activeOverlay === "animation" ? (
           <>
-            <LoadingSpinner
-              opacity={
-                activeOverlay === "animation" ? "opacity-0" : "opacity-100"
-              }
-            />
+            <LoadingSpinner opacity={activeOverlay === "animation" ? "opacity-0" : "opacity-100"} />
             {activeOverlay === "animation" && <Checkmark />}
           </>
         ) : activeOverlay === "editAmount" ? (
-          <EditAmount
-            closeOverlay={closeOverlay}
-            changeActiveOverlay={changeActiveOverlay}
-          />
+          <EditAmount closeOverlay={closeOverlay} changeActiveOverlay={changeActiveOverlay} />
         ) : activeOverlay === "createExercise" ? (
-          <CreateExercise />
+          <CreateExercise closeOverlay={closeOverlay} changeActiveOverlay={changeActiveOverlay} />
         ) : (
           <></>
         )}

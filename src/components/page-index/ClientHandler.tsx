@@ -28,7 +28,7 @@ export default function ClientHandler() {
     const sessionKey = localStorage.getItem("sessionKey");
     const mail = localStorage.getItem("mail");
     setTimeout(() => {
-      if (sessionKey === null || mail === null) {
+      if (!sessionKey || !mail) {
         setIsProcessingTitle(<h2 className="font-medium">Not logged in...</h2>);
         setTimeout(() => {
           setIsProcessingVisible(false);

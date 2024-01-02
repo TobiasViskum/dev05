@@ -42,9 +42,7 @@ export default function CreateExercise() {
         discipline: discipline,
       }),
     });
-    const response = await fetch(
-      `/api/redux-store?uid=${uid}&getSpecific=cardioData`
-    );
+    const response = await fetch(`/api/redux-store?uid=${uid}&getSpecific=cardioData`);
     const result: { cardioData: CardioData[] } = await response.json();
     dispatch(setCardioData(result.cardioData));
 
@@ -59,9 +57,7 @@ export default function CreateExercise() {
       <div className="mx-10 flex flex-col items-center gap-y-2">
         <div className="text-center">
           <p className="text-second">NEW</p>
-          <h3 className="text-lg font-semibold">
-            {firstLetterUppercase(discipline)} Exercise
-          </h3>
+          <h3 className="text-lg font-semibold">{firstLetterUppercase(discipline)} Exercise</h3>
         </div>
         <div className="grid gap-y-2">
           <div className="flex flex-col items-center gap-y-2">
