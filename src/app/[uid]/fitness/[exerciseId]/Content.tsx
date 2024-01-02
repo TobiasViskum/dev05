@@ -5,24 +5,61 @@ import { useState } from "react";
 import { twJoin } from "tailwind-merge";
 import styles from "./CreateExercise.module.scss";
 import { Button } from "@/components/global/Button";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { set } from "zod";
 
 export function Content({ strFitnessData }: { strFitnessData: string }) {
   const router = useRouter();
   const exercise: FitnessData = JSON.parse(strFitnessData);
-
+  const serarchParams = useSearchParams();
   const [name, setName] = useState("");
   const [isCompeting, setIsCompeting] = useState(!!exercise.is_competing);
   const [isReps, setIsReps] = useState(!!exercise.has_reps);
   const [isMax, setIsMax] = useState(!!exercise.has_max);
   const [isLocked, setIsLocked] = useState(!!exercise.is_date_locked);
 
-  function handleClick() {
+  async function handleClick() {
+    const matcher = serarchParams.get("matcher");
+    let newPage = "";
+    if (matcher === "reps") {
+      newPage = `${exercise.uid}/fitness/reps`;
+    } else if (matcher === "max") {
+      newPage = `${exercise.uid}/fitness/max`;
+    }
+
+    const time1 = new Date().getTime();
+
+    await fetch("/api/fitness/delete-exercise", {
+      method: "POST",
+      body: JSON.stringify({ profile: exercise.uid, id: exercise.id }),
+    });
+
     const event = new CustomEvent("showFitnessOverlay", {
       detail: { overlay: "deleteExercise" },
     });
     document.dispatchEvent(event);
+
+    const waitTime = 1500 - (new Date().getTime() - time1);
+    setTimeout(
+      () => {
+        const event2 = new CustomEvent("showFitnessOverlay", {
+          detail: { overlay: "animation" },
+        });
+        document.dispatchEvent(event2);
+
+        setTimeout(() => {
+          router.push(newPage);
+        }, 500);
+
+        setTimeout(() => {
+          const event3 = new CustomEvent("showFitnessOverlay", {
+            detail: { overlay: "" },
+          });
+          document.dispatchEvent(event3);
+        }, 1250);
+      },
+      waitTime < 0 ? 0 : waitTime
+    );
   }
 
   async function handleSave() {
@@ -127,7 +164,7 @@ export function Content({ strFitnessData }: { strFitnessData: string }) {
             "flex w-full max-w-2xl flex-col items-center justify-center gap-x-4 gap-y-6 tn:flex-row tn:gap-y-0"
           )}
         ></div>
-        <div className="flex gap-x-8 mt-80">
+        <div className="flex gap-x-8 mt-32">
           <Button
             onClick={handleSave}
             styling={{
